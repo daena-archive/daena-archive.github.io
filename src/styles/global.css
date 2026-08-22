@@ -346,6 +346,9 @@
   .dark-panel .section-copy {
     color: #b8b1a5;
   }
+  .final-cta.dark-panel p {
+    color: #b8b1a5;
+  }
   .page-hero {
     position: relative;
     padding-block: clamp(5rem, 9vw, 9rem) clamp(4rem, 7vw, 7rem);

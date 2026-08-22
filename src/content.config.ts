@@ -38,6 +38,8 @@ const plugins = defineCollection({
     homepage: z.url().optional(),
     version: z.string(),
     daenaCompatibility: z.string(),
+    hostApi: z.string(),
+    runtimeKind: z.enum(['sandboxed', 'declarative']),
     categories: z.array(z.string()),
     status,
     official: z.boolean(),

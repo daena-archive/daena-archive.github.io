@@ -39,7 +39,9 @@ const { Content } = await render(plugin);
         <h2>Package record</h2><dl>
           <div><dt>Author</dt><dd>{plugin.data.author}</dd></div><div>
             <dt>Version</dt><dd>{plugin.data.version}</dd>
-          </div><div><dt>Compatibility</dt><dd>{plugin.data.daenaCompatibility}</dd></div><div>
+          </div><div><dt>Daena</dt><dd>{plugin.data.daenaCompatibility}</dd></div><div>
+            <dt>Host API</dt><dd><code>{plugin.data.hostApi}</code></dd>
+          </div><div><dt>Runtime</dt><dd>{plugin.data.runtimeKind}</dd></div><div>
             <dt>Updated</dt><dd>
               {
                 plugin.data.updated.toLocaleDateString('en', {
@@ -67,8 +69,8 @@ const { Content } = await render(plugin);
             ))
           }
         </ul><p class="capability-note">
-          Capability names describe requested scope. The host still validates the active session,
-          project, namespace, payload, and current revisions.
+          These identifiers mirror the current module manifest. The host still validates the active
+          session, project, namespace, payload, and current revisions.
         </p>
       </div>
     </div>
@@ -200,7 +202,12 @@ const { Content } = await render(plugin);
     list-style: none;
   }
   .capabilities li {
+    min-width: 0;
+    max-width: 100%;
     margin: 0;
+  }
+  .capabilities code {
+    overflow-wrap: anywhere;
   }
   .capability-note {
     padding: 1rem;

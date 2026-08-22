@@ -345,11 +345,8 @@ const showcase = (await getCollection('showcase'))
       <div class="proposal-card">
         <span>REWRITE PROPOSAL</span>
         <p>“The bells beneath the water were older than the city above them.”</p>
-        <div>
-          <button type="button" tabindex="-1">Keep original</button><button
-            type="button"
-            tabindex="-1">Accept proposal</button
-          >
+        <div class="proposal-actions" role="group" aria-label="Example proposal actions">
+          <span>Keep original</span><span>Accept proposal</span>
         </div>
         <small>Nothing changes until you choose.</small>
       </div>
@@ -1108,7 +1105,7 @@ const showcase = (await getCollection('showcase'))
     display: flex;
     gap: 0.6rem;
   }
-  .proposal-card button {
+  .proposal-actions span {
     padding: 0.6rem 0.8rem;
     border: 1px solid var(--line);
     border-radius: 0.45rem;
@@ -1116,7 +1113,7 @@ const showcase = (await getCollection('showcase'))
     color: var(--muted);
     font-size: 0.7rem;
   }
-  .proposal-card button:last-child {
+  .proposal-actions span:last-child {
     background: var(--forest-900);
     color: var(--paper);
   }

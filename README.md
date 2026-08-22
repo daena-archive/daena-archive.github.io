@@ -15,7 +15,10 @@ Validation:
 npm run check
 npm run build
 npm run format:check
+npm run verify:registry -- ../daena
 ```
+
+The registry verifier compares the five website entries with the authoritative module manifests in a Daena checkout. Pass its path as the first argument, or set `DAENA_SOURCE_DIR`.
 
 ## GitHub Pages
 

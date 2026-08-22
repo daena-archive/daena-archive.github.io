@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StatusBadge from '../components/StatusBadge.astro';
-import { withBase } from '../config/site';
+import { siteConfig, withBase } from '../config/site';
 
 const items = (await getCollection('roadmap')).sort((a, b) => a.data.order - b.data.order);
 const statuses = ['stable', 'beta', 'experimental', 'planned', 'exploring'] as const;
@@ -36,9 +36,7 @@ const descriptions = {
         <p>
           Daena grows through practical iterations. This roadmap shows what is established, what is
           being tested, and what remains only a direction.
-        </p><a class="text-link" href="https://github.com/daena-archive/daena/issues"
-          >Follow development on GitHub</a
-        >
+        </p><a class="text-link" href={siteConfig.issues}>Follow development on GitHub</a>
       </div>
     </div>
   </header>

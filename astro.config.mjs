@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import starlight from '@astrojs/starlight';
+import { siteConfig } from './src/config/site.ts';
 
 const repository = process.env.GITHUB_REPOSITORY?.split('/')[1];
 const pagesBuild = process.env.GITHUB_ACTIONS === 'true';
@@ -27,7 +28,7 @@ export default defineConfig({
         {
           icon: 'github',
           label: 'GitHub',
-          href: 'https://github.com/daena-archive/daena',
+          href: siteConfig.repository,
         },
       ],
       customCss: ['./src/styles/starlight.css'],

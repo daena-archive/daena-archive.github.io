@@ -6,6 +6,8 @@ summary: Native and provider-backed maps connected to the entities and history i
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/maps
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 alpha'
+hostApi: '>=1.0.0 <2.0.0'
+runtimeKind: sandboxed
 categories: [maps, generation]
 status: beta
 official: true
@@ -14,13 +16,20 @@ featured: true
 capabilities:
   [
     entity.read,
-    fields.read,
-    fields.write,
-    relationships.read,
-    relationships.write,
-    assets.read,
-    assets.write,
-    maps.navigation,
+    entity.write,
+    entity.delete,
+    'field.read:self',
+    'field.write:self',
+    relationship.read,
+    relationship.write,
+    'asset.read:self',
+    'asset.write:self',
+    search.query,
+    'host.surface:daena.maps/editor@1',
+    'service.provide:daena.maps/navigation@1',
+    'event.subscribe:daena.core/entity-changed@1',
+    'event.publish:daena.maps/state@1',
+    'event.publish:daena.maps/selection@1',
   ]
 license: Apache-2.0
 updated: 2026-08-22

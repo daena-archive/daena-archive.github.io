@@ -6,6 +6,8 @@ summary: Events, encounters, eras, calendars, dates, locations, and participants
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/timeline
 version: 0.2.0
 daenaCompatibility: 'Daena 0.1 alpha'
+hostApi: '>=1.0.0 <2.0.0'
+runtimeKind: sandboxed
 categories: [timeline, calendars]
 status: beta
 official: true
@@ -15,13 +17,22 @@ capabilities:
   [
     entity.read,
     entity.write,
+    entity.delete,
     document.read,
     document.write,
-    fields.read,
-    fields.write,
-    relationships.read,
-    relationships.write,
-    search.read,
+    'field.read:self',
+    'field.read:shared',
+    'field.write:self',
+    'record.read:self',
+    'record.write:self',
+    relationship.read,
+    relationship.write,
+    'asset.read:self',
+    asset.register,
+    search.query,
+    schema.overlay,
+    'service.provide:daena.timeline.resolve-date@1',
+    'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
 updated: 2026-08-22

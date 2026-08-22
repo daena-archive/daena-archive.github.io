@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "verify:registry": "node scripts/verify-registry.mjs",
     "verify:static": "node scripts/verify-static.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

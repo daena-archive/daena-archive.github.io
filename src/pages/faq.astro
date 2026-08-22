@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { withBase } from '../config/site';
+import { siteConfig, withBase } from '../config/site';
 
 const entries = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
 const rendered = await Promise.all(
@@ -76,7 +76,7 @@ const categories = [
       </p><div class="button-row">
         <a class="button button-brass" href={withBase('/docs/')}>Read documentation</a><a
           class="button button-secondary"
-          href="https://github.com/daena-archive/daena/discussions">GitHub discussions ↗</a
+          href={siteConfig.discussions}>GitHub discussions ↗</a
         >
       </div>
     </div>
