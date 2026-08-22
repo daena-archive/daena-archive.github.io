@@ -2,12 +2,23 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { extname, join, relative, resolve } from 'node:path';
 
 const root = resolve('dist');
-const configuredBase = process.env.STATIC_BASE || '/';
+const repository = process.env.GITHUB_REPOSITORY?.split('/')[1];
+const repositoryOwner = process.env.GITHUB_REPOSITORY_OWNER;
+const organizationSite =
+  repository &&
+  repositoryOwner &&
+  repository.toLowerCase() === `${repositoryOwner}.github.io`.toLowerCase();
+const inferredPagesBase = repository && !organizationSite ? `/${repository}` : '/';
+const configuredBase = process.env.STATIC_BASE || process.env.PUBLIC_BASE_PATH || inferredPagesBase;
 const base = configuredBase === '/' ? '/' : `/${configuredBase.replace(/^\/+|\/+$/g, '')}/`;
 const errors = [];
 let htmlCount = 0;
 let referenceCount = 0;
 let structuralCheckCount = 0;
+
+if (!existsSync(join(root, '.nojekyll'))) {
+  errors.push('dist/.nojekyll -> missing GitHub Pages Jekyll bypass marker');
+}
 
 function walk(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {

@@ -22,7 +22,9 @@ The registry verifier compares the five website entries with the authoritative m
 
 ## GitHub Pages
 
-The default Actions build derives a project-site base path from the repository name. For a custom domain or another path, set these repository variables:
+In **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**. Publishing from a branch invokes Jekyll, which cannot parse Astro component fences.
+
+The default Actions build publishes organization/user Pages repositories such as `daena-archive.github.io` at `/` and derives a project-site base path for other repository names. The generated artifact includes `.nojekyll` as an additional safeguard. For a custom domain or another path, set these repository variables:
 
 - `PUBLIC_SITE_URL`, for example `https://daena.example`
 - `PUBLIC_BASE_PATH`, for example `/` or `/website-daena`

@@ -4,15 +4,18 @@ import starlight from '@astrojs/starlight';
 import { siteConfig } from './src/config/site.ts';
 
 const repository = process.env.GITHUB_REPOSITORY?.split('/')[1];
+const repositoryOwner = process.env.GITHUB_REPOSITORY_OWNER;
 const pagesBuild = process.env.GITHUB_ACTIONS === 'true';
 const configuredBase = process.env.PUBLIC_BASE_PATH?.trim();
 const configuredSite = process.env.PUBLIC_SITE_URL?.trim();
-const base = configuredBase || (pagesBuild && repository ? `/${repository}` : '/');
+const organizationSite =
+  repository &&
+  repositoryOwner &&
+  repository.toLowerCase() === `${repositoryOwner}.github.io`.toLowerCase();
+const base =
+  configuredBase || (pagesBuild && repository && !organizationSite ? `/${repository}` : '/');
 const site =
-  configuredSite ||
-  (pagesBuild
-    ? `https://${process.env.GITHUB_REPOSITORY_OWNER}.github.io`
-    : 'http://localhost:4321');
+  configuredSite || (pagesBuild ? `https://${repositoryOwner}.github.io` : 'http://localhost:4321');
 
 export default defineConfig({
   site,

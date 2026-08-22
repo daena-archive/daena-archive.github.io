@@ -25,6 +25,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
       - name: Install dependencies
         run: npm ci
       - name: Build static site
@@ -32,8 +34,12 @@ jobs:
         env:
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
           PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
+      - name: Verify static artifact
+        run: npm run verify:static
+        env:
+          PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
