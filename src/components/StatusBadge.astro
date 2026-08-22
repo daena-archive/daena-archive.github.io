@@ -1,0 +1,45 @@
+---
+interface Props {
+  status: 'stable' | 'beta' | 'experimental' | 'planned' | 'exploring' | string;
+}
+const { status } = Astro.props;
+---
+
+<span class={`status status-${status}`}><span aria-hidden="true"></span>{status}</span>
+
+<style>
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    padding: 0.36rem 0.58rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.66rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .status span {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: var(--muted-light);
+  }
+  .status-stable span {
+    background: #4f7b5c;
+  }
+  .status-beta span {
+    background: var(--copper);
+  }
+  .status-experimental span {
+    background: #916d9b;
+  }
+  .status-planned span {
+    background: #657d8c;
+  }
+  .status-exploring span {
+    background: #90897d;
+  }
+</style>

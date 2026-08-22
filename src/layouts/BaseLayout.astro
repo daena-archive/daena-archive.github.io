@@ -1,0 +1,107 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { siteConfig, withBase } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  pageClass?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = siteConfig.description,
+  image = '/images/hero-map.png',
+  pageClass = '',
+  noindex = false,
+} = Astro.props;
+const pageTitle = title
+  ? `${title} · ${siteConfig.name}`
+  : `${siteConfig.name} · Local-first worldbuilding`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const socialImage = new URL(withBase(image), Astro.site ?? Astro.url.origin);
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f6f2" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href={withBase('/branding/daena-icon.png')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem('daena-theme') || 'system';
+        const resolved =
+          saved === 'system'
+            ? matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+            : saved;
+        document.documentElement.dataset.theme = resolved;
+        document.documentElement.dataset.themePreference = saved;
+      })();
+    </script>
+  </head>
+  <body class={pageClass}>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <SiteHeader currentPath={Astro.url.pathname} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const media = matchMedia('(prefers-color-scheme: dark)');
+        const apply = (preference) => {
+          const resolved =
+            preference === 'system' ? (media.matches ? 'dark' : 'light') : preference;
+          root.dataset.theme = resolved;
+          root.dataset.themePreference = preference;
+          document.querySelectorAll('[data-theme-choice]').forEach((button) => {
+            const active = button.dataset.themeChoice === preference;
+            button.setAttribute('aria-pressed', String(active));
+          });
+          document.querySelectorAll('[data-theme-label]').forEach((label) => {
+            label.textContent = preference.charAt(0).toUpperCase() + preference.slice(1);
+          });
+          document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute('content', resolved === 'dark' ? '#0e1714' : '#f7f6f2');
+        };
+        apply(localStorage.getItem('daena-theme') || 'system');
+        document.addEventListener('click', (event) => {
+          const button = event.target.closest('[data-theme-choice]');
+          if (!button) return;
+          const preference = button.dataset.themeChoice;
+          localStorage.setItem('daena-theme', preference);
+          apply(preference);
+          button.closest('details')?.removeAttribute('open');
+        });
+        media.addEventListener('change', () => {
+          if ((localStorage.getItem('daena-theme') || 'system') === 'system') apply('system');
+        });
+      })();
+    </script>
+  </body>
+</html>

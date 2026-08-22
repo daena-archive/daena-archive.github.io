@@ -1,0 +1,179 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../config/site';
+
+const entries = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({ entry, ...(await render(entry)) })),
+);
+const categories = [
+  ['product', 'About Daena'],
+  ['privacy', 'Ownership and privacy'],
+  ['workflow', 'Ways of working'],
+  ['technical', 'Technical questions'],
+] as const;
+---
+
+<BaseLayout
+  title="Frequently asked questions"
+  description="Clear answers about Daena's alpha status, ownership model, AI, plugins, Git, and supported workflows."
+>
+  <header class="page-hero">
+    <div class="content-shell page-hero-grid">
+      <div>
+        <span class="eyebrow">Questions · Answers</span><h1 class="page-heading">
+          What should you know before opening the archive?
+        </h1>
+      </div><div class="page-hero-aside">
+        <p>
+          Short answers are useful. The documentation carries the details and the current release
+          notes remain the authority for changing platform and format support.
+        </p>
+      </div>
+    </div>
+  </header>
+  <section class="section-tight">
+    <div class="content-shell faq-layout">
+      <aside>
+        <span>ON THIS PAGE</span>{categories.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}<a
+          href={withBase('/docs/')}>Documentation ↗</a
+        >
+      </aside>
+      <div class="faq-groups">
+        {
+          categories.map(([category, label]) => {
+            const questions = rendered.filter(({ entry }) => entry.data.category === category);
+            return (
+              <section id={category}>
+                <>
+                  <span class="eyebrow">{label}</span>
+                  <div class="faq-list">
+                    {questions.map(({ entry, Content }) => (
+                      <details>
+                        <summary>
+                          <h2>{entry.data.question}</h2>
+                          <span aria-hidden="true">+</span>
+                        </summary>
+                        <div class="faq-answer content-prose">
+                          <Content />
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                </>
+              </section>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+  <section class="final-cta dark-panel">
+    <div class="content-shell">
+      <h2>Still looking for a detail?</h2><p>
+        Read the guides for current behavior or open a project discussion on GitHub.
+      </p><div class="button-row">
+        <a class="button button-brass" href={withBase('/docs/')}>Read documentation</a><a
+          class="button button-secondary"
+          href="https://github.com/daena-archive/daena/discussions">GitHub discussions ↗</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .faq-layout {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: start;
+  }
+  aside {
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
+    display: grid;
+    gap: 0.75rem;
+  }
+  .faq-layout aside > span {
+    margin-bottom: 0.3rem;
+    color: var(--copper-text);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+  .faq-layout aside a {
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-decoration: none;
+  }
+  .faq-layout aside a:hover {
+    color: var(--ink);
+  }
+  .faq-groups {
+    display: grid;
+    gap: 5rem;
+  }
+  .faq-list {
+    margin-top: 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+  .faq-list details {
+    border-bottom: 1px solid var(--line);
+  }
+  .faq-list summary {
+    padding: 1.35rem 0;
+    display: grid;
+    grid-template-columns: 1fr 2rem;
+    align-items: center;
+    gap: 2rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-list summary h2 {
+    font-size: clamp(1.35rem, 2.4vw, 2rem);
+  }
+  .faq-list summary span {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--copper-text);
+    transition: transform 180ms ease;
+  }
+  .faq-list details[open] summary span {
+    transform: rotate(45deg);
+  }
+  .faq-answer {
+    padding: 0 3.5rem 1.5rem 0;
+    color: var(--muted);
+  }
+  .faq-answer :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .final-cta .button-secondary {
+    border-color: #45584d;
+    background: transparent;
+    color: #f2eee4;
+  }
+  @media (max-width: 48rem) {
+    .faq-layout {
+      grid-template-columns: 1fr;
+    }
+    .faq-layout aside {
+      position: static;
+      grid-template-columns: 1fr 1fr;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .faq-layout aside > span {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -1,0 +1,160 @@
+---
+import Wordmark from './Wordmark.astro';
+import ThemeSelector from './ThemeSelector.astro';
+import { navItems, siteConfig, withBase } from '../config/site';
+
+interface Props {
+  currentPath: string;
+}
+const { currentPath } = Astro.props;
+const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').replace(/\/$/, ''));
+---
+
+<header class="site-header">
+  <div class="header-inner shell">
+    <a class="brand" href={withBase('/')} aria-label="Daena Archive home"><Wordmark /></a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {
+        navItems.map((item) => (
+          <a href={withBase(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="header-actions">
+      <a class="github-link" href={siteConfig.repository}
+        >GitHub <span aria-hidden="true">↗</span></a
+      >
+      <ThemeSelector />
+      <a class="button button-primary compact" href={withBase('/download/')}>Download</a>
+      <details class="mobile-menu">
+        <summary aria-label="Open navigation menu"><span></span><span></span><span></span></summary>
+        <nav aria-label="Mobile navigation">
+          {navItems.map((item) => <a href={withBase(item.href)}>{item.label}</a>)}
+          <a href={withBase('/faq/')}>FAQ</a>
+          <a href={siteConfig.repository}>GitHub <span aria-hidden="true">↗</span></a>
+          <a href={withBase('/download/')}>Download Daena</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    z-index: 40;
+    top: 0;
+    height: var(--header-height);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
+    background: color-mix(in srgb, var(--paper) 91%, transparent);
+    backdrop-filter: blur(14px);
+  }
+  .header-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .brand {
+    flex: 0 0 auto;
+    text-decoration: none;
+  }
+  .desktop-nav {
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+  .desktop-nav a,
+  .github-link {
+    position: relative;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    font-weight: 620;
+    text-decoration: none;
+  }
+  .desktop-nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: -0.65rem;
+    left: 0;
+    height: 1px;
+    background: var(--copper);
+    content: '';
+    transform: scaleX(0);
+    transition: transform 180ms ease;
+  }
+  .desktop-nav a:hover::after,
+  .desktop-nav a[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .mobile-menu {
+    display: none;
+    position: relative;
+  }
+  .mobile-menu > summary {
+    width: 2.65rem;
+    height: 2.65rem;
+    display: grid;
+    place-content: center;
+    gap: 0.24rem;
+    border: 1px solid var(--line);
+    border-radius: 0.65rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .mobile-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+  .mobile-menu > summary span {
+    width: 1rem;
+    height: 1px;
+    background: var(--ink);
+  }
+  .mobile-menu nav {
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    right: 0;
+    width: min(18rem, calc(100vw - 2rem));
+    padding: 0.55rem;
+    display: grid;
+    border: 1px solid var(--line);
+    border-radius: 0.9rem;
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-medium);
+  }
+  .mobile-menu nav a {
+    padding: 0.8rem 0.9rem;
+    border-radius: 0.55rem;
+    color: var(--ink);
+    font-weight: 650;
+    text-decoration: none;
+  }
+  .mobile-menu nav a:hover {
+    background: var(--paper-warm);
+  }
+  @media (max-width: 68rem) {
+    .desktop-nav,
+    .github-link {
+      display: none;
+    }
+    .header-actions {
+      margin-left: auto;
+    }
+    .mobile-menu {
+      display: block;
+    }
+  }
+  @media (max-width: 35rem) {
+    .header-actions > .button {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,84 @@
+<details class="theme-selector">
+  <summary aria-label="Choose color theme" title="Choose color theme">
+    <svg aria-hidden="true" viewBox="0 0 24 24"
+      ><path
+        d="M12 3v2m0 14v2M3 12h2m14 0h2M5.64 5.64l1.42 1.42m9.88 9.88 1.42 1.42m0-12.72-1.42 1.42M7.06 16.94l-1.42 1.42M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+      ></path></svg
+    >
+    <span data-theme-label>System</span>
+  </summary>
+  <div class="theme-menu" role="group" aria-label="Color theme">
+    <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+    <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+    <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
+  </div>
+</details>
+
+<style>
+  .theme-selector {
+    position: relative;
+  }
+  summary {
+    min-height: 2.65rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.58rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 0.65rem;
+    color: var(--ink-soft);
+    font: 650 0.76rem/1 var(--font-sans);
+    cursor: pointer;
+    list-style: none;
+    background: color-mix(in srgb, var(--paper-raised) 86%, transparent);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  svg {
+    width: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+  }
+  .theme-menu {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 9rem;
+    padding: 0.4rem;
+    display: grid;
+    gap: 0.2rem;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-medium);
+  }
+  button {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--ink-soft);
+    text-align: left;
+    font: 600 0.82rem/1 var(--font-sans);
+    cursor: pointer;
+  }
+  button:hover,
+  button:focus-visible {
+    background: var(--paper-warm);
+    color: var(--ink);
+  }
+  button[aria-pressed='true'] {
+    background: var(--forest-900);
+    color: var(--dark-ink);
+  }
+  @media (max-width: 68rem) {
+    summary span {
+      display: none;
+    }
+  }
+</style>

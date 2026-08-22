@@ -1,0 +1,1393 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArchiveCard from '../components/ArchiveCard.astro';
+import RelationshipGraph from '../components/RelationshipGraph.astro';
+import TimelineStrip from '../components/TimelineStrip.astro';
+import LanguageSpecimen from '../components/LanguageSpecimen.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import { entrySlug, siteConfig, withBase } from '../config/site';
+
+const plugins = (await getCollection('plugins')).filter((entry) => entry.data.featured).slice(0, 3);
+const showcase = (await getCollection('showcase'))
+  .filter((entry) => entry.data.featured)
+  .slice(0, 3);
+---
+
+<BaseLayout pageClass="home">
+  <section class="hero" aria-labelledby="hero-title">
+    <picture class="hero-art">
+      <source
+        media="(max-width: 700px)"
+        srcset={withBase('/images/hero-map-960.webp')}
+        type="image/webp"
+      />
+      <source srcset={withBase('/images/hero-map.webp')} type="image/webp" />
+      <img
+        src={withBase('/images/hero-map.png')}
+        alt="Hand-drawn map of Eldermere, with teal seas, forest terrain, mountains, and navigation lines"
+        width="1536"
+        height="1024"
+        fetchpriority="high"
+      />
+    </picture>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="shell hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">A private place for impossible worlds</span>
+        <h1 id="hero-title" class="display-heading">
+          Build the world <em class="accent-italic">behind the story.</em>
+        </h1>
+        <p class="lede">
+          Shape characters, places, factions, languages, maps, and history in one calm, local-first
+          studio.
+        </p>
+        <div class="button-row">
+          <a class="button button-primary" href={withBase('/download/')}
+            >Download Daena <span aria-hidden="true">↓</span></a
+          >
+          <a class="button button-secondary" href={withBase('/features/')}
+            >Explore the studio <span aria-hidden="true">→</span></a
+          >
+        </div>
+        <a class="hero-github" href={siteConfig.repository}
+          >View source on GitHub <span aria-hidden="true">↗</span></a
+        >
+      </div>
+      <ArchiveCard class="hero-archive-card" />
+      <div class="map-marker marker-one" aria-hidden="true"><span>⌾</span><i></i></div>
+      <div class="map-marker marker-two" aria-hidden="true"><span>⌁</span><i></i></div>
+    </div>
+    <div class="shell hero-facts" aria-label="Daena principles">
+      <div><strong>100%</strong><span>Local-first</span></div>
+      <div><strong>Open source</strong><span>Apache-2.0</span></div>
+      <div><strong>Built for creators</strong><span>No telemetry</span></div>
+      <div><strong>Your data</strong><span>Stays yours</span></div>
+    </div>
+  </section>
+
+  <section class="section intro-section">
+    <div class="content-shell intro-grid">
+      <div>
+        <span class="eyebrow">One world · Many threads</span>
+        <h2 class="section-heading">
+          Worlds are complicated. <em class="accent-italic">Keeping track of them shouldn’t be.</em>
+        </h2>
+      </div>
+      <div class="intro-copy">
+        <p>
+          Daena brings the pieces of a world into one connected archive. Lore, history, maps,
+          languages, writing, and extensions remain close enough to inform one another without
+          forcing your work into a single rigid workflow.
+        </p>
+        <div class="thread-list" aria-label="Connected archive layers">
+          <span><i></i>Lore</span><span><i></i>History</span><span><i></i>Place</span><span
+            ><i></i>Language</span
+          ><span><i></i>Writing</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section lore-section">
+    <div class="content-shell lore-grid">
+      <div class="lore-copy">
+        <span class="eyebrow">Lore · Relationships</span>
+        <h2 class="feature-heading">Nothing in your world exists in isolation.</h2>
+        <p class="section-copy">
+          Record people, places, cultures, artifacts, factions, concepts, and the details that make
+          them distinct. Connect them through structured relationships, then move through the
+          archive without losing the larger picture.
+        </p>
+        <p class="supporting-line">
+          From a single artifact to an entire civilization, Daena keeps context close.
+        </p>
+        <a class="text-link" href={withBase('/features/lore/')}>Explore Lore</a>
+      </div>
+      <div class="graph-stage surface">
+        <RelationshipGraph />
+        <article class="entity-fragment">
+          <div><span>PERSON</span><i>•</i><small>12 relationships</small></div>
+          <h3>Mira Vale</h3>
+          <p>Cartographer of the Tidewatch and keeper of the western soundings.</p>
+          <dl>
+            <div><dt>Origin</dt><dd>Eldermere</dd></div><div>
+              <dt>Culture</dt><dd>Coastfolk</dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section timeline-section">
+    <div class="content-shell">
+      <div class="timeline-intro">
+        <div>
+          <span class="eyebrow">History · Time</span>
+          <h2 class="feature-heading">Give history somewhere to happen.</h2>
+        </div>
+        <div>
+          <p class="section-copy">
+            Build timelines for events, eras, characters, and places. Use calendars when your world
+            needs them, or keep dates simple when it does not. History should add context—not
+            bookkeeping.
+          </p>
+          <a class="text-link" href={withBase('/features/timeline/')}>Explore Timelines</a>
+        </div>
+      </div>
+      <div class="timeline-stage"><TimelineStrip /></div>
+    </div>
+  </section>
+
+  <section class="maps-section dark-panel">
+    <div class="map-background" aria-hidden="true">
+      <picture
+        ><source srcset={withBase('/images/hero-map.webp')} type="image/webp" /><img
+          src={withBase('/images/hero-map.png')}
+          alt=""
+          width="1536"
+          height="1024"
+          loading="lazy"
+        /></picture
+      >
+    </div>
+    <div class="content-shell map-content">
+      <div class="map-copy">
+        <span class="eyebrow">Maps · Place</span>
+        <h2 class="section-heading">Every world needs somewhere to exist.</h2>
+        <p class="section-copy">
+          Keep maps beside the lore they describe. Link places and entities to geography, explore
+          generated worlds, and build visual layers that turn a map into part of the archive.
+        </p>
+        <div class="status-row">
+          <StatusBadge status="beta" /><span>Maps is actively evolving</span>
+        </div>
+        <a class="button button-brass" href={withBase('/features/maps/')}
+          >Explore Maps <span aria-hidden="true">→</span></a
+        >
+      </div>
+      <div class="map-layers" aria-label="Map progression">
+        <span class="coordinate">42° 18′ N · 11° 07′ W</span>
+        <ol>
+          <li><small>01</small><strong>Physical structure</strong><span>Available · Beta</span></li>
+          <li><small>02</small><strong>Terrain detail</strong><span>In development</span></li>
+          <li><small>03</small><strong>Lore overlays</strong><span>Roadmap</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section language-section">
+    <div class="content-shell language-grid">
+      <div>
+        <span class="eyebrow">Language · Culture</span>
+        <h2 class="feature-heading">Let your cultures speak for themselves.</h2>
+        <p class="section-copy">
+          Develop sounds, words, grammar, and writing systems without separating language from the
+          people and places that use it. Start with a name and a few notes, or go deeper when the
+          language demands it.
+        </p>
+        <a class="text-link" href={withBase('/features/languages/')}>Explore Languages</a>
+      </div>
+      <LanguageSpecimen />
+    </div>
+  </section>
+
+  <section class="section writing-section">
+    <div class="content-shell writing-grid">
+      <div class="writing-sheet surface">
+        <div class="document-bar">
+          <span>MANUSCRIPT · CHAPTER IV</span><span>Saved locally</span>
+        </div>
+        <h3>The Sounding Bell</h3>
+        <p class="first-line">
+          At first light, Mira found the tide three marks higher than the tables allowed.
+        </p>
+        <p>
+          Beyond the glass, Eldermere’s eastern quay was already awake. Ropes creaked against wet
+          timber, lanterns went dark one by one, and every gull had turned inland.
+        </p>
+        <span class="reference-chip">@ Mira Vale <i>PERSON</i></span>
+        <span class="reference-chip">@ Eldermere <i>PLACE</i></span>
+      </div>
+      <div>
+        <span class="eyebrow">Writing · Context</span>
+        <h2 class="feature-heading">Write with the world beside you.</h2>
+        <p class="section-copy">
+          Keep prose close to the people, places, history, and terminology that shape it. Daena is a
+          world archive first, but the archive should never be far away when it is time to write.
+        </p>
+        <a class="text-link" href={withBase('/features/writing/')}>Explore Writing</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ownership-section dark-panel">
+    <div class="content-shell ownership-grid">
+      <div>
+        <span class="eyebrow">Your archive</span>
+        <h2 class="section-heading">Your world belongs to you.</h2>
+      </div>
+      <div>
+        <p class="section-copy">
+          Daena is built around local projects, open formats, and user-controlled files. Your
+          archive should remain useful outside the application that created it.
+        </p>
+        <p>
+          Keep projects on your own machine. Use Git when you want history and remotes. Work with
+          portable representations. Extend the studio without giving up ownership of the archive.
+        </p>
+        <div class="ownership-labels">
+          <span>Local-first</span><span>Open source</span><span>Git-friendly</span><span
+            >Portable checkpoints</span
+          ><span>No subscription</span>
+        </div>
+      </div>
+      <div class="orbit" aria-hidden="true"><i></i><i></i><i></i><span>DAENA</span></div>
+    </div>
+  </section>
+
+  <section class="section snapshots-section">
+    <div class="content-shell snapshot-grid">
+      <div>
+        <span class="eyebrow">Snapshots · History</span>
+        <h2 class="feature-heading">Your project has a history too.</h2>
+        <p class="section-copy">
+          Browse snapshots of the archive, inspect earlier states, and recover work when the project
+          changes direction. World history belongs in Timeline. Project history belongs here.
+        </p>
+        <a class="text-link" href={withBase('/features/snapshots/')}>Learn about snapshots</a>
+      </div>
+      <div class="snapshot-stack" aria-label="Example project snapshots">
+        <article>
+          <span>Today · 14:32</span><strong>Connect the Tidewatch to Lantern Marsh</strong><small
+            >8 portable files</small
+          >
+        </article>
+        <article>
+          <span>Yesterday · 21:08</span><strong>Revise Coastfolk language notes</strong><small
+            >12 portable files</small
+          >
+        </article>
+        <article>
+          <span>Aug 18 · 09:16</span><strong>Before map boundary revision</strong><small
+            >5 portable files</small
+          >
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section plugins-section">
+    <div class="content-shell">
+      <div class="section-header-row">
+        <div>
+          <span class="eyebrow">Extensions</span><h2 class="feature-heading">
+            Make the studio your own.
+          </h2>
+        </div>
+        <div>
+          <p class="section-copy">
+            Modules and plugins add focused capabilities through versioned, permission-aware
+            contracts.
+          </p><a class="text-link" href={withBase('/plugins/')}>Browse the registry</a>
+        </div>
+      </div>
+      <div class="plugin-preview-grid">
+        {
+          plugins.map((plugin, index) => (
+            <article class={`plugin-preview plugin-tone-${index + 1}`}>
+              <div class="plugin-art" aria-hidden="true">
+                <>
+                  <i />
+                  <i />
+                  <span>{plugin.data.name.charAt(0)}</span>
+                </>
+              </div>
+              <div class="plugin-body">
+                <>
+                  <StatusBadge status={plugin.data.status} />
+                  <h3>{plugin.data.name}</h3>
+                  <p>{plugin.data.summary}</p>
+                  <small>
+                    {plugin.data.package} · v{plugin.data.version}
+                  </small>
+                  <a
+                    href={withBase(`/plugins/${entrySlug(plugin.id)}/`)}
+                    aria-label={`View ${plugin.data.name}`}
+                  >
+                    View module <span aria-hidden="true">→</span>
+                  </a>
+                </>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section ai-section">
+    <div class="content-shell ai-grid surface">
+      <div class="ai-copy">
+        <span class="eyebrow">Optional AI</span>
+        <h2 class="feature-heading">Help when you ask for it.</h2>
+        <p class="section-copy">
+          Use language models for rewriting, expansion, or context-aware assistance when they are
+          useful. Choose local models when you want the workflow to remain on your machine.
+        </p>
+        <div class="status-row">
+          <StatusBadge status="experimental" /><span>Opt-in · proposal only</span>
+        </div>
+        <a class="text-link" href={withBase('/features/ai/')}>Read about AI in Daena</a>
+      </div>
+      <div class="proposal-card">
+        <span>REWRITE PROPOSAL</span>
+        <p>“The bells beneath the water were older than the city above them.”</p>
+        <div>
+          <button type="button" tabindex="-1">Keep original</button><button
+            type="button"
+            tabindex="-1">Accept proposal</button
+          >
+        </div>
+        <small>Nothing changes until you choose.</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="section showcase-section">
+    <div class="content-shell">
+      <div class="section-header-row">
+        <div>
+          <span class="eyebrow">From the archive</span><h2 class="feature-heading">
+            See how a connected world takes shape.
+          </h2>
+        </div>
+        <div>
+          <p class="section-copy">
+            The first collection uses clearly labeled demonstration archives. Community submissions
+            can follow through a moderated workflow.
+          </p><a class="text-link" href={withBase('/showcase/')}>Visit the showcase</a>
+        </div>
+      </div>
+      <div class="showcase-preview-grid">
+        {
+          showcase.map((entry, index) => (
+            <a
+              class={`showcase-preview accent-${entry.data.accent} item-${index + 1}`}
+              href={withBase(`/showcase/${entrySlug(entry.id)}/`)}
+            >
+              <div class="showcase-art" aria-hidden="true">
+                <>
+                  <span />
+                  <i />
+                  <b>{String(index + 1).padStart(2, '0')}</b>
+                </>
+              </div>
+              <>
+                <small>{entry.data.creator}</small>
+                <h3>{entry.data.title}</h3>
+                <p>{entry.data.summary}</p>
+                <span class="view-label">Open archive →</span>
+              </>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta dark-panel">
+    <div class="content-shell">
+      <span class="eyebrow">Free · Open source · Local-first</span>
+      <h2>Build your archive. <em class="accent-italic">Keep it yours.</em></h2>
+      <p>
+        Daena Archive is free and open source. Download the alpha, explore the source, or help shape
+        what comes next.
+      </p>
+      <div class="button-row">
+        <a class="button button-brass" href={withBase('/download/')}>Download Daena</a><a
+          class="button button-secondary"
+          href={siteConfig.repository}>View on GitHub ↗</a
+        ><a class="text-link" href={withBase('/docs/')}>Read the documentation</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(57rem, calc(100vh - var(--header-height)));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #f6f0e4;
+    color: #34352f;
+  }
+  .hero-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(248, 246, 239, 0.98) 0%,
+      rgba(248, 246, 239, 0.91) 31%,
+      rgba(248, 246, 239, 0.15) 61%,
+      rgba(248, 246, 239, 0.02) 100%
+    );
+  }
+  .hero-inner {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  .hero-copy {
+    position: relative;
+    z-index: 4;
+    width: min(43rem, 52%);
+    padding-block: 5rem 3rem;
+  }
+  .hero-copy .display-heading {
+    color: #253128;
+  }
+  .hero-copy .lede {
+    max-width: 34rem;
+    color: #4e5049;
+  }
+  .hero-github {
+    display: inline-block;
+    margin-top: 1.4rem;
+    color: #625e54;
+    font-size: 0.75rem;
+    font-weight: 650;
+    text-underline-offset: 0.25rem;
+  }
+  :global(.hero-archive-card) {
+    position: absolute;
+    z-index: 3;
+    top: 42%;
+    right: 8%;
+  }
+  .map-marker {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+  }
+  .map-marker span {
+    position: relative;
+    z-index: 1;
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border: 6px solid rgba(255, 254, 250, 0.8);
+    border-radius: 50%;
+    background: #2c493a;
+    color: #fff;
+    box-shadow: 0 10px 22px rgba(30, 45, 37, 0.2);
+  }
+  .map-marker i {
+    position: absolute;
+    width: 8rem;
+    height: 8rem;
+    border: 1px dashed rgba(151, 103, 51, 0.65);
+    border-radius: 50%;
+  }
+  .marker-one {
+    top: 25%;
+    right: 21%;
+  }
+  .marker-two {
+    right: 31%;
+    bottom: 22%;
+  }
+  .marker-two span {
+    background: #ad7a43;
+  }
+  .hero-facts {
+    position: relative;
+    z-index: 4;
+    min-height: 6.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    border-top: 1px solid rgba(125, 113, 91, 0.2);
+  }
+  .hero-facts div {
+    padding-inline: 1.5rem;
+    display: grid;
+    justify-items: center;
+    border-right: 1px solid rgba(125, 113, 91, 0.2);
+    color: #34352f;
+  }
+  .hero-facts div:last-child {
+    border-right: 0;
+  }
+  .hero-facts strong {
+    font: 520 1.12rem/1.2 var(--font-serif);
+  }
+  .hero-facts span {
+    margin-top: 0.25rem;
+    color: #646159;
+    font-size: 0.7rem;
+  }
+  :global([data-theme='dark']) .hero {
+    background: #0e1714;
+  }
+  :global([data-theme='dark']) .hero-art {
+    opacity: 0.62;
+  }
+  :global([data-theme='dark']) .hero-shade {
+    background: linear-gradient(
+      90deg,
+      #0e1714 0%,
+      rgba(14, 23, 20, 0.94) 33%,
+      rgba(14, 23, 20, 0.38) 66%,
+      rgba(14, 23, 20, 0.16)
+    );
+  }
+  :global([data-theme='dark']) .hero-copy .display-heading {
+    color: #f2eee4;
+  }
+  :global([data-theme='dark']) .hero-copy .lede,
+  :global([data-theme='dark']) .hero-github {
+    color: #c8c0b3;
+  }
+  :global([data-theme='dark']) .hero-facts {
+    border-color: #31443a;
+  }
+  :global([data-theme='dark']) .hero-facts div {
+    border-color: #31443a;
+    color: #eee8dc;
+  }
+  :global([data-theme='dark']) .hero-facts span {
+    color: #aaa296;
+  }
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: end;
+  }
+  .intro-copy > p {
+    font: 450 clamp(1.15rem, 1.8vw, 1.45rem)/1.55 var(--font-serif);
+  }
+  .thread-list {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .thread-list span {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+  .thread-list i {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--copper);
+  }
+  .lore-section {
+    padding-top: 3rem;
+  }
+  .lore-grid {
+    display: grid;
+    grid-template-columns: 0.72fr 1.28fr;
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: center;
+  }
+  .supporting-line {
+    margin: 2rem 0;
+    padding-left: 1.2rem;
+    border-left: 2px solid var(--brass);
+    color: var(--ink);
+    font: italic 1.15rem/1.5 var(--font-serif);
+  }
+  .graph-stage {
+    position: relative;
+    padding: clamp(1.2rem, 3vw, 2.5rem);
+    box-shadow: var(--shadow-soft);
+  }
+  .entity-fragment {
+    position: absolute;
+    right: -2rem;
+    bottom: -3.5rem;
+    width: 18rem;
+    padding: 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-medium);
+  }
+  .entity-fragment > div {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--copper-text);
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  .entity-fragment small {
+    color: var(--muted);
+    letter-spacing: 0;
+  }
+  .entity-fragment h3 {
+    margin-top: 0.65rem;
+    font-size: 1.35rem;
+  }
+  .entity-fragment p {
+    margin-top: 0.45rem;
+    color: var(--muted);
+    font-size: 0.73rem;
+    line-height: 1.5;
+  }
+  .entity-fragment dl {
+    margin: 0.8rem 0 0;
+  }
+  .entity-fragment dl div {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.45rem 0;
+    border-top: 1px solid var(--line-soft);
+    font-size: 0.67rem;
+  }
+  .entity-fragment dt {
+    color: var(--muted);
+  }
+  .entity-fragment dd {
+    color: var(--ink);
+  }
+  .timeline-section {
+    background: var(--paper-warm);
+  }
+  .timeline-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+  }
+  .timeline-intro .section-copy {
+    margin-top: 0;
+  }
+  .timeline-intro .text-link {
+    margin-top: 1.5rem;
+  }
+  .timeline-stage {
+    margin-top: clamp(3rem, 7vw, 6rem);
+    padding: 1rem 0 2rem;
+  }
+  .maps-section {
+    position: relative;
+    min-height: 52rem;
+    padding-block: clamp(6rem, 11vw, 10rem);
+    overflow: hidden;
+  }
+  .map-background {
+    position: absolute;
+    inset: 0;
+    opacity: 0.29;
+    mix-blend-mode: luminosity;
+  }
+  .map-background::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      #17241e 0%,
+      rgba(23, 36, 30, 0.88) 38%,
+      rgba(23, 36, 30, 0.25)
+    );
+    content: '';
+  }
+  .map-background picture,
+  .map-background img {
+    width: 100%;
+    height: 100%;
+  }
+  .map-background img {
+    object-fit: cover;
+    object-position: 70% center;
+    filter: saturate(0.7) sepia(0.12);
+  }
+  .map-content {
+    position: relative;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 5rem;
+    align-items: end;
+  }
+  .map-copy {
+    align-self: center;
+  }
+  .status-row {
+    margin: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+  .dark-panel .status-row {
+    color: #aaa296;
+  }
+  .map-layers {
+    min-height: 28rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .coordinate {
+    align-self: end;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid #45584d;
+    border-radius: 0.4rem;
+    color: #d0c7b8;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+  }
+  .map-layers ol {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #45584d;
+    border-radius: 0.8rem;
+    background: rgba(14, 23, 20, 0.72);
+    list-style: none;
+    backdrop-filter: blur(6px);
+  }
+  .map-layers li {
+    min-height: 10rem;
+    padding: 1.2rem;
+    display: grid;
+    align-content: space-between;
+    border-right: 1px solid #45584d;
+  }
+  .map-layers li:last-child {
+    border-right: 0;
+  }
+  .map-layers small {
+    color: #d5a55f;
+  }
+  .map-layers strong {
+    color: #f2eee4;
+    font: 520 1.2rem/1.2 var(--font-serif);
+  }
+  .map-layers li span {
+    color: #a49e92;
+    font-size: 0.68rem;
+  }
+  .language-grid {
+    display: grid;
+    grid-template-columns: 0.65fr 1.35fr;
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: center;
+  }
+  .language-grid .text-link {
+    margin-top: 2rem;
+  }
+  .writing-section {
+    background: var(--paper-warm);
+  }
+  .writing-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: center;
+  }
+  .writing-sheet {
+    position: relative;
+    min-height: 36rem;
+    padding: clamp(2rem, 5vw, 5rem);
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-soft);
+  }
+  .document-bar {
+    margin-bottom: 4rem;
+    padding-bottom: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+  }
+  .writing-sheet h3 {
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1;
+  }
+  .writing-sheet p {
+    max-width: 39rem;
+    margin-top: 1.2rem;
+    font: 400 1.15rem/1.75 var(--font-serif);
+  }
+  .writing-sheet .first-line::first-letter {
+    float: left;
+    margin: 0.1rem 0.45rem 0 0;
+    color: var(--copper-text);
+    font-size: 3.4rem;
+    line-height: 0.8;
+  }
+  .reference-chip {
+    margin: 2rem 0.4rem 0 0;
+    padding: 0.45rem 0.65rem;
+    display: inline-flex;
+    gap: 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    font-size: 0.68rem;
+  }
+  .reference-chip i {
+    color: var(--entity-person);
+    font-style: normal;
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  .ownership-section {
+    overflow: hidden;
+  }
+  .ownership-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+  }
+  .ownership-grid > div:nth-child(2) > p:not(.section-copy) {
+    margin-top: 1.5rem;
+    color: #b8b1a5;
+  }
+  .ownership-labels {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+  .ownership-labels span {
+    padding: 0.5rem 0.7rem;
+    border: 1px solid #45584d;
+    border-radius: 999px;
+    color: #ded7ca;
+    font-size: 0.7rem;
+  }
+  .orbit {
+    position: absolute;
+    width: 33rem;
+    height: 33rem;
+    right: -15rem;
+    bottom: -19rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid #3a4e43;
+    border-radius: 50%;
+  }
+  .orbit::before,
+  .orbit::after {
+    position: absolute;
+    inset: 4rem;
+    border: 1px solid #3a4e43;
+    border-radius: 50%;
+    content: '';
+  }
+  .orbit::after {
+    inset: 9rem;
+  }
+  .orbit span {
+    color: #d5a55f;
+    font: 500 1.2rem var(--font-serif);
+    letter-spacing: 0.2em;
+  }
+  .orbit i {
+    position: absolute;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: #d5a55f;
+  }
+  .orbit i:nth-child(1) {
+    top: 5rem;
+    left: 7rem;
+  }
+  .orbit i:nth-child(2) {
+    top: 9rem;
+    right: 3rem;
+  }
+  .orbit i:nth-child(3) {
+    bottom: 5rem;
+    left: 5rem;
+  }
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: center;
+  }
+  .snapshot-stack {
+    position: relative;
+    min-height: 27rem;
+  }
+  .snapshot-stack article {
+    position: absolute;
+    width: min(31rem, 90%);
+    padding: 1.3rem 1.5rem;
+    display: grid;
+    gap: 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-soft);
+  }
+  .snapshot-stack article:nth-child(1) {
+    z-index: 3;
+    top: 0;
+    right: 0;
+  }
+  .snapshot-stack article:nth-child(2) {
+    z-index: 2;
+    top: 7.5rem;
+    right: 2.5rem;
+  }
+  .snapshot-stack article:nth-child(3) {
+    z-index: 1;
+    top: 15rem;
+    right: 5rem;
+  }
+  .snapshot-stack span,
+  .snapshot-stack small {
+    color: var(--muted);
+    font-size: 0.67rem;
+  }
+  .snapshot-stack strong {
+    color: var(--ink);
+    font: 520 1.18rem/1.3 var(--font-serif);
+  }
+  .section-header-row {
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+  }
+  .section-header-row .section-copy {
+    margin-top: 0;
+  }
+  .section-header-row .text-link {
+    margin-top: 1.3rem;
+  }
+  .plugin-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .plugin-preview {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+    overflow: hidden;
+  }
+  .plugin-art {
+    position: relative;
+    height: 12rem;
+    display: grid;
+    place-items: center;
+    background: #d6cfbb;
+    overflow: hidden;
+  }
+  .plugin-art::before,
+  .plugin-art::after {
+    position: absolute;
+    width: 14rem;
+    height: 14rem;
+    border: 1px solid rgba(63, 72, 58, 0.35);
+    border-radius: 50%;
+    content: '';
+  }
+  .plugin-art::after {
+    width: 8rem;
+    height: 8rem;
+  }
+  .plugin-art i {
+    position: absolute;
+    width: 1px;
+    height: 130%;
+    background: rgba(63, 72, 58, 0.25);
+    transform: rotate(42deg);
+  }
+  .plugin-art i:nth-child(2) {
+    transform: rotate(-42deg);
+  }
+  .plugin-art > span {
+    position: relative;
+    z-index: 1;
+    color: #2c3931;
+    font: 500 3.5rem var(--font-serif);
+  }
+  .plugin-tone-2 .plugin-art {
+    background: #c5d1ca;
+  }
+  .plugin-tone-3 .plugin-art {
+    background: #d6c6b8;
+  }
+  .plugin-body {
+    padding: 1.3rem;
+  }
+  .plugin-body h3 {
+    margin: 1rem 0 0.5rem;
+    font-size: 1.65rem;
+  }
+  .plugin-body p {
+    min-height: 4.6rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+  .plugin-body small {
+    display: block;
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.65rem;
+  }
+  .plugin-body a {
+    margin-top: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    color: var(--copper-text);
+    font-size: 0.76rem;
+    font-weight: 750;
+    text-decoration: none;
+  }
+  .ai-section {
+    background: var(--paper-warm);
+  }
+  .ai-grid {
+    padding: clamp(2rem, 6vw, 5rem);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .proposal-card {
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: var(--paper);
+    box-shadow: var(--shadow-soft);
+  }
+  .proposal-card > span {
+    color: var(--copper-text);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+  .proposal-card p {
+    margin: 2rem 0;
+    font: italic 1.8rem/1.35 var(--font-serif);
+    color: var(--ink);
+  }
+  .proposal-card div {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .proposal-card button {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 0.45rem;
+    background: var(--paper-raised);
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+  .proposal-card button:last-child {
+    background: var(--forest-900);
+    color: var(--paper);
+  }
+  .proposal-card small {
+    display: block;
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.66rem;
+  }
+  .showcase-preview-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-rows: repeat(2, auto);
+    gap: 1rem;
+  }
+  .showcase-preview {
+    padding: 1.2rem;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+    text-decoration: none;
+  }
+  .showcase-preview.item-1 {
+    grid-row: 1 / 3;
+  }
+  .showcase-art {
+    position: relative;
+    height: 12rem;
+    margin-bottom: 1.3rem;
+    border-radius: 0.6rem;
+    background: linear-gradient(150deg, #b5c9c3, #426a67);
+    overflow: hidden;
+  }
+  .item-1 .showcase-art {
+    height: 27rem;
+  }
+  .accent-marsh .showcase-art {
+    background: linear-gradient(145deg, #c6c09e, #66745a);
+  }
+  .accent-ember .showcase-art {
+    background: linear-gradient(145deg, #d0b097, #80513b);
+  }
+  .showcase-art span {
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    right: -2rem;
+    bottom: -5rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 48% 52% 61% 39%;
+  }
+  .showcase-art i {
+    position: absolute;
+    width: 8rem;
+    height: 8rem;
+    top: 2rem;
+    left: 2rem;
+    border: 1px dashed rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+  }
+  .showcase-art b {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.6rem;
+    color: rgba(255, 255, 255, 0.85);
+    font: italic 3rem var(--font-serif);
+  }
+  .showcase-preview > small {
+    color: var(--copper-text);
+    font-size: 0.62rem;
+    font-weight: 760;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .showcase-preview h3 {
+    margin-top: 0.5rem;
+    font-size: 1.8rem;
+  }
+  .showcase-preview p {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  .view-label {
+    margin-top: 1rem;
+    display: block;
+    color: var(--copper-text);
+    font-size: 0.72rem;
+    font-weight: 720;
+  }
+  .final-cta .eyebrow {
+    color: #d5a55f;
+  }
+  .final-cta .button-secondary {
+    border-color: #45584d;
+    background: transparent;
+    color: #f2eee4;
+  }
+  .final-cta .text-link {
+    margin-left: 0.4rem;
+    color: #e4c786;
+  }
+  @media (max-width: 84rem) {
+    .entity-fragment {
+      right: 0;
+    }
+  }
+  @media (max-width: 62rem) {
+    .hero {
+      min-height: 48rem;
+    }
+    .hero-copy {
+      width: 62%;
+    }
+    :global(.hero-archive-card) {
+      right: 4%;
+    }
+    .intro-grid,
+    .lore-grid,
+    .language-grid,
+    .writing-grid,
+    .snapshot-grid {
+      grid-template-columns: 1fr;
+    }
+    .graph-stage {
+      margin-bottom: 3rem;
+    }
+    .language-grid > :first-child,
+    .writing-grid > :last-child {
+      max-width: 42rem;
+    }
+    .writing-grid .writing-sheet {
+      order: 2;
+    }
+    .map-content {
+      grid-template-columns: 1fr;
+    }
+    .map-copy {
+      max-width: 37rem;
+    }
+    .ownership-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .orbit {
+      opacity: 0.55;
+    }
+    .plugin-preview-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .plugin-preview:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 46rem) {
+    .hero {
+      min-height: auto;
+      padding-bottom: 0;
+    }
+    .hero-art {
+      height: 26rem;
+      top: auto;
+    }
+    .hero-art img {
+      object-position: 68% center;
+    }
+    .hero-shade {
+      background: linear-gradient(
+        180deg,
+        #f8f6ef 0%,
+        #f8f6ef 59%,
+        rgba(248, 246, 239, 0.2) 82%,
+        rgba(248, 246, 239, 0.03)
+      );
+    }
+    :global([data-theme='dark']) .hero-shade {
+      background: linear-gradient(
+        180deg,
+        #0e1714 0%,
+        #0e1714 58%,
+        rgba(14, 23, 20, 0.38) 83%,
+        rgba(14, 23, 20, 0.08)
+      );
+    }
+    .hero-inner {
+      min-height: auto;
+      display: block;
+      align-items: flex-start;
+    }
+    .hero-copy {
+      width: 100%;
+      padding-top: 4rem;
+    }
+    .hero-copy .display-heading {
+      font-size: clamp(3.5rem, 16vw, 5.6rem);
+    }
+    :global(.hero-archive-card) {
+      position: relative;
+      inset: auto;
+      width: 15rem;
+      margin: 2rem 0 3rem;
+    }
+    .map-marker {
+      display: none;
+    }
+    .hero-facts {
+      grid-template-columns: 1fr 1fr;
+      padding-block: 0.8rem;
+    }
+    .hero-facts div {
+      padding: 0.8rem;
+    }
+    .hero-facts div:nth-child(2) {
+      border-right: 0;
+    }
+    .intro-grid,
+    .timeline-intro,
+    .section-header-row,
+    .ai-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .entity-fragment {
+      right: 0.6rem;
+      bottom: -4rem;
+    }
+    .maps-section {
+      min-height: auto;
+    }
+    .map-layers {
+      min-height: 21rem;
+    }
+    .map-layers ol {
+      grid-template-columns: 1fr;
+    }
+    .map-layers li {
+      min-height: 5.5rem;
+      border-right: 0;
+      border-bottom: 1px solid #45584d;
+    }
+    .map-layers li:last-child {
+      border-bottom: 0;
+    }
+    .snapshot-stack {
+      min-height: 25rem;
+    }
+    .snapshot-stack article {
+      width: 95%;
+    }
+    .snapshot-stack article:nth-child(2) {
+      right: 0.8rem;
+    }
+    .snapshot-stack article:nth-child(3) {
+      right: 1.6rem;
+    }
+    .plugin-preview-grid,
+    .showcase-preview-grid {
+      grid-template-columns: 1fr;
+    }
+    .plugin-preview:last-child {
+      grid-column: auto;
+    }
+    .showcase-preview.item-1 {
+      grid-row: auto;
+    }
+    .item-1 .showcase-art {
+      height: 15rem;
+    }
+    .final-cta .button-row {
+      flex-direction: column;
+    }
+  }
+</style>

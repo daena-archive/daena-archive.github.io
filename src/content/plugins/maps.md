@@ -1,0 +1,37 @@
+---
+name: Maps
+package: daena.maps
+author: daena-archive
+summary: Native and provider-backed maps connected to the entities and history in a Daena project.
+repository: https://github.com/daena-archive/daena/tree/main/packages/modules/maps
+version: 0.1.0
+daenaCompatibility: 'Daena 0.1 alpha'
+categories: [maps, generation]
+status: beta
+official: true
+bundled: true
+featured: true
+capabilities:
+  [
+    entity.read,
+    fields.read,
+    fields.write,
+    relationships.read,
+    relationships.write,
+    assets.read,
+    assets.write,
+    maps.navigation,
+  ]
+license: Apache-2.0
+updated: 2026-08-22
+---
+
+Maps contributes the first-party map workspace, location capture and reconciliation commands, and a versioned navigation service for other enabled modules.
+
+## Installation
+
+Maps is bundled with Daena. Map-provider assets and adapters may have their own preparation or compatibility requirements documented with each provider.
+
+## Maturity
+
+The workspace is beta. Physical-world generation, native-vector editing, and external-provider workflows are evolving at different rates and are documented independently.

@@ -1,0 +1,118 @@
+<figure class="relationship-graph" aria-labelledby="graph-caption">
+  <svg
+    viewBox="0 0 760 440"
+    role="img"
+    aria-label="Example relationships between six Eldermere archive entries"
+  >
+    <g class="edges">
+      <path
+        d="M375 220 195 110M375 220 585 105M375 220 625 268M375 220 530 360M375 220 190 345M195 110 585 105M190 345 530 360M585 105 625 268"
+      ></path>
+    </g>
+    <g class="node node-person" transform="translate(315 186)"
+      ><rect width="120" height="68" rx="10"></rect><text x="60" y="29">Mira Vale</text><text
+        class="node-type"
+        x="60"
+        y="46">PERSON</text
+      ></g
+    >
+    <g class="node node-artifact" transform="translate(120 74)"
+      ><rect width="150" height="68" rx="10"></rect><text x="75" y="29">Amulet of Tides</text><text
+        class="node-type"
+        x="75"
+        y="46">ARTIFACT</text
+      ></g
+    >
+    <g class="node node-place" transform="translate(510 69)"
+      ><rect width="150" height="68" rx="10"></rect><text x="75" y="29">Eldermere</text><text
+        class="node-type"
+        x="75"
+        y="46">PLACE</text
+      ></g
+    >
+    <g class="node node-culture" transform="translate(550 234)"
+      ><rect width="150" height="68" rx="10"></rect><text x="75" y="29">Coastfolk Culture</text
+      ><text class="node-type" x="75" y="46">CULTURE</text></g
+    >
+    <g class="node node-person" transform="translate(455 326)"
+      ><rect width="150" height="68" rx="10"></rect><text x="75" y="29">Lord Ashford</text><text
+        class="node-type"
+        x="75"
+        y="46">PERSON</text
+      ></g
+    >
+    <g class="node node-person" transform="translate(105 311)"
+      ><rect width="170" height="68" rx="10"></rect><text x="85" y="29">Captain Elian Rook</text
+      ><text class="node-type" x="85" y="46">PERSON</text></g
+    >
+  </svg>
+  <figcaption id="graph-caption">
+    <span>WORLD GRAPH</span> One archive, navigated through its connections.
+  </figcaption>
+</figure>
+
+<style>
+  figure {
+    margin: 0;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .edges path {
+    fill: none;
+    stroke: var(--graph-line);
+    stroke-width: 1.3;
+    stroke-dasharray: 5 5;
+  }
+  .node rect {
+    fill: var(--paper-raised);
+    stroke: var(--line);
+    stroke-width: 1.4;
+  }
+  .node text {
+    fill: var(--ink);
+    text-anchor: middle;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 680;
+  }
+  .node .node-type {
+    fill: var(--muted);
+    font-size: 7px;
+    letter-spacing: 1.4px;
+  }
+  .node-person rect {
+    stroke: var(--entity-person);
+  }
+  .node-place rect {
+    stroke: var(--entity-place);
+  }
+  .node-artifact rect {
+    stroke: var(--entity-artifact);
+  }
+  .node-culture rect {
+    stroke: var(--entity-culture);
+  }
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+  figcaption span {
+    color: var(--copper-text);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+  @media (max-width: 35rem) {
+    .node:nth-of-type(6),
+    .node:nth-of-type(7) {
+      display: none;
+    }
+  }
+</style>

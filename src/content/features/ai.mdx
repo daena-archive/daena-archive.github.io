@@ -1,0 +1,33 @@
+---
+title: Optional AI assistance
+eyebrow: OPTIONAL AI
+summary: Ask for rewriting, expansion, or context-aware help while keeping every proposed change under your control.
+description: Daena supports provider-neutral AI assistance with both local and remote endpoints, explicit context, and proposal-only mutations.
+status: experimental
+area: extensions
+order: 90
+featured: false
+icon: spark
+capabilities:
+  - Choose local providers such as LM Studio or Ollama
+  - Configure remote providers when you choose network access
+  - Assemble context from authorized archive records
+  - Review editable proposals before anything enters the project
+connections:
+  - Writing Studio
+  - Lore
+limitation: AI is optional, opt-in, and still experimental. Provider availability and model quality are external to Daena.
+docs: /docs/ai/enabling-ai/
+---
+
+## Help when you ask for it
+
+AI is a tool inside Daena, not the product's identity. It can assist with rewriting, expansion, and context-aware suggestions when useful, then step away.
+
+## Local and remote follow one workflow
+
+Local and remote providers appear through the same active-provider experience. The application derives security requirements from the configured endpoint while keeping network and credential boundaries internal.
+
+## Proposals, not authority
+
+Generated text does not silently mutate the archive. You decide what to accept, and accepted changes pass through the same revision-aware storage path as any other edit.

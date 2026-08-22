@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig, withBase } from '../config/site';
+---
+
+<BaseLayout
+  title="Community"
+  description="Contribute to Daena, discuss the project, and understand the planned plugin and showcase submission principles."
+>
+  <header class="page-hero">
+    <div class="content-shell page-hero-grid">
+      <div>
+        <span class="eyebrow">Community · Contribution</span><h1 class="page-heading">
+          Build worlds together, even when the archives are your own.
+        </h1>
+      </div><div class="page-hero-aside">
+        <p>
+          Daena is local-first, but its source, design decisions, bug reports, plugins, and showcase
+          can be shaped in public.
+        </p>
+      </div>
+    </div>
+  </header>
+  <section class="section-tight">
+    <div class="content-shell community-grid">
+      <article>
+        <span>CODE</span><h2>Contribute to Daena</h2><p>
+          Read the repository guidance, choose a bounded issue, and keep architectural contracts and
+          user data ownership in view.
+        </p><a class="text-link" href={siteConfig.contributing}>Contribution guide</a>
+      </article><article>
+        <span>DISCUSS</span><h2>Ask and propose</h2><p>
+          Use GitHub Discussions for product questions and design directions. Use Issues for
+          reproducible defects and scoped work.
+        </p><a class="text-link" href={siteConfig.discussions}>Open discussions</a>
+      </article><article>
+        <span>EXTEND</span><h2>Prepare a plugin</h2><p>
+          The third-party platform is experimental. Inspect current manifests, SDK contracts, and
+          capability rules before treating a package as distributable.
+        </p><a class="text-link" href={withBase('/docs/developer/plugin-development/')}
+          >Plugin development</a
+        >
+      </article><article>
+        <span>SHOW</span><h2>Prepare a showcase</h2><p>
+          Future entries will be moderated, content-driven project exhibitions—not a social feed.
+          Creator consent, useful context, and accurate attribution come first.
+        </p><a class="text-link" href={withBase('/showcase/')}>See the initial format</a>
+      </article>
+    </div>
+  </section>
+  <section class="principles dark-panel">
+    <div class="reading-shell">
+      <span class="eyebrow">Participation principles</span><h2>
+        Specific, kind, and technically honest.
+      </h2><ul>
+        <li>Do not present roadmap ideas as released behavior.</li><li>
+          Respect project ownership, privacy, and creator attribution.
+        </li><li>Report evidence and reproduction steps rather than vague failure.</li><li>
+          Keep changes bounded enough to review and verify.
+        </li>
+      </ul><a class="button button-brass" href={siteConfig.repository}>Visit GitHub ↗</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .community-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .community-grid article {
+    padding: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+  }
+  .community-grid article > span {
+    color: var(--copper-text);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+  }
+  .community-grid h2 {
+    margin-top: 1rem;
+    font-size: 2rem;
+  }
+  .community-grid p {
+    min-height: 5rem;
+    margin-top: 0.8rem;
+    color: var(--muted);
+  }
+  .community-grid .text-link {
+    margin-top: 1rem;
+  }
+  .principles {
+    padding-block: clamp(5rem, 9vw, 8rem);
+  }
+  .principles h2 {
+    margin-top: 1rem;
+    font-size: 4rem;
+    line-height: 1;
+  }
+  .principles ul {
+    margin: 2rem 0;
+    padding-left: 1.2rem;
+    color: #c1baae;
+  }
+  .principles li {
+    margin: 0.7rem 0;
+  }
+  @media (max-width: 42rem) {
+    .community-grid {
+      grid-template-columns: 1fr;
+    }
+    .community-grid p {
+      min-height: auto;
+    }
+  }
+</style>

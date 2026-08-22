@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig, withBase } from '../config/site';
+---
+
+<BaseLayout
+  title="Download"
+  description="Download the current Daena Archive alpha from GitHub Releases and review release-specific platform requirements."
+>
+  <header class="download-hero dark-panel">
+    <div class="content-shell download-grid">
+      <div>
+        <span class="eyebrow">Alpha · v0.1.0</span><h1 class="page-heading">
+          Open the archive carefully.
+        </h1><p class="lede">
+          Daena is in active early development and is not production ready. The release page is the
+          single source for currently published builds, installation requirements, and known
+          limitations.
+        </p><div class="button-row">
+          <a class="button button-brass" href={siteConfig.releases}>View GitHub Releases ↗</a><a
+            class="button button-secondary"
+            href={withBase('/docs/getting-started/installing-daena/')}>Installation guide</a
+          >
+        </div>
+      </div><div class="download-seal" aria-hidden="true">
+        <span>α</span><i></i><b>DAENA ARCHIVE</b>
+      </div>
+    </div>
+  </header>
+  <section class="section-tight">
+    <div class="content-shell download-notes">
+      <article>
+        <span>01</span><h2>Check the release notes</h2><p>
+          Platform builds and package formats can change during alpha. The website does not
+          duplicate a platform matrix that could become stale.
+        </p>
+      </article><article>
+        <span>02</span><h2>Back up important projects</h2><p>
+          Keep a separate copy of project folders you care about and read migration notes before
+          opening them with a new alpha build.
+        </p>
+      </article><article>
+        <span>03</span><h2>Report what you find</h2><p>
+          Reproducible bug reports and focused contributions help turn the alpha into a dependable
+          first beta.
+        </p>
+      </article>
+    </div>
+  </section>
+  <section class="release-authority">
+    <div class="reading-shell">
+      <span class="eyebrow">Current authority</span><h2>Why no platform buttons here?</h2><p>
+        {siteConfig.platforms}
+      </p><p>
+        A conventional download grid would look convenient while quietly becoming incorrect. GitHub
+        Releases stays closest to the artifacts, checksums, and per-release notes.
+      </p><div class="button-row">
+        <a class="button button-primary" href={siteConfig.releases}>Open releases</a><a
+          class="text-link"
+          href={siteConfig.issues}>Report an issue</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .download-hero {
+    padding-block: clamp(5rem, 10vw, 9rem);
+  }
+  .download-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .download-hero .lede {
+    color: #b8b1a5;
+  }
+  .download-hero .button-secondary {
+    border-color: #45584d;
+    background: transparent;
+    color: #f2eee4;
+  }
+  .download-seal {
+    position: relative;
+    min-height: 24rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid #42574b;
+    border-radius: var(--radius-large);
+  }
+  .download-seal::before,
+  .download-seal::after {
+    position: absolute;
+    width: 17rem;
+    height: 17rem;
+    border: 1px solid #4b604f;
+    border-radius: 50%;
+    content: '';
+  }
+  .download-seal::after {
+    width: 10rem;
+    height: 10rem;
+    border-color: #b48143;
+    border-style: dashed;
+  }
+  .download-seal span {
+    z-index: 2;
+    color: #e4c786;
+    font: italic 7rem var(--font-serif);
+  }
+  .download-seal i {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: #42574b;
+  }
+  .download-seal b {
+    position: absolute;
+    bottom: 1.2rem;
+    color: #aaa296;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+  }
+  .download-notes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+  }
+  .download-notes article {
+    padding: 2rem;
+    border-right: 1px solid var(--line);
+  }
+  .download-notes article:last-child {
+    border-right: 0;
+  }
+  .download-notes span {
+    color: var(--copper-text);
+    font: italic 1rem var(--font-serif);
+  }
+  .download-notes h2 {
+    margin-top: 1rem;
+    font-size: 1.7rem;
+  }
+  .download-notes p {
+    margin-top: 0.7rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+  .release-authority {
+    padding-block: clamp(5rem, 10vw, 9rem);
+    background: var(--paper-warm);
+  }
+  .release-authority h2 {
+    margin-top: 1rem;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: 1;
+  }
+  .release-authority p {
+    margin-top: 1.3rem;
+    color: var(--muted);
+  }
+  @media (max-width: 55rem) {
+    .download-grid {
+      grid-template-columns: 1fr;
+    }
+    .download-seal {
+      min-height: 17rem;
+    }
+    .download-notes {
+      grid-template-columns: 1fr;
+    }
+    .download-notes article {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .download-notes article:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>

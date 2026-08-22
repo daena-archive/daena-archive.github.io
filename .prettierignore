@@ -1,0 +1,6 @@
+dist/
+node_modules/
+docs/DAENA_WEBSITE_REFERENCE_SPEC.md
+docs/*.png
+public/**/*.png
+public/**/*.webp

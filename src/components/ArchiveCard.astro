@@ -1,0 +1,54 @@
+---
+interface Props {
+  label?: string;
+  title?: string;
+  quote?: string;
+  meta?: string;
+  class?: string;
+}
+const {
+  label = 'ELDERMERE',
+  title,
+  quote = 'The sea remembers what kingdoms forget.',
+  meta = 'Fragments · 12',
+  class: className = '',
+} = Astro.props;
+---
+
+<article class:list={['archive-card', className]}>
+  <span>{label}</span>
+  {title && <h3>{title}</h3>}
+  <p>{quote}</p>
+  <small>{meta}</small>
+</article>
+
+<style>
+  .archive-card {
+    width: min(17rem, 46vw);
+    padding: 1.35rem 1.45rem;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: color-mix(in srgb, var(--paper-raised) 94%, transparent);
+    box-shadow: var(--shadow-medium);
+    color: var(--ink);
+  }
+  span {
+    color: var(--copper-text);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+  h3 {
+    margin: 0.65rem 0 0;
+    font: 600 1.1rem/1.2 var(--font-serif);
+  }
+  p {
+    margin: 0.7rem 0 1rem;
+    font: 500 clamp(1.05rem, 1.5vw, 1.35rem)/1.2 var(--font-serif);
+    text-wrap: balance;
+  }
+  small {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+</style>

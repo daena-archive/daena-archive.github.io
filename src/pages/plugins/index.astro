@@ -1,0 +1,396 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { entrySlug, withBase } from '../../config/site';
+
+const plugins = (await getCollection('plugins')).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name),
+);
+const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categories))].sort();
+---
+
+<BaseLayout
+  title="Plugin registry"
+  description="Browse Daena's static, permission-aware catalogue of bundled modules and future community extensions."
+>
+  <header class="registry-hero dark-panel">
+    <div class="shell registry-hero-grid">
+      <div>
+        <span class="eyebrow">Plugin registry</span><h1 class="page-heading">
+          Extensions, catalogued with their boundaries.
+        </h1><p class="lede">
+          Browse the first-party modules shipped with Daena. Every entry exposes identity, version,
+          compatibility, status, license, and requested capabilities—without ratings or store
+          mechanics.
+        </p>
+      </div><div class="registry-mark" aria-hidden="true"><span>REG</span><i></i><i></i></div>
+    </div>
+  </header>
+
+  <section class="section-tight">
+    <div class="content-shell">
+      <div class="registry-note">
+        <strong>Current catalogue</strong><p>
+          The initial registry contains real bundled modules from the Daena repository. Community
+          submission and review are planned; no fictional installable package is presented here.
+        </p>
+      </div>
+      <div class="filter-bar" data-plugin-filters>
+        <label class="sr-only" for="plugin-search">Search modules</label><input
+          id="plugin-search"
+          type="search"
+          placeholder="Search modules, packages, or capabilities…"
+          data-plugin-search
+        />
+        <label class="sr-only" for="plugin-category">Category</label><select
+          id="plugin-category"
+          data-plugin-category
+          ><option value="all">All categories</option>{
+            categories.map((category) => <option value={category}>{category}</option>)
+          }</select
+        >
+        <label class="sr-only" for="plugin-status">Status</label><select
+          id="plugin-status"
+          data-plugin-status
+          ><option value="all">All statuses</option><option value="beta">Beta</option><option
+            value="experimental">Experimental</option
+          ></select
+        >
+        <span class="filter-count" aria-live="polite" data-plugin-count
+          >{plugins.length} modules</span
+        >
+      </div>
+      <div class="registry-grid" data-plugin-grid>
+        {
+          plugins.map((plugin, index) => (
+            <article
+              class="registry-card"
+              data-plugin-card
+              data-name={`${plugin.data.name} ${plugin.data.package} ${plugin.data.summary} ${plugin.data.capabilities.join(' ')}`.toLowerCase()}
+              data-categories={plugin.data.categories.join(' ')}
+              data-status={plugin.data.status}
+            >
+              <div class={`registry-art art-${index + 1}`} aria-hidden="true">
+                <>
+                  <span>{plugin.data.name.charAt(0)}</span>
+                  <i />
+                  <b>{String(index + 1).padStart(2, '0')}</b>
+                </>
+              </div>
+              <div class="registry-card-body">
+                <div class="card-meta">
+                  <>
+                    <span>{plugin.data.categories.join(' · ')}</span>
+                    <StatusBadge status={plugin.data.status} />
+                  </>
+                </div>
+                <>
+                  <h2>{plugin.data.name}</h2>
+                  <p>{plugin.data.summary}</p>
+                </>
+                <dl>
+                  <>
+                    <div>
+                      <>
+                        <dt>Package</dt>
+                        <dd>{plugin.data.package}</dd>
+                      </>
+                    </div>
+                    <div>
+                      <>
+                        <dt>Version</dt>
+                        <dd>{plugin.data.version}</dd>
+                      </>
+                    </div>
+                    <div>
+                      <>
+                        <dt>Distribution</dt>
+                        <dd>{plugin.data.bundled ? 'Bundled' : 'Optional'}</dd>
+                      </>
+                    </div>
+                  </>
+                </dl>
+                <a href={withBase(`/plugins/${entrySlug(plugin.id)}/`)}>
+                  View module <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+      <div class="empty-state" data-plugin-empty>No modules match those filters.</div>
+    </div>
+  </section>
+
+  <section class="submission-section dark-panel">
+    <div class="content-shell submission-grid">
+      <div>
+        <span class="eyebrow">Registry workflow</span><h2>Contribution, review, rebuild.</h2>
+      </div><ol>
+        <li><span>01</span><p>Author submits validated metadata.</p></li><li>
+          <span>02</span><p>Maintainers review identity, source, and compatibility.</p>
+        </li><li><span>03</span><p>The static site rebuilds from merged content.</p></li>
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (() => {
+    const search = document.querySelector('[data-plugin-search]');
+    const category = document.querySelector('[data-plugin-category]');
+    const status = document.querySelector('[data-plugin-status]');
+    const cards = [...document.querySelectorAll('[data-plugin-card]')];
+    const count = document.querySelector('[data-plugin-count]');
+    const empty = document.querySelector('[data-plugin-empty]');
+    const update = () => {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      cards.forEach((card) => {
+        const matchesSearch = !query || card.dataset.name.includes(query);
+        const matchesCategory =
+          category.value === 'all' || card.dataset.categories.split(' ').includes(category.value);
+        const matchesStatus = status.value === 'all' || card.dataset.status === status.value;
+        const show = matchesSearch && matchesCategory && matchesStatus;
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+      count.textContent = `${visible} ${visible === 1 ? 'module' : 'modules'}`;
+      empty.style.display = visible === 0 ? 'block' : 'none';
+    };
+    search?.addEventListener('input', update);
+    category?.addEventListener('change', update);
+    status?.addEventListener('change', update);
+  })();
+</script>
+
+<style>
+  .registry-hero {
+    padding-block: clamp(5rem, 9vw, 8rem);
+  }
+  .registry-hero-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .registry-hero .lede {
+    color: #b8b1a5;
+  }
+  .registry-mark {
+    position: relative;
+    min-height: 20rem;
+    display: grid;
+    place-items: center;
+  }
+  .registry-mark::before,
+  .registry-mark::after {
+    position: absolute;
+    width: 17rem;
+    height: 17rem;
+    border: 1px solid #465a4f;
+    border-radius: 50%;
+    content: '';
+  }
+  .registry-mark::after {
+    width: 10rem;
+    height: 10rem;
+    border-style: dashed;
+    border-color: #a57d43;
+  }
+  .registry-mark span {
+    color: #e4c786;
+    font: 500 2rem var(--font-serif);
+    letter-spacing: 0.22em;
+  }
+  .registry-mark i {
+    position: absolute;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: #d9a552;
+  }
+  .registry-mark i:first-of-type {
+    top: 2rem;
+    right: 5rem;
+  }
+  .registry-mark i:last-of-type {
+    bottom: 3rem;
+    left: 3rem;
+  }
+  .registry-note {
+    margin-bottom: 2rem;
+    padding: 1rem 1.2rem;
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: 2rem;
+    border-left: 2px solid var(--brass);
+    background: var(--paper-warm);
+  }
+  .registry-note strong {
+    font-family: var(--font-serif);
+  }
+  .registry-note p {
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+  .registry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .registry-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+    overflow: hidden;
+  }
+  .registry-art {
+    position: relative;
+    height: 11rem;
+    display: grid;
+    place-items: center;
+    background: #c4d0c8;
+    overflow: hidden;
+  }
+  .registry-art::before {
+    position: absolute;
+    width: 13rem;
+    height: 13rem;
+    border: 1px solid rgba(47, 68, 56, 0.28);
+    border-radius: 50%;
+    content: '';
+  }
+  .registry-art i {
+    position: absolute;
+    width: 130%;
+    height: 1px;
+    background: rgba(47, 68, 56, 0.25);
+    transform: rotate(28deg);
+  }
+  .registry-art > span {
+    color: #2b4336;
+    font: italic 4rem var(--font-serif);
+  }
+  .registry-art b {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.5rem;
+    color: rgba(43, 67, 54, 0.65);
+    font: italic 1.6rem var(--font-serif);
+  }
+  .art-2,
+  .art-5 {
+    background: #d5c6aa;
+  }
+  .art-3 {
+    background: #b7c9ca;
+  }
+  .art-4 {
+    background: #d4c2b9;
+  }
+  .registry-card-body {
+    padding: 1.25rem;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .card-meta > span {
+    color: var(--copper-text);
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .registry-card h2 {
+    margin-top: 1rem;
+    font-size: 1.8rem;
+  }
+  .registry-card p {
+    min-height: 5rem;
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  .registry-card dl {
+    margin: 1rem 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .registry-card dl div {
+    padding: 0.45rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 0.66rem;
+  }
+  .registry-card dt {
+    color: var(--muted);
+  }
+  .registry-card dd {
+    color: var(--ink);
+  }
+  .registry-card a {
+    display: flex;
+    justify-content: space-between;
+    color: var(--copper-text);
+    font-size: 0.74rem;
+    font-weight: 750;
+    text-decoration: none;
+  }
+  .submission-section {
+    padding-block: clamp(5rem, 8vw, 8rem);
+  }
+  .submission-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 5rem;
+  }
+  .submission-grid h2 {
+    margin-top: 1rem;
+    font-size: 3.8rem;
+    line-height: 1;
+  }
+  .submission-grid ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .submission-grid li {
+    padding: 1rem 0;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    border-bottom: 1px solid #3b4e44;
+  }
+  .submission-grid li span {
+    color: #d5a55f;
+  }
+  .submission-grid li p {
+    color: #d8d1c3;
+  }
+  @media (max-width: 60rem) {
+    .registry-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .registry-hero-grid,
+    .submission-grid {
+      grid-template-columns: 1fr;
+    }
+    .registry-mark {
+      min-height: 14rem;
+    }
+  }
+  @media (max-width: 38rem) {
+    .registry-grid {
+      grid-template-columns: 1fr;
+    }
+    .registry-note {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>

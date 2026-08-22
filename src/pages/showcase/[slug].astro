@@ -1,0 +1,234 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArchiveCard from '../../components/ArchiveCard.astro';
+import RelationshipGraph from '../../components/RelationshipGraph.astro';
+import TimelineStrip from '../../components/TimelineStrip.astro';
+import { entrySlug, withBase } from '../../config/site';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('showcase');
+  return entries.map((entry) => ({ params: { slug: entrySlug(entry.id) }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.summary}>
+  <header class={`showcase-detail-hero accent-${entry.data.accent}`}>
+    <div class="archive-landscape" aria-hidden="true"><span></span><i></i><b></b></div>
+    <div class="content-shell showcase-title">
+      <nav class="breadcrumb">
+        <a href={withBase('/showcase/')}>Showcase</a><span>/</span>Demonstration archive
+      </nav><span class="eyebrow">{entry.data.creator}</span><h1 class="page-heading">
+        {entry.data.title}
+      </h1><p>{entry.data.summary}</p>
+    </div>
+    <ArchiveCard
+      class="detail-card"
+      label={entry.data.title.toUpperCase()}
+      quote={entry.data.summary}
+      meta="Demonstration archive"
+    />
+  </header>
+
+  <section class="section-tight">
+    <div class="content-shell statement-grid">
+      <div class="content-prose"><Content /></div><dl>
+        {
+          entry.data.stats.map((stat: { label: string; value: string }) => (
+            <div>
+              <>
+                <dt>{stat.value}</dt>
+                <dd>{stat.label}</dd>
+              </>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+  <section class="section-tight graph-exhibit">
+    <div class="content-shell">
+      <div class="exhibit-header">
+        <span class="eyebrow">Selected connections</span><p>
+          A small archive study showing how stable records gather context across modules.
+        </p>
+      </div><div class="surface graph-frame"><RelationshipGraph /></div>
+    </div>
+  </section>
+  <section class="section-tight timeline-exhibit dark-panel">
+    <div class="content-shell">
+      <span class="eyebrow">History excerpt</span><h2>Four moments from the same world.</h2><div
+        class="timeline-dark"
+      >
+        <TimelineStrip />
+      </div>
+    </div>
+  </section>
+  <section class="final-cta">
+    <div class="content-shell">
+      <h2>Build an archive with your own shape.</h2><p>
+        Daena is free, open source, and local-first.
+      </p><div class="button-row">
+        <a class="button button-primary" href={withBase('/download/')}>Download Daena</a><a
+          class="button button-secondary"
+          href={withBase('/showcase/')}>Back to showcase</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .showcase-detail-hero {
+    position: relative;
+    min-height: 46rem;
+    padding-block: 7rem;
+    display: flex;
+    align-items: end;
+    background: linear-gradient(145deg, #c8d7d2, #416663);
+    overflow: hidden;
+  }
+  .showcase-detail-hero.accent-marsh {
+    background: linear-gradient(145deg, #d3cda8, #5b7056);
+  }
+  .showcase-detail-hero.accent-ember {
+    background: linear-gradient(145deg, #d9bca4, #785342);
+  }
+  .archive-landscape span {
+    position: absolute;
+    width: 58rem;
+    height: 58rem;
+    right: -12rem;
+    bottom: -30rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 42% 58% 48% 52%;
+  }
+  .archive-landscape::before,
+  .archive-landscape::after {
+    position: absolute;
+    width: 30rem;
+    height: 30rem;
+    right: 3rem;
+    bottom: -10rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    content: '';
+  }
+  .archive-landscape::after {
+    width: 16rem;
+    height: 16rem;
+    right: 12rem;
+    bottom: 2rem;
+    border-style: dashed;
+  }
+  .showcase-title {
+    position: relative;
+    z-index: 2;
+    color: #17241e;
+  }
+  .showcase-title .page-heading {
+    color: #17241e;
+  }
+  .showcase-title > p {
+    max-width: 36rem;
+    margin-top: 1.2rem;
+    font: 500 1.25rem/1.5 var(--font-serif);
+  }
+  .showcase-title .breadcrumb {
+    color: #2e4b41;
+  }
+  .showcase-title .eyebrow {
+    color: #744a2a;
+  }
+  :global(.detail-card) {
+    position: absolute;
+    z-index: 3;
+    right: 10%;
+    bottom: 4rem;
+  }
+  .statement-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 5rem;
+  }
+  .statement-grid dl {
+    display: grid;
+    align-content: start;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .statement-grid dl div {
+    padding: 1.5rem;
+    background: var(--paper-raised);
+  }
+  .statement-grid dt {
+    color: var(--ink);
+    font: italic 2.5rem var(--font-serif);
+  }
+  .statement-grid dd {
+    color: var(--muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .graph-exhibit {
+    background: var(--paper-warm);
+  }
+  .exhibit-header {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+  .exhibit-header p {
+    max-width: 30rem;
+    color: var(--muted);
+  }
+  .graph-frame {
+    padding: clamp(1rem, 4vw, 3rem);
+  }
+  .timeline-exhibit h2 {
+    margin-top: 1rem;
+    font-size: 4rem;
+  }
+  .timeline-dark {
+    margin-top: 3rem;
+    padding: 2rem;
+    border: 1px solid #3b4e44;
+    border-radius: var(--radius);
+    background: #131f1b;
+  }
+  @media (max-width: 55rem) {
+    :global(.detail-card) {
+      right: 1.5rem;
+      bottom: 2rem;
+    }
+    .statement-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 40rem) {
+    .showcase-detail-hero {
+      min-height: 43rem;
+      align-items: flex-start;
+    }
+    .showcase-title .page-heading {
+      font-size: 4rem;
+    }
+    :global(.detail-card) {
+      right: auto;
+      left: 1rem;
+      bottom: 1.5rem;
+      width: calc(100% - 2rem);
+    }
+    .exhibit-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+title: Daena Archive documentation
+description: Learn the current Daena alpha from first project to connected archive.
+template: splash
+hero:
+  tagline: Build a connected, local-first archive for a fictional world.
+  actions:
+    - text: Create your first project
+      link: ./getting-started/creating-a-project/
+      icon: right-arrow
+      variant: primary
+    - text: Understand project storage
+      link: ./project-storage/how-projects-are-stored/
+      icon: document
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="Start with the archive" icon="open-book">
+    Install the current alpha, create a local project, and learn the workspace without committing to
+    a rigid workflow.
+  </Card>
+  <Card title="Connect the world" icon="random">
+    Give people, places, history, maps, language, and writing a shared model with stable identity.
+  </Card>
+  <Card title="Keep it yours" icon="document">
+    Understand the local runtime, portable checkpoints, recovery boundaries, and optional Git
+    history.
+  </Card>
+  <Card title="Extend carefully" icon="puzzle">
+    Learn how modules, plugin permissions, compatibility, and isolated execution fit together.
+  </Card>
+</CardGrid>
+
+> Daena is currently an active alpha. Guides describe implemented behavior, and pages call out areas that are beta or experimental.

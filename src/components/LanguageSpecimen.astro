@@ -1,0 +1,74 @@
+<figure class="language-specimen">
+  <span>LEXICON · COASTFOLK</span>
+  <p class="word">vaerith</p>
+  <p class="phonetic">/ˈvæː.rɪθ/</p>
+  <div class="meaning"><i></i><p><strong>sea</strong> · deep water · the western ocean</p></div>
+  <div class="notes" aria-hidden="true">
+    <span>VAER · WATER</span><span>-ITH · VASTNESS</span><span>NOUN · COMMON</span>
+  </div>
+  <figcaption>Decorative demonstration language from the Eldermere archive.</figcaption>
+</figure>
+
+<style>
+  figure {
+    position: relative;
+    margin: 0;
+    padding: clamp(2rem, 6vw, 5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-large);
+    background: var(--paper-raised);
+    overflow: hidden;
+  }
+  figure > span {
+    color: var(--copper-text);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+  .word {
+    margin: 1.4rem 0 0;
+    color: var(--forest-900);
+    font: italic clamp(4.8rem, 12vw, 10.5rem)/0.8 var(--font-serif);
+    letter-spacing: -0.05em;
+  }
+  .phonetic {
+    margin: 1.7rem 0;
+    color: var(--muted);
+    font: 400 clamp(1.15rem, 2.3vw, 1.7rem)/1 var(--font-serif);
+  }
+  .meaning {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .meaning i {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--copper);
+  }
+  .meaning p {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+  .notes {
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    display: grid;
+    gap: 0.5rem;
+    color: var(--muted-light);
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-align: right;
+  }
+  figcaption {
+    margin-top: 3rem;
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+  @media (max-width: 38rem) {
+    .notes {
+      display: none;
+    }
+  }
+</style>

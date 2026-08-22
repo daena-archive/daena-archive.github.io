@@ -1,0 +1,98 @@
+---
+const events = [
+  ['812', 'Founding of Eldermere'],
+  ['834', 'The Crown of Salt changes hands'],
+  ['847', 'The War of Tides'],
+  ['861', 'The Lantern Marsh Accord'],
+];
+---
+
+<ol class="timeline-strip">
+  {
+    events.map(([year, title], index) => (
+      <li style={`--i:${index}`}>
+        <>
+          <span>{year}</span>
+          <i aria-hidden="true" />
+          <strong>{title}</strong>
+        </>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  ol {
+    position: relative;
+    margin: 0;
+    padding: 2rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    list-style: none;
+  }
+  ol::before {
+    position: absolute;
+    top: 4.25rem;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: var(--timeline-line);
+    content: '';
+  }
+  li {
+    position: relative;
+    display: grid;
+    align-content: start;
+    justify-items: start;
+  }
+  li span {
+    color: var(--copper-text);
+    font: italic 1.6rem/1 var(--font-serif);
+  }
+  li i {
+    position: relative;
+    z-index: 1;
+    width: 0.72rem;
+    height: 0.72rem;
+    margin: 1.35rem 0 1.25rem;
+    border: 2px solid var(--paper);
+    border-radius: 50%;
+    outline: 1px solid var(--copper);
+    background: var(--brass);
+  }
+  li strong {
+    max-width: 12rem;
+    padding-right: 1.25rem;
+    color: var(--ink);
+    font: 570 1rem/1.35 var(--font-serif);
+  }
+  @media (max-width: 42rem) {
+    ol {
+      padding: 0 0 0 1rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    ol::before {
+      top: 0;
+      right: auto;
+      bottom: 0;
+      left: 1.32rem;
+      width: 1px;
+      height: auto;
+    }
+    li {
+      min-height: 7rem;
+      padding-left: 2.4rem;
+    }
+    li span {
+      font-size: 1.2rem;
+    }
+    li i {
+      position: absolute;
+      top: 0.1rem;
+      left: -0.01rem;
+      margin: 0;
+    }
+  }
+</style>

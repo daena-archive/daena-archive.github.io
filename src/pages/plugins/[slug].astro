@@ -1,0 +1,228 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { entrySlug, withBase } from '../../config/site';
+
+export async function getStaticPaths() {
+  const plugins = await getCollection('plugins');
+  return plugins.map((plugin) => ({ params: { slug: entrySlug(plugin.id) }, props: { plugin } }));
+}
+const { plugin } = Astro.props;
+const { Content } = await render(plugin);
+---
+
+<BaseLayout title={`${plugin.data.name} plugin`} description={plugin.data.summary}>
+  <header class="plugin-detail-hero">
+    <div class="content-shell plugin-hero-grid">
+      <div>
+        <nav class="breadcrumb">
+          <a href={withBase('/plugins/')}>Plugin registry</a><span>/</span>{plugin.data.package}
+        </nav><span class="eyebrow">{plugin.data.categories.join(' · ')}</span><h1
+          class="page-heading"
+        >
+          {plugin.data.name}
+        </h1><p class="lede">{plugin.data.summary}</p><div class="plugin-flags">
+          <StatusBadge status={plugin.data.status} /><span
+            >{plugin.data.official ? 'Official' : 'Community'}</span
+          ><span>{plugin.data.bundled ? 'Bundled' : 'Optional'}</span>
+        </div>
+      </div>
+      <div class="plugin-seal" aria-hidden="true">
+        <span>{plugin.data.name.charAt(0)}</span><i></i><b>{plugin.data.package}</b>
+      </div>
+    </div>
+  </header>
+  <section class="section-tight">
+    <div class="content-shell plugin-detail-grid">
+      <aside>
+        <h2>Package record</h2><dl>
+          <div><dt>Author</dt><dd>{plugin.data.author}</dd></div><div>
+            <dt>Version</dt><dd>{plugin.data.version}</dd>
+          </div><div><dt>Compatibility</dt><dd>{plugin.data.daenaCompatibility}</dd></div><div>
+            <dt>Updated</dt><dd>
+              {
+                plugin.data.updated.toLocaleDateString('en', {
+                  dateStyle: 'medium',
+                  timeZone: 'UTC',
+                })
+              }
+            </dd>
+          </div><div><dt>License</dt><dd>{plugin.data.license}</dd></div>
+        </dl>{
+          plugin.data.repository && (
+            <a class="button button-secondary" href={plugin.data.repository}>
+              View source ↗
+            </a>
+          )
+        }
+      </aside>
+      <div class="content-prose">
+        <Content /><h2>Declared capabilities</h2><ul class="capabilities">
+          {
+            plugin.data.capabilities.map((capability: string) => (
+              <li>
+                <code>{capability}</code>
+              </li>
+            ))
+          }
+        </ul><p class="capability-note">
+          Capability names describe requested scope. The host still validates the active session,
+          project, namespace, payload, and current revisions.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="final-cta dark-panel">
+    <div class="content-shell">
+      <h2>Inspect before you enable.</h2><p>
+        Identity, source, compatibility, license, and requested access belong together in every
+        registry entry.
+      </p><div class="button-row">
+        <a class="button button-brass" href={withBase('/plugins/')}>Back to registry</a><a
+          class="button button-secondary"
+          href={withBase('/docs/plugins/permissions/')}>Understand permissions</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .plugin-detail-hero {
+    padding-block: clamp(5rem, 9vw, 8rem);
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--line);
+  }
+  .plugin-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 0.7fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .plugin-flags {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .plugin-flags > span {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
+  .plugin-seal {
+    position: relative;
+    min-height: 24rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-large);
+    background: var(--paper-raised);
+    overflow: hidden;
+  }
+  .plugin-seal::before,
+  .plugin-seal::after {
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    content: '';
+  }
+  .plugin-seal::after {
+    width: 10rem;
+    height: 10rem;
+    border-style: dashed;
+    border-color: var(--brass);
+  }
+  .plugin-seal > span {
+    z-index: 1;
+    color: var(--forest-900);
+    font: italic 6rem var(--font-serif);
+  }
+  .plugin-seal i {
+    position: absolute;
+    width: 130%;
+    height: 1px;
+    background: var(--line);
+    transform: rotate(-31deg);
+  }
+  .plugin-seal b {
+    position: absolute;
+    bottom: 1.2rem;
+    color: var(--copper-text);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+  .plugin-detail-grid {
+    display: grid;
+    grid-template-columns: 0.65fr 1.35fr;
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: start;
+  }
+  aside {
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
+    padding: 1.4rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+  }
+  aside h2 {
+    font-size: 1.5rem;
+  }
+  aside dl {
+    margin: 1rem 0;
+  }
+  aside dl div {
+    padding: 0.65rem 0;
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 0.74rem;
+  }
+  aside dt {
+    color: var(--muted);
+  }
+  aside dd {
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  .capabilities {
+    padding: 0 !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+  }
+  .capabilities li {
+    margin: 0;
+  }
+  .capability-note {
+    padding: 1rem;
+    border-left: 2px solid var(--brass);
+    background: var(--paper-warm);
+    font-size: 0.85rem;
+  }
+  .final-cta .button-secondary {
+    border-color: #45584d;
+    background: transparent;
+    color: #f2eee4;
+  }
+  @media (max-width: 55rem) {
+    .plugin-hero-grid,
+    .plugin-detail-grid {
+      grid-template-columns: 1fr;
+    }
+    aside {
+      position: static;
+    }
+    .plugin-seal {
+      min-height: 17rem;
+    }
+  }
+</style>

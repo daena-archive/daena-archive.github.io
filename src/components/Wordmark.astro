@@ -1,0 +1,57 @@
+---
+import { withBase } from '../config/site';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<span class:list={['wordmark', { compact }]}>
+  <img src={withBase('/branding/daena-icon.png')} alt="" width="500" height="500" />
+  <span class="wordmark-copy">
+    <strong>DAENA</strong>
+    <small>ARCHIVE</small>
+  </span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--ink);
+  }
+  img {
+    width: 2.25rem;
+    height: 2.25rem;
+    object-fit: contain;
+  }
+  .wordmark-copy {
+    display: grid;
+    line-height: 1;
+  }
+  strong {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 560;
+    letter-spacing: 0.25em;
+  }
+  small {
+    margin-top: 0.28rem;
+    color: var(--copper-text);
+    font-size: 0.53rem;
+    font-weight: 750;
+    letter-spacing: 0.5em;
+  }
+  .compact img {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+  @media (max-width: 30rem) {
+    .wordmark-copy {
+      display: none;
+    }
+  }
+</style>

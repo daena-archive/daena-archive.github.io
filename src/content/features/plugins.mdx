@@ -1,0 +1,32 @@
+---
+title: Plugins and modules
+eyebrow: EXTENSIONS
+summary: Add focused capabilities without turning every idea into part of the core application.
+description: Bundled modules and third-party plugins share versioned contracts while third-party code remains isolated and capability-limited.
+status: experimental
+area: extensions
+order: 80
+featured: true
+icon: plugin
+capabilities:
+  - Enable modules that contribute schemas, views, commands, and services
+  - Review declared capabilities before granting access
+  - Keep plugin sessions isolated from Tauri, files, shell, and processes
+  - Preserve portable plugin data when an extension is disabled
+connections:
+  - Local archive and search
+limitation: The plugin platform is implemented in bounded phases and remains experimental during the alpha.
+docs: /docs/plugins/installing-plugins/
+---
+
+## Make the studio your own
+
+Daena uses the same manifest and broker concepts for bundled modules and optional plugins. Extensions can add meaning to shared records without receiving a database handle or unrestricted host access.
+
+## Permissions stay explicit
+
+Capabilities are declared by the package and granted by the user. Sessions are bound to the installed package, project, version, and current activation. Disabling, upgrading, uninstalling, or closing a project revokes access.
+
+## Portable data remains yours
+
+When a plugin is disabled, its UI contributions disappear while its portable interpretation state remains available for recovery and export.
