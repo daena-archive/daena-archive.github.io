@@ -50,7 +50,28 @@ h4,
   letter-spacing: 0.04em;
 }
 header.header {
+  --sl-color-bg-nav: color-mix(in srgb, #17241e 96%, transparent);
+  --sl-color-white: #f2eee4;
+  --sl-color-gray-1: #e8e1d5;
+  --sl-color-gray-2: #c5beb1;
+  --sl-color-gray-4: #667a6f;
+  --sl-color-gray-5: #43584c;
+  --sl-color-gray-6: #2a3d33;
+  --sl-color-accent: #e4c786;
+  border-bottom-color: #354a3f;
+  background: var(--sl-color-bg-nav);
+  color: #f2eee4;
   backdrop-filter: blur(14px);
+}
+header.header :is(.site-title, a, button) {
+  color: inherit;
+}
+header.header button[data-open-modal] {
+  border-color: #43584c;
+  background: rgba(255, 255, 255, 0.045);
+}
+header.header button[data-open-modal]:hover {
+  background: #2d4437;
 }
 .sl-markdown-content {
   font-size: 1rem;

@@ -223,7 +223,7 @@ const entries = await getCollection('showcase');
   @media (max-width: 58rem) {
     .board-grid,
     .invite-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .board-entry.entry-1 {
       grid-row: auto;
@@ -234,11 +234,14 @@ const entries = await getCollection('showcase');
   }
   @media (max-width: 38rem) {
     .board-entry:not(.entry-1) {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .board-art,
     .entry-1 .board-art {
       min-height: 18rem;
+    }
+    .invite-grid h2 {
+      font-size: clamp(2.7rem, 13vw, 4rem);
     }
   }
 </style>

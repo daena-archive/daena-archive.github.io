@@ -21,7 +21,7 @@ const { compact = false } = Astro.props;
     display: inline-flex;
     align-items: center;
     gap: 0.65rem;
-    color: var(--ink);
+    color: var(--wordmark-ink, var(--ink));
   }
   img {
     width: 2.25rem;
@@ -40,7 +40,7 @@ const { compact = false } = Astro.props;
   }
   small {
     margin-top: 0.28rem;
-    color: var(--copper-text);
+    color: var(--wordmark-accent, var(--copper-text));
     font-size: 0.53rem;
     font-weight: 750;
     letter-spacing: 0.5em;

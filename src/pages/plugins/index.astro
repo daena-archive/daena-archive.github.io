@@ -378,7 +378,7 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
     }
     .registry-hero-grid,
     .submission-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .registry-mark {
       min-height: 14rem;
@@ -391,6 +391,9 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
     .registry-note {
       grid-template-columns: 1fr;
       gap: 0.5rem;
+    }
+    .submission-grid h2 {
+      font-size: clamp(2.7rem, 13vw, 3.8rem);
     }
   }
 </style>

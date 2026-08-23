@@ -197,7 +197,7 @@ const descriptions = {
   }
   .lane-items {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
   }
   .lane-items article {
@@ -251,7 +251,7 @@ const descriptions = {
   }
   @media (max-width: 54rem) {
     .roadmap-lane {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 2rem;
     }
     .roadmap-controls {
@@ -260,7 +260,10 @@ const descriptions = {
   }
   @media (max-width: 38rem) {
     .lane-items {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .roadmap-lane h2 {
+      font-size: clamp(2.6rem, 13vw, 3.2rem);
     }
   }
 </style>

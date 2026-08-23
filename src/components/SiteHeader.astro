@@ -31,8 +31,14 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
       <details class="mobile-menu">
         <summary aria-label="Open navigation menu"><span></span><span></span><span></span></summary>
         <nav aria-label="Mobile navigation">
-          {navItems.map((item) => <a href={withBase(item.href)}>{item.label}</a>)}
-          <a href={withBase('/faq/')}>FAQ</a>
+          {
+            navItems.map((item) => (
+              <a href={withBase(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            ))
+          }
+          <a href={withBase('/faq/')} aria-current={isActive('/faq/') ? 'page' : undefined}>FAQ</a>
           <a href={siteConfig.repository}>GitHub <span aria-hidden="true">↗</span></a>
           <a href={withBase('/download/')}>Download Daena</a>
         </nav>
@@ -43,12 +49,22 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
 
 <style>
   .site-header {
+    --wordmark-ink: #f2eee4;
+    --wordmark-accent: #e4c786;
+    --theme-control-background: rgba(255, 255, 255, 0.045);
+    --theme-control-border: #43584c;
+    --theme-control-color: #f2eee4;
+    --theme-menu-background: #203229;
+    --theme-hover-background: #2d4437;
+    --theme-hover-color: #fffdf7;
+    --theme-active-background: #e4c786;
+    --theme-active-color: #2f2619;
     position: sticky;
     z-index: 40;
     top: 0;
     height: var(--header-height);
-    border-bottom: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
-    background: color-mix(in srgb, var(--paper) 91%, transparent);
+    border-bottom: 1px solid #354a3f;
+    background: color-mix(in srgb, #17241e 96%, transparent);
     backdrop-filter: blur(14px);
   }
   .header-inner {
@@ -70,7 +86,7 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
   .desktop-nav a,
   .github-link {
     position: relative;
-    color: var(--ink-soft);
+    color: #d8d1c3;
     font-size: 0.85rem;
     font-weight: 620;
     text-decoration: none;
@@ -81,7 +97,7 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
     bottom: -0.65rem;
     left: 0;
     height: 1px;
-    background: var(--copper);
+    background: #e4c786;
     content: '';
     transform: scaleX(0);
     transition: transform 180ms ease;
@@ -89,6 +105,19 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
   .desktop-nav a:hover::after,
   .desktop-nav a[aria-current='page']::after {
     transform: scaleX(1);
+  }
+  .desktop-nav a:hover,
+  .desktop-nav a[aria-current='page'],
+  .github-link:hover {
+    color: #fffdf7;
+  }
+  .site-header .button-primary {
+    background: #e4c786;
+    color: #2f2619;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  }
+  .site-header .button-primary:hover {
+    background: #efd59e;
   }
   .header-actions {
     display: flex;
@@ -105,7 +134,7 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
     display: grid;
     place-content: center;
     gap: 0.24rem;
-    border: 1px solid var(--line);
+    border: 1px solid #43584c;
     border-radius: 0.65rem;
     cursor: pointer;
     list-style: none;
@@ -116,7 +145,7 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
   .mobile-menu > summary span {
     width: 1rem;
     height: 1px;
-    background: var(--ink);
+    background: #f2eee4;
   }
   .mobile-menu nav {
     position: absolute;
@@ -125,20 +154,24 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
     width: min(18rem, calc(100vw - 2rem));
     padding: 0.55rem;
     display: grid;
-    border: 1px solid var(--line);
+    border: 1px solid #43584c;
     border-radius: 0.9rem;
-    background: var(--paper-raised);
+    background: #203229;
     box-shadow: var(--shadow-medium);
   }
   .mobile-menu nav a {
     padding: 0.8rem 0.9rem;
     border-radius: 0.55rem;
-    color: var(--ink);
+    color: #f2eee4;
     font-weight: 650;
     text-decoration: none;
   }
   .mobile-menu nav a:hover {
-    background: var(--paper-warm);
+    background: #2d4437;
+  }
+  .mobile-menu nav a[aria-current='page'] {
+    background: #2d4437;
+    color: #efd59e;
   }
   @media (max-width: 68rem) {
     .desktop-nav,
