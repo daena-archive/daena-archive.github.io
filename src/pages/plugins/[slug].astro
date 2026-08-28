@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import { entrySlug, withBase } from '../../config/site';
+import { ArrowUpRight } from 'lucide-static';
 
 export async function getStaticPaths() {
   const plugins = await getCollection('plugins');
@@ -54,7 +55,7 @@ const { Content } = await render(plugin);
         </dl>{
           plugin.data.repository && (
             <a class="button button-secondary" href={plugin.data.repository}>
-              View source ↗
+              View source <span set:html={ArrowUpRight}></span>
             </a>
           )
         }

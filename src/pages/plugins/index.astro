@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import { entrySlug, withBase } from '../../config/site';
+import { ArrowRight } from 'lucide-static';
 
 const plugins = (await getCollection('plugins')).sort((a, b) =>
   a.data.name.localeCompare(b.data.name),
@@ -112,7 +113,7 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
                   </>
                 </dl>
                 <a href={withBase(`/plugins/${entrySlug(plugin.id)}/`)}>
-                  View module <span aria-hidden="true">→</span>
+                  View module <span aria-hidden="true" set:html={ArrowRight}></span>
                 </a>
               </div>
             </article>

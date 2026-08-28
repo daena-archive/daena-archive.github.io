@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import { entrySlug, withBase } from '../../config/site';
+import { ArrowRight } from 'lucide-static';
 
 const allFeatures = (await getCollection('features')).sort((a, b) => a.data.order - b.data.order);
 const groups = [
@@ -75,7 +76,7 @@ const groups = [
                         <span>{feature.data.summary}</span>
                       </div>
                       <StatusBadge status={feature.data.status} />
-                      <i aria-hidden="true">→</i>
+                      <i aria-hidden="true" set:html={ArrowRight}></i>
                     </a>
                   ))}
                 </div>

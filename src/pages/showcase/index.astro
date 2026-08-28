@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { entrySlug, withBase } from '../../config/site';
+import { ArrowRight } from 'lucide-static';
 
 const entries = await getCollection('showcase');
 ---
@@ -49,7 +50,7 @@ const entries = await getCollection('showcase');
                   ))}
                 </div>
                 <strong>
-                  Open archive <i>→</i>
+                  Open archive <i set:html={ArrowRight}></i>
                 </strong>
               </>
             </div>

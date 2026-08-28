@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig, withBase } from '../config/site';
+import { ArrowUpRight } from 'lucide-static';
 ---
 
 <BaseLayout
@@ -58,7 +59,7 @@ import { siteConfig, withBase } from '../config/site';
         </li><li>Report evidence and reproduction steps rather than vague failure.</li><li>
           Keep changes bounded enough to review and verify.
         </li>
-      </ul><a class="button button-brass" href={siteConfig.repository}>Visit GitHub ↗</a>
+      </ul><a class="button button-brass" href={siteConfig.repository}>Visit GitHub <span set:html={ArrowUpRight}></span></a>
     </div>
   </section>
 </BaseLayout>

@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig, withBase } from '../config/site';
+import { ArrowUpRight } from 'lucide-static';
 
 const entries = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
 const rendered = await Promise.all(
@@ -37,7 +38,7 @@ const categories = [
     <div class="content-shell faq-layout">
       <aside>
         <span>ON THIS PAGE</span>{categories.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}<a
-          href={withBase('/docs/')}>Documentation ↗</a
+          href={withBase('/docs/')}>Documentation <span set:html={ArrowUpRight}></span></a
         >
       </aside>
       <div class="faq-groups">
@@ -76,7 +77,7 @@ const categories = [
       </p><div class="button-row">
         <a class="button button-brass" href={withBase('/docs/')}>Read documentation</a><a
           class="button button-secondary"
-          href={siteConfig.discussions}>GitHub discussions ↗</a
+          href={siteConfig.discussions}>GitHub discussions <span set:html={ArrowUpRight}></span></a
         >
       </div>
     </div>

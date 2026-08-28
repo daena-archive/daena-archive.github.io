@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import { entrySlug, withBase } from '../../config/site';
+import { ArrowRight } from 'lucide-static';
 
 export async function getStaticPaths() {
   const features = await getCollection('features');
@@ -104,7 +105,7 @@ const connected = feature.data.connections
                 <a href={withBase(`/features/${entrySlug(entry.id)}/`)}>
                   <strong>{entry.data.title}</strong>
                   <small>{entry.data.summary}</small>
-                  <i>→</i>
+                  <i set:html={ArrowRight}></i>
                 </a>
               ))}
             </div>

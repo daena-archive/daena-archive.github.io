@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig, withBase } from '../config/site';
+import { ArrowUpRight } from 'lucide-static';
 ---
 
 <BaseLayout
@@ -17,7 +18,7 @@ import { siteConfig, withBase } from '../config/site';
           single source for currently published builds, installation requirements, and known
           limitations.
         </p><div class="button-row">
-          <a class="button button-brass" href={siteConfig.releases}>View GitHub Releases ↗</a><a
+          <a class="button button-brass" href={siteConfig.releases}>View GitHub Releases <span set:html={ArrowUpRight}></span></a><a
             class="button button-secondary"
             href={withBase('/docs/getting-started/installing-daena/')}>Installation guide</a
           >
