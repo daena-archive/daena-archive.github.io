@@ -9,7 +9,7 @@ import StatusBadge from '../components/StatusBadge.astro';
 import { entrySlug, siteConfig, withBase } from '../config/site';
 import { Crown, Users, PenTool, Swords, TreePine, ArrowRight, ArrowDown, ArrowUpRight, BookOpen, Clock, MapPin, Languages, PenLine } from 'lucide-static';
 
-const plugins = (await getCollection('plugins')).filter((entry) => entry.data.featured).slice(0, 3);
+const plugins = (await getCollection('plugins')).filter((entry) => entry.data.featured);
 const showcase = (await getCollection('showcase'))
   .filter((entry) => entry.data.featured)
   .slice(0, 3);
@@ -320,20 +320,15 @@ const showcase = (await getCollection('showcase'))
           </p><a class="text-link" href={withBase('/plugins/')}>Browse the registry</a>
         </div>
       </div>
-      <div class="plugin-preview-grid">
+      <div class="plugin-preview-carousel">
         {
-          plugins.map((plugin, index) => (
-            <article class={`plugin-preview plugin-tone-${index + 1}`}>
+          plugins.map((plugin) => (
+            <article class="plugin-preview">
               <div class="plugin-art" aria-hidden="true">
-                <>
-                  <i />
-                  <i />
-                  <span>{plugin.data.name.charAt(0)}</span>
-                </>
+                <img src={withBase(plugin.data.image)} alt="" width="1536" height="1024" loading="lazy" />
               </div>
               <div class="plugin-body">
                 <>
-                  <StatusBadge status={plugin.data.status} />
                   <h3>{plugin.data.name}</h3>
                   <p>{plugin.data.summary}</p>
                   <small>
@@ -1084,12 +1079,21 @@ const showcase = (await getCollection('showcase'))
   .section-header-row .text-link {
     margin-top: 1.3rem;
   }
-  .plugin-preview-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  .plugin-preview-carousel {
+    display: flex;
     gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
+  }
+  .plugin-preview-carousel::-webkit-scrollbar {
+    display: none;
   }
   .plugin-preview {
+    flex: 0 0 22rem;
+    scroll-snap-align: start;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--paper-raised);
@@ -1098,45 +1102,13 @@ const showcase = (await getCollection('showcase'))
   .plugin-art {
     position: relative;
     height: 12rem;
-    display: grid;
-    place-items: center;
-    background: #d6cfbb;
     overflow: hidden;
   }
-  .plugin-art::before,
-  .plugin-art::after {
-    position: absolute;
-    width: 14rem;
-    height: 14rem;
-    border: 1px solid rgba(63, 72, 58, 0.35);
-    border-radius: 50%;
-    content: '';
-  }
-  .plugin-art::after {
-    width: 8rem;
-    height: 8rem;
-  }
-  .plugin-art i {
-    position: absolute;
-    width: 1px;
-    height: 130%;
-    background: rgba(63, 72, 58, 0.25);
-    transform: rotate(42deg);
-  }
-  .plugin-art i:nth-child(2) {
-    transform: rotate(-42deg);
-  }
-  .plugin-art > span {
-    position: relative;
-    z-index: 1;
-    color: #2c3931;
-    font: 500 3.5rem var(--font-serif);
-  }
-  .plugin-tone-2 .plugin-art {
-    background: #c5d1ca;
-  }
-  .plugin-tone-3 .plugin-art {
-    background: #d6c6b8;
+  .plugin-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
   .plugin-body {
     padding: 1.3rem;
@@ -1361,8 +1333,8 @@ const showcase = (await getCollection('showcase'))
     .orbit {
       opacity: 0.55;
     }
-    .plugin-preview-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .plugin-preview {
+      flex: 0 0 18rem;
     }
     .plugin-preview:last-child {
       grid-column: 1 / -1;
@@ -1473,12 +1445,11 @@ const showcase = (await getCollection('showcase'))
     .snapshot-stack article:nth-child(3) {
       right: 1.6rem;
     }
-    .plugin-preview-grid,
+    .plugin-preview {
+      flex: 0 0 16rem;
+    }
     .showcase-preview-grid {
       grid-template-columns: 1fr;
-    }
-    .plugin-preview:last-child {
-      grid-column: auto;
     }
     .showcase-preview.item-1 {
       grid-row: auto;

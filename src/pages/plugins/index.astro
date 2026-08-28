@@ -72,22 +72,18 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
               data-categories={plugin.data.categories.join(' ')}
               data-status={plugin.data.status}
             >
-              <div class={`registry-art art-${index + 1}`} aria-hidden="true">
-                <>
-                  <span>{plugin.data.name.charAt(0)}</span>
-                  <i />
-                  <b>{String(index + 1).padStart(2, '0')}</b>
-                </>
-              </div>
+              <a href={withBase(`/plugins/${entrySlug(plugin.id)}/`)} class="registry-art" aria-hidden="true">
+                <img src={withBase(plugin.data.image)} alt="" width="1536" height="1024" loading="lazy" />
+              </a>
               <div class="registry-card-body">
                 <div class="card-meta">
                   <>
                     <span>{plugin.data.categories.join(' · ')}</span>
-                    <StatusBadge status={plugin.data.status} />
+                    {typeof plugin.data.status === 'string' && <StatusBadge status={plugin.data.status} />}
                   </>
                 </div>
                 <>
-                  <h2>{plugin.data.name}</h2>
+                  <h2><a href={withBase(`/plugins/${entrySlug(plugin.id)}/`)}>{plugin.data.name}</a></h2>
                   <p>{plugin.data.summary}</p>
                 </>
                 <dl>
@@ -249,47 +245,15 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
   }
   .registry-art {
     position: relative;
+    display: block;
     height: 11rem;
-    display: grid;
-    place-items: center;
-    background: #c4d0c8;
     overflow: hidden;
   }
-  .registry-art::before {
-    position: absolute;
-    width: 13rem;
-    height: 13rem;
-    border: 1px solid rgba(47, 68, 56, 0.28);
-    border-radius: 50%;
-    content: '';
-  }
-  .registry-art i {
-    position: absolute;
-    width: 130%;
-    height: 1px;
-    background: rgba(47, 68, 56, 0.25);
-    transform: rotate(28deg);
-  }
-  .registry-art > span {
-    color: #2b4336;
-    font: italic 4rem var(--font-serif);
-  }
-  .registry-art b {
-    position: absolute;
-    right: 0.8rem;
-    bottom: 0.5rem;
-    color: rgba(43, 67, 54, 0.65);
-    font: italic 1.6rem var(--font-serif);
-  }
-  .art-2,
-  .art-5 {
-    background: #d5c6aa;
-  }
-  .art-3 {
-    background: #b7c9ca;
-  }
-  .art-4 {
-    background: #d4c2b9;
+  .registry-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
   .registry-card-body {
     padding: 1.25rem;
@@ -310,6 +274,15 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
   .registry-card h2 {
     margin-top: 1rem;
     font-size: 1.8rem;
+  }
+  .registry-card h2 a {
+    color: inherit;
+    font-size: inherit;
+    text-decoration: none;
+  }
+  .registry-card h2 a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
   .registry-card p {
     min-height: 5rem;

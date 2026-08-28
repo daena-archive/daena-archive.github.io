@@ -3,13 +3,13 @@ name: Lore
 package: daena.lore
 author: daena-archive
 summary: The connected world bible for people, places, artifacts, factions, cultures, and concepts.
+image: /images/plugins/lore.webp
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/lore
-version: 0.1.1
+version: 0.1.0
 daenaCompatibility: 'Daena 0.1 alpha'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: sandboxed
 categories: [lore, relationships]
-status: beta
 official: true
 bundled: true
 featured: true
@@ -33,7 +33,7 @@ capabilities:
     'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
-updated: 2026-08-22
+updated: 2026-08-28
 ---
 
 Lore contributes Daena's first-party people, places, artifacts, factions, cultures, and concepts. Its article and structured field surfaces operate on shared project records rather than a module-specific database.

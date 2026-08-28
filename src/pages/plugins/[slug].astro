@@ -15,22 +15,27 @@ const { Content } = await render(plugin);
 
 <BaseLayout title={`${plugin.data.name} plugin`} description={plugin.data.summary}>
   <header class="plugin-detail-hero">
-    <div class="content-shell plugin-hero-grid">
-      <div>
-        <nav class="breadcrumb">
-          <a href={withBase('/plugins/')}>Plugin registry</a><span>/</span>{plugin.data.package}
-        </nav><span class="eyebrow">{plugin.data.categories.join(' · ')}</span><h1
-          class="page-heading"
-        >
-          {plugin.data.name}
-        </h1><p class="lede">{plugin.data.summary}</p><div class="plugin-flags">
-          <StatusBadge status={plugin.data.status} /><span
-            >{plugin.data.official ? 'Official' : 'Community'}</span
-          ><span>{plugin.data.bundled ? 'Bundled' : 'Optional'}</span>
-        </div>
-      </div>
-      <div class="plugin-seal" aria-hidden="true">
-        <span>{plugin.data.name.charAt(0)}</span><i></i><b>{plugin.data.package}</b>
+    <div class="plugin-hero-image">
+      <img
+        src={withBase(plugin.data.image)}
+        alt=""
+        width="1536"
+        height="1024"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="plugin-hero-text">
+      <nav class="breadcrumb">
+        <a href={withBase('/plugins/')}>Plugin registry</a><span>/</span>{plugin.data.package}
+      </nav><span class="eyebrow">{plugin.data.categories.join(' · ')}</span><h1
+        class="page-heading"
+      >
+        {plugin.data.name}
+      </h1><p class="lede">{plugin.data.summary}</p>
+      <div class="plugin-flags">
+        {typeof plugin.data.status === 'string' && <StatusBadge status={plugin.data.status} />}
+        <span>{plugin.data.official ? 'Official' : 'Community'}</span>
+        <span>{plugin.data.bundled ? 'Bundled' : 'Optional'}</span>
       </div>
     </div>
   </header>
@@ -93,15 +98,38 @@ const { Content } = await render(plugin);
 
 <style>
   .plugin-detail-hero {
-    padding-block: clamp(5rem, 9vw, 8rem);
-    background: var(--paper-warm);
+    display: grid;
+    grid-template-columns: 0.4fr 0.6fr;
+    min-height: 28rem;
     border-bottom: 1px solid var(--line);
   }
-  .plugin-hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 0.7fr;
-    gap: 5rem;
-    align-items: center;
+  .plugin-hero-image {
+    order: 1;
+  }
+  .plugin-hero-text {
+    order: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem) clamp(3rem, 6vw, 6rem);
+    background: var(--paper-warm);
+  }
+  .plugin-hero-image {
+    position: relative;
+    overflow: hidden;
+  }
+  .plugin-hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 70%, var(--paper-warm) 100%);
+    pointer-events: none;
+  }
+  .plugin-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
   .plugin-flags {
     margin-top: 2rem;
@@ -116,50 +144,6 @@ const { Content } = await render(plugin);
     border-radius: 999px;
     color: var(--muted);
     font-size: 0.68rem;
-  }
-  .plugin-seal {
-    position: relative;
-    min-height: 24rem;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-large);
-    background: var(--paper-raised);
-    overflow: hidden;
-  }
-  .plugin-seal::before,
-  .plugin-seal::after {
-    position: absolute;
-    width: 18rem;
-    height: 18rem;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    content: '';
-  }
-  .plugin-seal::after {
-    width: 10rem;
-    height: 10rem;
-    border-style: dashed;
-    border-color: var(--brass);
-  }
-  .plugin-seal > span {
-    z-index: 1;
-    color: var(--forest-900);
-    font: italic 6rem var(--font-serif);
-  }
-  .plugin-seal i {
-    position: absolute;
-    width: 130%;
-    height: 1px;
-    background: var(--line);
-    transform: rotate(-31deg);
-  }
-  .plugin-seal b {
-    position: absolute;
-    bottom: 1.2rem;
-    color: var(--copper-text);
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
   }
   .plugin-detail-grid {
     display: grid;

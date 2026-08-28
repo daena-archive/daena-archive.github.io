@@ -3,13 +3,13 @@ name: Language
 package: daena.language
 author: daena-archive
 summary: Vocabulary, phonology, orthographies, grammar, paradigms, and samples for fictional languages.
+image: /images/plugins/language.webp
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/language
-version: 0.7.0
+version: 0.1.0
 daenaCompatibility: 'Daena 0.1 alpha'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: sandboxed
 categories: [language, culture]
-status: beta
 official: true
 bundled: true
 featured: true
@@ -26,7 +26,7 @@ capabilities:
     'record.write:self',
   ]
 license: Apache-2.0
-updated: 2026-08-22
+updated: 2026-08-28
 ---
 
 Language contributes schemas and editing surfaces for lexemes, phonemes, phonology, orthographies, grammar, paradigms, and example samples.

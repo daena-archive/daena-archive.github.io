@@ -3,6 +3,7 @@ name: Maps
 package: daena.maps
 author: daena-archive
 summary: Native and provider-backed maps connected to the entities and history in a Daena project.
+image: /images/plugins/maps.webp
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/maps
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 alpha'
@@ -32,7 +33,7 @@ capabilities:
     'event.publish:daena.maps/selection@1',
   ]
 license: Apache-2.0
-updated: 2026-08-22
+updated: 2026-08-28
 ---
 
 Maps contributes the first-party map workspace, location capture and reconciliation commands, and a versioned navigation service for other enabled modules.

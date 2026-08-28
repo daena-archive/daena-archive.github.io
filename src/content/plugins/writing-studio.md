@@ -3,13 +3,13 @@ name: Writing Studio
 package: daena.writing
 author: daena-archive
 summary: Manuscripts and reference pages with direct links back to a world's shared archive.
+image: /images/plugins/writing-studio.webp
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/writing
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 alpha'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: declarative
 categories: [writing, documents]
-status: beta
 official: true
 bundled: true
 featured: true
@@ -31,7 +31,7 @@ capabilities:
     'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
-updated: 2026-08-22
+updated: 2026-08-28
 ---
 
 Writing Studio contributes manuscript and reference-page templates plus a focused editing surface for long-form work.
