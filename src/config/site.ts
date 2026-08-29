@@ -21,6 +21,7 @@ export const navItems = [
   { label: 'Plugins', href: '/plugins/' },
   { label: 'Showcase', href: '/showcase/' },
   { label: 'Roadmap', href: '/roadmap/' },
+  { label: 'Community', href: '/community/' },
 ] as const;
 
 export function withBase(path: string, base = import.meta.env.BASE_URL) {

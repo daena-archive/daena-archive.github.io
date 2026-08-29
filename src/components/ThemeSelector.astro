@@ -20,11 +20,11 @@ const iconStroke = 'currentColor';
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.65rem;
-    height: 2.65rem;
+    width: 2.4rem;
+    height: 2.4rem;
     padding: 0;
     border: 1px solid var(--theme-control-border, var(--line));
-    border-radius: 0.65rem;
+    border-radius: 999px;
     color: var(--theme-control-color, var(--ink-soft));
     background: var(
       --theme-control-background,
@@ -34,13 +34,14 @@ const iconStroke = 'currentColor';
   }
   .theme-toggle:hover,
   .theme-toggle:focus-visible {
-    border-color: var(--theme-hover-color, var(--ink));
+    border-color: var(--theme-control-border-hover, var(--theme-control-border, var(--line)));
     color: var(--theme-hover-color, var(--ink));
+    background: var(--theme-control-background-hover, var(--theme-control-background));
   }
   .theme-toggle svg,
   .theme-toggle :global(svg) {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1.05rem;
+    height: 1.05rem;
   }
   .icon-sun,
   .icon-moon {

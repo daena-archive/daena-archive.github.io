@@ -24,11 +24,11 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
       }
     </nav>
     <div class="header-actions">
-      <a class="github-link" href={siteConfig.repository}
+      <a class="github-link" href={siteConfig.repository} target="_blank" rel="noopener noreferrer"
         >GitHub <span aria-hidden="true" set:html={ArrowUpRight}></span></a
       >
-      <ThemeSelector />
       <a class="button button-primary compact" href={withBase('/download/')}>Download</a>
+      <ThemeSelector />
       <details class="mobile-menu">
         <summary aria-label="Open navigation menu"><span class="menu-icon" set:html={Menu}></span></summary>
         <nav aria-label="Mobile navigation">
@@ -40,7 +40,7 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
             ))
           }
           <a href={withBase('/faq/')} aria-current={isActive('/faq/') ? 'page' : undefined}>FAQ</a>
-          <a href={siteConfig.repository}>GitHub <span aria-hidden="true" set:html={ArrowUpRight}></span></a>
+          <a href={siteConfig.repository} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true" set:html={ArrowUpRight}></span></a>
           <a href={withBase('/download/')}>Download Daena</a>
         </nav>
       </details>
@@ -50,23 +50,45 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
 
 <style>
   .site-header {
+    --wordmark-ink: #2b2f2d;
+    --wordmark-accent: #a07b33;
+    --theme-control-background: rgba(255, 255, 255, 0.62);
+    --theme-control-background-hover: #fffefa;
+    --theme-control-border: #d6c7a7;
+    --theme-control-border-hover: #c2b190;
+    --theme-control-color: #5a5a56;
+    --theme-menu-background: #fffefa;
+    --theme-hover-background: #f6f1e6;
+    --theme-hover-color: #25251f;
+    --theme-active-background: #cead75;
+    --theme-active-color: #2f2619;
+    position: sticky;
+    z-index: 40;
+    top: 0;
+    height: var(--header-height);
+    border-top: 1px solid #0b0b0b;
+    border-bottom: 1px solid #e2d9c6;
+    background: rgba(246, 241, 230, 0.94);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  }
+  :global([data-theme='dark']) .site-header {
     --wordmark-ink: #f2eee4;
     --wordmark-accent: #e4c786;
     --theme-control-background: rgba(255, 255, 255, 0.045);
+    --theme-control-background-hover: #2d4437;
     --theme-control-border: #43584c;
+    --theme-control-border-hover: #5a7467;
     --theme-control-color: #f2eee4;
     --theme-menu-background: #203229;
     --theme-hover-background: #2d4437;
     --theme-hover-color: #fffdf7;
     --theme-active-background: #e4c786;
     --theme-active-color: #2f2619;
-    position: sticky;
-    z-index: 40;
-    top: 0;
-    height: var(--header-height);
-    border-bottom: 1px solid #354a3f;
+    border-top-color: #0b0b0b;
+    border-bottom-color: #354a3f;
     background: color-mix(in srgb, #17241e 96%, transparent);
-    backdrop-filter: blur(14px);
+    box-shadow: none;
   }
   .header-inner {
     height: 100%;
@@ -84,16 +106,32 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
     align-items: center;
     gap: clamp(1rem, 2vw, 2rem);
   }
-  .desktop-nav a,
+  .desktop-nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    color: #2e2d2b;
+    font-size: 0.84rem;
+    font-weight: 550;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+  :global([data-theme='dark']) .desktop-nav a {
+    color: #d8d1c3;
+  }
   .github-link {
     position: relative;
     display: inline-flex;
     align-items: center;
     gap: 0.25em;
-    color: #d8d1c3;
+    color: #2e2d2b;
     font-size: 0.85rem;
     font-weight: 620;
     text-decoration: none;
+  }
+  :global([data-theme='dark']) .github-link {
+    color: #d8d1c3;
   }
   .desktop-nav a::after {
     position: absolute;
@@ -101,26 +139,50 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
     bottom: -0.65rem;
     left: 0;
     height: 1px;
-    background: #e4c786;
+    background: #b8934a;
     content: '';
     transform: scaleX(0);
     transition: transform 180ms ease;
+  }
+  :global([data-theme='dark']) .desktop-nav a::after {
+    background: #e4c786;
   }
   .desktop-nav a:hover::after,
   .desktop-nav a[aria-current='page']::after {
     transform: scaleX(1);
   }
   .desktop-nav a:hover,
-  .desktop-nav a[aria-current='page'],
+  .desktop-nav a[aria-current='page'] {
+    color: #1a1a18;
+  }
+  :global([data-theme='dark']) .desktop-nav a:hover,
+  :global([data-theme='dark']) .desktop-nav a[aria-current='page'] {
+    color: #fffdf7;
+  }
   .github-link:hover {
+    color: #1a1a18;
+  }
+  :global([data-theme='dark']) .github-link:hover {
     color: #fffdf7;
   }
   .site-header .button-primary {
-    background: #e4c786;
+    background: #c9a46a;
     color: #2f2619;
+    border: 1px solid #b8935a;
+    border-radius: 0.5rem;
+    box-shadow: none;
+    font-weight: 700;
+  }
+  :global([data-theme='dark']) .site-header .button-primary {
+    background: #e4c786;
+    border-color: transparent;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
   }
   .site-header .button-primary:hover {
+    background: #b8935a;
+    color: #1a140d;
+  }
+  :global([data-theme='dark']) .site-header .button-primary:hover {
     background: #efd59e;
   }
   .header-actions {
@@ -133,15 +195,16 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
     position: relative;
   }
   .mobile-menu > summary {
-    width: 2.65rem;
-    height: 2.65rem;
+    width: 2.4rem;
+    height: 2.4rem;
     display: grid;
     place-content: center;
-    border: 1px solid #43584c;
-    border-radius: 0.65rem;
+    border: 1px solid var(--theme-control-border);
+    border-radius: 999px;
     cursor: pointer;
     list-style: none;
-    color: #f2eee4;
+    color: var(--theme-control-color);
+    background: var(--theme-control-background);
   }
   .mobile-menu > summary::-webkit-details-marker {
     display: none;
@@ -157,23 +220,29 @@ const isActive = (href: string) => currentPath.includes(href.replace(/^\//, '').
     width: min(18rem, calc(100vw - 2rem));
     padding: 0.55rem;
     display: grid;
-    border: 1px solid #43584c;
+    border: 1px solid var(--theme-control-border);
     border-radius: 0.9rem;
-    background: #203229;
+    background: var(--theme-menu-background);
     box-shadow: var(--shadow-medium);
   }
   .mobile-menu nav a {
     padding: 0.8rem 0.9rem;
     border-radius: 0.55rem;
-    color: #f2eee4;
+    color: #2f2619;
     font-weight: 650;
     text-decoration: none;
   }
+  :global([data-theme='dark']) .mobile-menu nav a {
+    color: #f2eee4;
+  }
   .mobile-menu nav a:hover {
-    background: #2d4437;
+    background: var(--theme-hover-background);
   }
   .mobile-menu nav a[aria-current='page'] {
-    background: #2d4437;
+    background: var(--theme-hover-background);
+    color: #a07b33;
+  }
+  :global([data-theme='dark']) .mobile-menu nav a[aria-current='page'] {
     color: #efd59e;
   }
   @media (max-width: 68rem) {

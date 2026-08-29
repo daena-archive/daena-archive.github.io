@@ -52,9 +52,10 @@ const columns = [
       columns.map((column) => (
         <div class="footer-column">
           <h2>{column.title}</h2>
-          {column.links.map(([label, href]) => (
-            <a href={withBase(href)}>{label}</a>
-          ))}
+          {column.links.map(([label, href]) => {
+            const external = /^https?:/.test(href);
+            return <a href={withBase(href)} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>{label}</a>;
+          })}
         </div>
       ))
     }
