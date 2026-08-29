@@ -76,7 +76,7 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
               <a href={withBase(`/plugins/${entrySlug(plugin.id)}/`)} class="registry-art" aria-hidden="true">
                 <Image
                   src={plugin.data.image}
-                  alt=""
+                  alt={plugin.data.imageAlt || ''}
                   widths={[320, 640, 960]}
                   sizes="(max-width: 38rem) 92vw, (max-width: 60rem) 45vw, 360px"
                   loading="lazy"

@@ -19,7 +19,7 @@ const { Content } = await render(plugin);
     <div class="plugin-hero-image">
       <Image
         src={plugin.data.image}
-        alt=""
+        alt={plugin.data.imageAlt || ''}
         widths={[640, 960, 1536]}
         sizes="(max-width: 55rem) 100vw, 58vw"
         loading="eager"

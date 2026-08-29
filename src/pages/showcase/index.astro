@@ -37,7 +37,7 @@ const entries = await getCollection('showcase');
                 <>
                   <Image
                     src={entry.data.image}
-                    alt=""
+                    alt={entry.data.imageAlt || ''}
                     widths={[400, 640, 1080]}
                     sizes={index === 0
                       ? '(max-width: 38rem) 92vw, (max-width: 58rem) 92vw, 560px'

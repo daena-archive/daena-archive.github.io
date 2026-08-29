@@ -332,7 +332,7 @@ const showcase = (await getCollection('showcase'))
                 <div class="plugin-art" aria-hidden="true">
                   <Image
                     src={plugin.data.image}
-                    alt=""
+                    alt={plugin.data.imageAlt || ''}
                     widths={[320, 640, 960, 1536]}
                     sizes="(max-width: 46rem) 84vw, (max-width: 62rem) 18rem, 22rem"
                     loading="lazy"
@@ -462,9 +462,9 @@ const showcase = (await getCollection('showcase'))
                   <>
                     <Image
                       src={entry.data.image}
-                      alt=""
-                      widths={[400, 640, 1080]}
-                      sizes={index === 0
+                    alt={entry.data.imageAlt || ''}
+                    widths={[400, 640, 1080]}
+                    sizes={index === 0
                         ? '(max-width: 46rem) 92vw, 560px'
                         : '(max-width: 46rem) 92vw, 400px'}
                       loading="lazy"

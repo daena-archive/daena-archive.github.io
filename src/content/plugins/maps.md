@@ -4,6 +4,7 @@ package: daena.maps
 author: daena-archive
 summary: Native and provider-backed maps connected to the entities and history in a Daena project.
 image: ../../assets/plugins/maps.webp
+imageAlt: Artistic illustration for the Maps module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/maps
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 alpha'

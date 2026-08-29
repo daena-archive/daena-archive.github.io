@@ -21,7 +21,7 @@ const { Content } = await render(entry);
       <div class="hero-image" aria-hidden="true">
         <Image
           src={entry.data.image}
-          alt=""
+          alt={entry.data.imageAlt || ''}
           widths={[720, 1080, 1440]}
           sizes="100vw"
           loading="eager"

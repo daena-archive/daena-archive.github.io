@@ -3,6 +3,7 @@ title: Lantern Marsh
 creator: Daena demonstration archive
 summary: A wetland borderland mapped through seasonal paths, old accords, and the people who keep its lights.
 image: ../../assets/showcase/lantern-marsh.webp
+imageAlt: Artwork of the Lantern Marsh wetlands with glowing lights along seasonal crossing paths
 featured: true
 tags: [demo archive, maps, timeline]
 accent: marsh

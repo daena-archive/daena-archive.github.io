@@ -3,6 +3,7 @@ title: Elian Rook
 creator: Daena demonstration archive
 summary: Captain Elian Rook commands the coast patrols and distrusts any map that has not survived a flood season.
 image: ../../assets/showcase/elian-rook.webp
+imageAlt: Artwork of Captain Elian Rook overlooking the Glass Coast with patrol maps and tide charts
 featured: true
 tags: [demo archive, lore, relationships]
 accent: sea

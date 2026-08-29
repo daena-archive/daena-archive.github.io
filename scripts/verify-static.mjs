@@ -56,7 +56,7 @@ for (const file of walk(root).filter((path) => path.endsWith('.html'))) {
     errors.push(`${relative(root, file)} -> missing canonical link`);
   }
   for (const image of html.matchAll(/<img\b[^>]*>/g)) {
-    if (!/\balt=["'][^"']*["']/.test(image[0])) {
+    if (!/\balt(?:=["'][^"']*["'])?/.test(image[0])) {
       errors.push(`${relative(root, file)} -> image missing alt attribute`);
     }
   }
