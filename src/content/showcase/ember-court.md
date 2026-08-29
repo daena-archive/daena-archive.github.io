@@ -2,6 +2,7 @@
 title: The Ember Court
 creator: Daena demonstration archive
 summary: A court assembled from factions, language fragments, lineages, and the consequences of the War of Tides.
+image: ../../assets/showcase/ember-court.webp
 featured: true
 tags: [demo archive, factions, language]
 accent: ember

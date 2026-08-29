@@ -3,7 +3,7 @@ name: Language
 package: daena.language
 author: daena-archive
 summary: Vocabulary, phonology, orthographies, grammar, paradigms, and samples for fictional languages.
-image: /images/plugins/language.webp
+image: ../../assets/plugins/language.webp
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/language
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 alpha'

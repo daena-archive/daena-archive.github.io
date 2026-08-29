@@ -7,6 +7,7 @@ import TimelineStrip from '../components/TimelineStrip.astro';
 import LanguageSpecimen from '../components/LanguageSpecimen.astro';
 import StatusBadge from '../components/StatusBadge.astro';
 import { entrySlug, siteConfig, withBase } from '../config/site';
+import { Image } from 'astro:assets';
 import { Crown, Users, PenTool, Swords, TreePine, ArrowRight, ArrowDown, ArrowUpRight, BookOpen, Clock, MapPin, Languages, PenLine, ChevronLeft, ChevronRight } from 'lucide-static';
 
 const plugins = (await getCollection('plugins')).filter((entry) => entry.data.featured);
@@ -329,7 +330,14 @@ const showcase = (await getCollection('showcase'))
             plugins.map((plugin) => (
               <article class="plugin-preview">
                 <div class="plugin-art" aria-hidden="true">
-                  <img src={withBase(plugin.data.image)} alt="" width="1536" height="1024" loading="lazy" />
+                  <Image
+                    src={plugin.data.image}
+                    alt=""
+                    widths={[320, 640, 960, 1536]}
+                    sizes="(max-width: 46rem) 84vw, (max-width: 62rem) 18rem, 22rem"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <div class="plugin-body">
                   <>
@@ -446,15 +454,31 @@ const showcase = (await getCollection('showcase'))
         {
           showcase.map((entry, index) => (
             <a
-              class={`showcase-preview accent-${entry.data.accent} item-${index + 1}`}
+              class={`showcase-preview accent-${entry.data.accent} item-${index + 1} ${entry.data.image ? 'has-image' : ''}`}
               href={withBase(`/showcase/${entrySlug(entry.id)}/`)}
             >
-              <div class="showcase-art" aria-hidden="true">
-                <>
-                  <span />
-                  <i />
-                  <b>{String(index + 1).padStart(2, '0')}</b>
-                </>
+              <div class={`showcase-art ${entry.data.image ? 'has-image' : ''}`} aria-hidden="true">
+                {entry.data.image ? (
+                  <>
+                    <Image
+                      src={entry.data.image}
+                      alt=""
+                      widths={[400, 640, 1080]}
+                      sizes={index === 0
+                        ? '(max-width: 46rem) 92vw, 560px'
+                        : '(max-width: 46rem) 92vw, 400px'}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <b>{String(index + 1).padStart(2, '0')}</b>
+                  </>
+                ) : (
+                  <>
+                    <span />
+                    <i />
+                    <b>{String(index + 1).padStart(2, '0')}</b>
+                  </>
+                )}
               </div>
               <>
                 <small>{entry.data.creator}</small>
@@ -1330,6 +1354,27 @@ const showcase = (await getCollection('showcase'))
     background: linear-gradient(150deg, #b5c9c3, #426a67);
     overflow: hidden;
   }
+  .showcase-art.has-image {
+    background: var(--paper-warm);
+  }
+  .showcase-art.has-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .showcase-art.has-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(23, 36, 30, 0) 55%, rgba(23, 36, 30, 0.42) 100%);
+    pointer-events: none;
+  }
+  .showcase-art.has-image b {
+    z-index: 1;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+  }
   .item-1 .showcase-art {
     height: 27rem;
   }
@@ -1338,6 +1383,10 @@ const showcase = (await getCollection('showcase'))
   }
   .accent-ember .showcase-art {
     background: linear-gradient(145deg, #d0b097, #80513b);
+  }
+  .accent-marsh .showcase-art.has-image,
+  .accent-ember .showcase-art.has-image {
+    background: var(--paper-warm);
   }
   .showcase-art span {
     position: absolute;
@@ -1382,10 +1431,18 @@ const showcase = (await getCollection('showcase'))
   }
   .view-label {
     margin-top: 1rem;
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     color: var(--copper-text);
     font-size: 0.72rem;
     font-weight: 720;
+    white-space: nowrap;
+  }
+  .view-label :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
   }
   .final-cta .eyebrow {
     color: #d5a55f;

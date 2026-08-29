@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { entrySlug, withBase } from '../../config/site';
 import { ArrowRight } from 'lucide-static';
@@ -28,16 +29,33 @@ const entries = await getCollection('showcase');
       {
         entries.map((entry, index) => (
           <a
-            class={`board-entry entry-${index + 1} accent-${entry.data.accent}`}
+            class={`board-entry entry-${index + 1} accent-${entry.data.accent} ${entry.data.image ? 'has-image' : ''}`}
             href={withBase(`/showcase/${entrySlug(entry.id)}/`)}
           >
-            <div class="board-art" aria-hidden="true">
-              <>
-                <span />
-                <i />
-                <b>{String(index + 1).padStart(2, '0')}</b>
-                <em>{entry.data.tags[1] ?? 'archive'}</em>
-              </>
+            <div class={`board-art ${entry.data.image ? 'has-image' : ''}`} aria-hidden="true">
+              {entry.data.image ? (
+                <>
+                  <Image
+                    src={entry.data.image}
+                    alt=""
+                    widths={[400, 640, 1080]}
+                    sizes={index === 0
+                      ? '(max-width: 38rem) 92vw, (max-width: 58rem) 92vw, 560px'
+                      : '(max-width: 38rem) 92vw, (max-width: 58rem) 92vw, 400px'}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <b>{String(index + 1).padStart(2, '0')}</b>
+                  <em>{entry.data.tags[1] ?? 'archive'}</em>
+                </>
+              ) : (
+                <>
+                  <span />
+                  <i />
+                  <b>{String(index + 1).padStart(2, '0')}</b>
+                  <em>{entry.data.tags[1] ?? 'archive'}</em>
+                </>
+              )}
             </div>
             <div class="board-copy">
               <>
@@ -115,7 +133,28 @@ const entries = await getCollection('showcase');
     background: linear-gradient(150deg, #a9c4c0, #365d5b);
     overflow: hidden;
   }
+  .board-art.has-image {
+    background: var(--paper-warm);
+    padding: 0;
+  }
+  .board-art.has-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .board-art.has-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(23, 36, 30, 0) 55%, rgba(23, 36, 30, 0.45) 100%);
+    pointer-events: none;
+  }
   .entry-1 .board-art {
+    min-height: 34rem;
+  }
+  .entry-1 .board-art.has-image {
     min-height: 34rem;
   }
   .accent-marsh .board-art {
@@ -123,6 +162,10 @@ const entries = await getCollection('showcase');
   }
   .accent-ember .board-art {
     background: linear-gradient(145deg, #d5b59a, #78503f);
+  }
+  .accent-marsh .board-art.has-image,
+  .accent-ember .board-art.has-image {
+    background: var(--paper-warm);
   }
   .board-art span {
     position: absolute;
@@ -148,6 +191,11 @@ const entries = await getCollection('showcase');
     bottom: 0.7rem;
     color: rgba(255, 255, 255, 0.75);
     font: italic 3.5rem var(--font-serif);
+  }
+  .board-art.has-image b,
+  .board-art.has-image em {
+    z-index: 1;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
   }
   .board-art em {
     position: absolute;
@@ -194,13 +242,23 @@ const entries = await getCollection('showcase');
   }
   .board-copy > strong {
     margin-top: 1.5rem;
-    display: flex;
-    justify-content: space-between;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     color: var(--copper-text);
     font-size: 0.75rem;
+    white-space: nowrap;
   }
   .board-copy > strong i {
     font-style: normal;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+  }
+  .board-copy > strong i :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
   }
   .community-invite {
     padding-block: clamp(5rem, 9vw, 8rem);

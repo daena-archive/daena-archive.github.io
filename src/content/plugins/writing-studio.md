@@ -3,7 +3,7 @@ name: Writing Studio
 package: daena.writing
 author: daena-archive
 summary: Manuscripts and reference pages with direct links back to a world's shared archive.
-image: /images/plugins/writing-studio.webp
+image: ../../assets/plugins/writing-studio.webp
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/writing
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 alpha'
