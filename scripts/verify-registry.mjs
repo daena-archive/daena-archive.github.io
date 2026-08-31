@@ -7,6 +7,7 @@ const daenaRoot = resolve(
   process.argv[2] ?? process.env.DAENA_SOURCE_DIR ?? join(websiteRoot, '..', 'daena'),
 );
 const entries = [
+  ['houses', 'houses'],
   ['language', 'language'],
   ['lore', 'lore'],
   ['maps', 'maps'],
