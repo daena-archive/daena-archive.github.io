@@ -37,12 +37,16 @@ license: Apache-2.0
 updated: 2026-08-28
 ---
 
-Lore contributes Daena's first-party people, places, artifacts, factions, cultures, and concepts. Its article and structured field surfaces operate on shared project records rather than a module-specific database.
+Lore contributes Daena's first-party people, places, artifacts, factions, cultures, and concepts. Each entry holds a readable article and structured details, and links to others through relationships that work in both directions.
 
 ## Installation
 
 Lore is bundled with Daena. Enable or disable it from the application's module management surface; no separate package download is required.
 
-## Access
+## How it connects
 
-Lore requests scoped access to shared records, documents, its declared field namespace, relationships, search, and entity-owned assets. The host remains the authority for every operation.
+People and places created here are the shared records the rest of the archive builds around. Houses draws the same Lore people into parents, partners, and house membership; Timeline brings them into events and calendars; Maps places them; Writing references them. No copy is made — there is still only one Captain Elian Rook.
+
+## Working with the archive
+
+Lore keeps articles, fields, images, and files close to the records they describe, while the host remains the authority for storage, revisions, and access.

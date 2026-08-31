@@ -35,12 +35,12 @@ license: Apache-2.0
 updated: 2026-08-28
 ---
 
-Writing Studio contributes manuscript and reference-page templates plus a focused editing surface for long-form work.
+Writing Studio is a quiet space for long-form work. It holds manuscripts and reference pages that can point directly to the people, places, events, and language in your archive, without pretending Daena is only a word processor.
 
 ## Installation
 
-Writing Studio is bundled with Daena and managed with the rest of the first-party modules.
+Writing Studio is bundled with Daena. Enable or disable it from the application's module management surface; no separate package download is required.
 
-## Connections
+## How it connects
 
-Documents can reference shared archive records. When Maps is enabled, Writing Studio can use its versioned navigation service without depending on provider-specific map data.
+Documents can reference any shared record, so a scene can point to a character or place it mentions. When Maps is available, writing can open those places on their maps without taking on provider-specific map data.

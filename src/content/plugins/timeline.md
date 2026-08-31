@@ -39,12 +39,12 @@ license: Apache-2.0
 updated: 2026-08-28
 ---
 
-Timeline contributes event, encounter, era, calendar, and calendar-definition templates. It can relate those records to shared entities and provide date resolution to other authorized modules.
+Timeline gives in-world history a home — events, encounters, eras, and calendars — while keeping every moment linked to the people, places, and records that took part in it.
 
 ## Installation
 
-Timeline is bundled with Daena and is managed through the application module settings.
+Timeline is bundled with Daena. Enable or disable it from the application's module management surface; no separate package download is required.
 
-## Interoperability
+## How it connects
 
-The module provides a versioned date-resolution service and can consume Maps navigation when Maps is enabled. Disabled capabilities disappear from the active workspace without deleting portable data.
+History is written against the same shared people and places found elsewhere in the archive, with dates that can be familiar or follow a calendar you define. Other parts of the archive can read those dates without taking on extra time-keeping on their own. Turning Timeline off hides its views without deleting events or the archive they describe.

@@ -30,12 +30,16 @@ license: Apache-2.0
 updated: 2026-08-28
 ---
 
-Language contributes schemas and editing surfaces for lexemes, phonemes, phonology, orthographies, grammar, paradigms, and example samples.
+Language gives each invented language a steady home — from a name and a few words to sounds, scripts, grammar, and examples — without pulling it away from the cultures and places that use it.
 
 ## Installation
 
-Language is bundled with Daena and can be enabled for projects that need structured conlang tools.
+Language is bundled with Daena. Enable or disable it from the application's module management surface; no separate package download is required.
 
-## Data ownership
+## What it adds
 
-Language-specific data remains in its declared portable namespace. Shared entities and relationships remain owned by Daena core.
+A language starts as one shared record with an article and a few optional details. Vocabulary, sounds, writing, grammar, and samples grow around it as you need them, with each word kept as its own entry that can hold meanings, pronunciations, forms, and notes.
+
+## Where it lives
+
+Language keeps its vocabulary and language-specific work in its own space, while people, places, and other lore stay in the shared archive. A speaker is still a Lore person who can be linked to the languages they use. Turning Language off hides its views without deleting people or other archive records.

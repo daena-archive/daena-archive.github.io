@@ -37,12 +37,16 @@ license: Apache-2.0
 updated: 2026-08-28
 ---
 
-Maps contributes the first-party map workspace, location capture and reconciliation commands, and a versioned navigation service for other enabled modules.
+Maps keeps geography beside the lore, events, and characters that give it meaning. Physical terrain, native vector maps, and optional external map sources all point back to the same shared places, without making a separate copy of your archive.
 
 ## Installation
 
-Maps is bundled with Daena. Map-provider assets and adapters may have their own preparation or compatibility requirements documented with each provider.
+Maps is bundled with Daena. Enable or disable it from the application's module management surface. Provider files and adapters, when used, keep their own requirements as noted with each provider.
+
+## How it connects
+
+Places and events that appear on a map are the same records used elsewhere. Other parts of the archive can open a location on its map without carrying provider-specific map data with them.
 
 ## Maturity
 
-The workspace is beta. Physical-world generation, native-vector editing, and external-provider workflows are evolving at different rates and are documented independently.
+Maps is in beta and is actively evolving. Native terrain, editing, and provider workflows are at different stages; the roadmap marks what is ready, what is being refined, and what is still ahead.
