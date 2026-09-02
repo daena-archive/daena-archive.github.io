@@ -27,7 +27,7 @@ capabilities:
     'record.write:self',
   ]
 license: Apache-2.0
-updated: 2026-08-28
+updated: 2026-09-02
 ---
 
 Language gives each invented language a steady home — from a name and a few words to sounds, scripts, grammar, and examples — without pulling it away from the cultures and places that use it.

@@ -34,7 +34,7 @@ capabilities:
     'event.publish:daena.maps/selection@1',
   ]
 license: Apache-2.0
-updated: 2026-08-28
+updated: 2026-09-02
 ---
 
 Maps keeps geography beside the lore, events, and characters that give it meaning. Physical terrain, native vector maps, and optional external map sources all point back to the same shared places, without making a separate copy of your archive.

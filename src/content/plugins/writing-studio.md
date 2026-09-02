@@ -32,7 +32,7 @@ capabilities:
     'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
-updated: 2026-08-28
+updated: 2026-09-02
 ---
 
 Writing Studio is a quiet space for long-form work. It holds manuscripts and reference pages that can point directly to the people, places, events, and language in your archive, without pretending Daena is only a word processor.

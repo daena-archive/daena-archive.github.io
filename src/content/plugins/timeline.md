@@ -36,7 +36,7 @@ capabilities:
     'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
-updated: 2026-08-28
+updated: 2026-09-02
 ---
 
 Timeline gives in-world history a home — events, encounters, eras, and calendars — while keeping every moment linked to the people, places, and records that took part in it.

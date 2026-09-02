@@ -25,7 +25,7 @@ capabilities:
     schema.overlay,
   ]
 license: Apache-2.0
-updated: 2026-08-28
+updated: 2026-09-02
 ---
 
 Houses adds lineage, household, and dynasty structure to Daena without duplicating people. It gathers houses themselves and the family links around them — parents and children, partners, and who belongs to which house — while the people you already keep in Lore remain the single source for prose, dates, and portraits.
