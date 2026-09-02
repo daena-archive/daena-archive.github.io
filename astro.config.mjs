@@ -65,6 +65,10 @@ export default defineConfig({
           items: [{ autogenerate: { directory: 'docs/writing' } }],
         },
         {
+          label: 'Houses',
+          items: [{ autogenerate: { directory: 'docs/houses' } }],
+        },
+        {
           label: 'Snapshots and Git',
           items: [{ autogenerate: { directory: 'docs/snapshots-git' } }],
         },
@@ -81,8 +85,16 @@ export default defineConfig({
           items: [{ autogenerate: { directory: 'docs/project-storage' } }],
         },
         {
+          label: 'Import and Export',
+          items: [{ autogenerate: { directory: 'docs/import-export' } }],
+        },
+        {
           label: 'Developer',
           items: [{ autogenerate: { directory: 'docs/developer' } }],
+        },
+        {
+          label: 'Troubleshooting',
+          items: [{ autogenerate: { directory: 'docs/troubleshooting' } }],
         },
       ],
       components: {

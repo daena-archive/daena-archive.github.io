@@ -6,4 +6,4 @@ area: maps
 order: 30
 ---
 
-Maps already supports physical-world and Fantasy Map Generator workflows. The path toward richer terrain and editing is being delivered through measured iterations.
+Maps already supports physical-world creation and OpenLayers vector editing with image import. The path toward richer terrain and editing is being delivered through measured iterations.
