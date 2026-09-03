@@ -24,7 +24,7 @@ A new project contains a manifest (`project.json`) at the root, content director
 
 Do not delete `.daena/` while a checkpoint is pending or failed; it can contain newer committed work than the portable files. If you are unsure about the checkpoint state, back up the entire project folder first.
 
-## Good habits while Daena is alpha
+## Good habits while Daena is beta
 
 - Create one folder per project, and keep unrelated files out of it.
 - Keep a separate backup of important projects outside the project folder.

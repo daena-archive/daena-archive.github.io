@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: 'Daena',
   description:
     'A free, open-source, local-first desktop studio for building fictional worlds and writing stories in them.',
-  status: 'Alpha · v0.1.0-alpha.4',
+  status: 'Beta · v0.1.0-beta.1',
   license: 'Apache-2.0',
   repository: 'https://github.com/daena-archive/daena',
   releases: 'https://github.com/daena-archive/daena/releases',
@@ -12,9 +12,9 @@ export const siteConfig = {
   contributing: 'https://github.com/daena-archive/daena/blob/main/CONTRIBUTING.md',
   discord: '',
   platforms:
-    'Daena is in active alpha development. Consult the latest release notes for currently published builds and installation requirements.',
-  releaseTag: 'v0.1.0-alpha.4',
-  releaseLabel: 'v0.1.0-alpha.4',
+    'Daena is in active beta development. Consult the latest release notes for currently published builds and installation requirements.',
+  releaseTag: 'v0.1.0-beta.1',
+  releaseLabel: 'v0.1.0-beta.1',
 } as const;
 
 export function releaseAssetUrl(fileName: string) {

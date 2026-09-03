@@ -7,7 +7,7 @@ image: ../../assets/plugins/houses.webp
 imageAlt: Artistic illustration for the Houses module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/houses
 version: 0.1.0
-daenaCompatibility: 'Daena 0.1 alpha'
+daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: declarative
 categories: [houses, genealogy]
@@ -25,7 +25,7 @@ capabilities:
     schema.overlay,
   ]
 license: Apache-2.0
-updated: 2026-09-02
+updated: 2026-09-04
 ---
 
 Houses adds lineage, household, and dynasty structure to Daena without duplicating people. It gathers houses themselves and the family links around them — parents and children, partners, and who belongs to which house — while the people you already keep in Lore remain the single source for prose, dates, and portraits.

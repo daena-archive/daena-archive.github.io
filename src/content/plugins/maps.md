@@ -7,7 +7,7 @@ image: ../../assets/plugins/maps.webp
 imageAlt: Artistic illustration for the Maps module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/maps
 version: 0.1.0
-daenaCompatibility: 'Daena 0.1 alpha'
+daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: sandboxed
 categories: [maps, generation]
@@ -34,7 +34,7 @@ capabilities:
     'event.publish:daena.maps/selection@1',
   ]
 license: Apache-2.0
-updated: 2026-09-02
+updated: 2026-09-04
 ---
 
 Maps keeps geography beside the lore, events, and characters that give it meaning. Physical terrain, native vector maps, and optional external map sources all point back to the same shared places, without making a separate copy of your archive.

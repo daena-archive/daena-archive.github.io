@@ -25,6 +25,6 @@ Unresolved conflicts, malformed project paths, invalid references, namespace vio
 
 ## Project will not open after an upgrade
 
-Stop, keep a copy of the project folder, and read the new release notes for format changes before retrying. Alpha storage may change before `v1.0`, and the hard-cut boundary rejects incompatible runtime state with a reset-required diagnostic rather than migrating silently. If the portable checkpoint is clean and validated, Daena can reconstruct the runtime from it; if it is pending or failed, the runtime may hold the newest work.
+Stop, keep a copy of the project folder, and read the new release notes for format changes before retrying. Beta storage may change before `v1.0`, and the hard-cut boundary rejects incompatible runtime state with a reset-required diagnostic rather than migrating silently. If the portable checkpoint is clean and validated, Daena can reconstruct the runtime from it; if it is pending or failed, the runtime may hold the newest work.
 
 <!-- TODO(screenshot): one conflict dialog and one blocked-Git message — exact wording, no personal paths. Caption the safe first action for each. -->

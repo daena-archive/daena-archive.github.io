@@ -6,4 +6,4 @@ area: archive
 order: 10
 ---
 
-This is a product principle and implemented baseline. The surrounding storage format can evolve, but local ownership is not a temporary alpha constraint.
+This is a product principle and implemented baseline. The surrounding storage format can evolve, but local ownership is not a temporary beta constraint.

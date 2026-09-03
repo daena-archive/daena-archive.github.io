@@ -7,7 +7,7 @@ image: ../../assets/plugins/lore.webp
 imageAlt: Artistic illustration for the Lore module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/lore
 version: 0.1.0
-daenaCompatibility: 'Daena 0.1 alpha'
+daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: sandboxed
 categories: [lore, relationships]
@@ -34,7 +34,7 @@ capabilities:
     'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
-updated: 2026-09-02
+updated: 2026-09-04
 ---
 
 Lore contributes Daena's first-party people, places, artifacts, factions, cultures, and concepts. Each entry holds a readable article and structured details, and links to others through relationships that work in both directions.

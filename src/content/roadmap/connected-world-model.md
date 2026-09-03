@@ -6,4 +6,4 @@ area: core
 order: 20
 ---
 
-The shared model is implemented across first-party modules. Alpha work continues on workflows, schema details, and interaction polish.
+The shared model is implemented across first-party modules. Beta work continues on workflows, schema details, and interaction polish.

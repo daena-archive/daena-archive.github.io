@@ -7,7 +7,7 @@ image: ../../assets/plugins/language.webp
 imageAlt: Artistic illustration for the Language module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/language
 version: 0.1.0
-daenaCompatibility: 'Daena 0.1 alpha'
+daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: sandboxed
 categories: [language, culture]
@@ -27,7 +27,7 @@ capabilities:
     'record.write:self',
   ]
 license: Apache-2.0
-updated: 2026-09-02
+updated: 2026-09-04
 ---
 
 Language gives each invented language a steady home — from a name and a few words to sounds, scripts, grammar, and examples — without pulling it away from the cultures and places that use it.

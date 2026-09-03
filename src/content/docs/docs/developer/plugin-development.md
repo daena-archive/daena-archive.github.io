@@ -11,7 +11,7 @@ Do not call private Tauri commands or assume access to the main webview. Plugin 
 
 ## Where to start
 
-1. Read the repository's `docs/PLUGIN_SDK.md` and `docs/PLUGIN_PLATFORM_PLAN.md` for the current alpha contract before publishing a package. Those two documents are the authority; website guides summarize them.
+1. Read the repository's `docs/PLUGIN_SDK.md` and `docs/PLUGIN_PLATFORM_PLAN.md` for the current beta contract before publishing a package. Those two documents are the authority; website guides summarize them.
 2. Generate from the source: JSON Schema, TypeScript declarations, and fixtures derive from the Rust API. Do not hand-write parallel contracts.
 3. Declare the narrowest capabilities and namespaces your feature needs. Overbroad requests fail user trust before they fail review.
 4. Version the three axes separately — package, host API range, and stored data — and ship declared, transactional migrations for your own stored data. Destructive operations need an explicit recovery policy.

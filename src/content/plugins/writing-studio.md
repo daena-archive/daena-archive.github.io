@@ -7,7 +7,7 @@ image: ../../assets/plugins/writing-studio.webp
 imageAlt: Artistic illustration for the Writing Studio module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/writing
 version: 0.1.0
-daenaCompatibility: 'Daena 0.1 alpha'
+daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: declarative
 categories: [writing, documents]
@@ -32,7 +32,7 @@ capabilities:
     'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
-updated: 2026-09-02
+updated: 2026-09-04
 ---
 
 Writing Studio is a quiet space for long-form work. It holds manuscripts and reference pages that can point directly to the people, places, events, and language in your archive, without pretending Daena is only a word processor.

@@ -7,7 +7,7 @@ image: ../../assets/plugins/timeline.webp
 imageAlt: Artistic illustration for the Timeline module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/timeline
 version: 0.1.0
-daenaCompatibility: 'Daena 0.1 alpha'
+daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: sandboxed
 categories: [timeline, calendars]
@@ -36,7 +36,7 @@ capabilities:
     'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
-updated: 2026-09-02
+updated: 2026-09-04
 ---
 
 Timeline gives in-world history a home — events, encounters, eras, and calendars — while keeping every moment linked to the people, places, and records that took part in it.

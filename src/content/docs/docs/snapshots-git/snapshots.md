@@ -12,7 +12,7 @@ Snapshots are explicit. Daena does not silently commit, reset, push, or discard 
 ## Good snapshot habits
 
 - **Write a real message.** Custom messages are supported; deterministic generated messages are available without AI. Say what changed in the world, not just "update."
-- **Snapshot before risky work.** Upgrades, bulk reorganization, hand-edited portable files, and schema overlay changes all deserve a snapshot first — especially in alpha.
+- **Snapshot before risky work.** Upgrades, bulk reorganization, hand-edited portable files, and schema overlay changes all deserve a snapshot first — especially in beta.
 - **Expect preflight.** Unresolved conflicts, malformed paths, invalid references, and pending checkpoints block the affected operations instead of being overwritten. Resolve, then retry.
 
 Git operates on portable files only. `.daena/`, SQLite files, runtime indexes, plugin grants, and sessions are never staged by built-in helpers.

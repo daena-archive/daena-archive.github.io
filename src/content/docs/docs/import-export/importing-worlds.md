@@ -17,7 +17,7 @@ Duplicate and conflict decisions (`create`, `skip`, `map to existing`) offer onl
 
 ## Before you import
 
-- Snapshot the project or back up the folder — the commit is one logical project change, and alpha storage may still evolve.
+- Snapshot the project or back up the folder — the commit is one logical project change, and beta storage may still evolve.
 - Prefer the smallest source that proves the mapping, then repeat at full size.
 - Only currently available importers are shown — generic documents (Markdown, HTML, DOCX, plain text, ZIP, folders), Obsidian vaults, and MediaWiki XML. Plugin-provided importers are still planned.
 
