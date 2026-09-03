@@ -28,8 +28,8 @@ Do not delete `.daena/` while a checkpoint is pending or failed; it can contain 
 
 - Create one folder per project, and keep unrelated files out of it.
 - Keep a separate backup of important projects outside the project folder.
-- Read [How projects are stored](../project-storage/how-projects-are-stored/) before editing portable files by hand or deleting anything inside `.daena/`.
+- Read [How projects are stored](/docs/project-storage/how-projects-are-stored/) before editing portable files by hand or deleting anything inside `.daena/`.
 
-Next, build [your first connected world](./your-first-world/) from one place, one person, and one event.
+Next, build [your first connected world](/docs/getting-started/your-first-world/) from one place, one person, and one event.
 
 <!-- TODO(screenshot): project switcher — empty/welcome state with the Open project folder action visible, plus the folder picker. Keep the captured path generic (no personal username). -->

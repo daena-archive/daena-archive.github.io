@@ -12,7 +12,7 @@ Daena is in active alpha development. Use the [latest GitHub release](https://gi
 1. Open the latest release and read its notes, including any migration or project-format notices.
 2. Download the build for your operating system.
 3. Install and open Daena Archive.
-4. Continue with [Creating a project](../creating-a-project/).
+4. Continue with [Creating a project](/docs/getting-started/creating-a-project/).
 
 Release notes may also list known limitations for that build. Treat them as part of the install step, not as optional reading.
 

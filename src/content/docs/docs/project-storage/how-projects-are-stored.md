@@ -18,6 +18,6 @@ Sync state is derived: `failed` when an export error is present, `pending` when 
 
 > A clean portable checkpoint can rebuild the project. A pending or failed checkpoint means the runtime may contain newer committed work and must not be discarded.
 
-Read [External edits and rebuilding](./external-edits/) before touching portable files by hand.
+Read [External edits and rebuilding](/docs/project-storage/external-edits/) before touching portable files by hand.
 
 <!-- TODO(screenshot): Project Center storage/status — checkpoint state (clean/pending/failed) with the portable vs machine-local distinction captioned. -->

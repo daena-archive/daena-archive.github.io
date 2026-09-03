@@ -25,7 +25,7 @@ If something looks thin at this stage, that is expected. A record can remain a f
 ## Where to go next
 
 - Open the world graph for Eldermere to see the three records connected.
-- Read [Understanding the workspace](./workspace/) to learn where Lore, Timeline, Maps, Languages, and Writing Studio each fit.
-- Read [Entities and concepts](../core-concepts/entities-and-concepts/) to understand why identity stays stable while names and types change.
+- Read [Understanding the workspace](/docs/getting-started/workspace/) to learn where Lore, Timeline, Maps, Languages, and Writing Studio each fit.
+- Read [Entities and concepts](/docs/core-concepts/entities-and-concepts/) to understand why identity stays stable while names and types change.
 
 <!-- TODO(screenshot): your-first-world — 2 captures: (1) Lore entry for a place with one relationship visible, (2) manuscript paragraph with one linked reference. Use the Eldermere/Mira Vale demo names so captions match the text. -->

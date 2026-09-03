@@ -31,6 +31,6 @@ The global New action opens the full template gallery. Each workspace header als
 
 Project Center holds Data & recovery (storage and backups), Snapshots (Git history, remotes, restore), Extensions (plugins), Fields & Types (schema), and Archive. Archiving is reversible and keeps the record in the project; permanent deletion lives in Project Center → Archive only.
 
-When you are comfortable moving around, continue with [Entities and concepts](../core-concepts/entities-and-concepts/).
+When you are comfortable moving around, continue with [Entities and concepts](/docs/core-concepts/entities-and-concepts/).
 
 <!-- TODO(screenshot): workspace overview — app shell with navigation rail, one module view, search, and inspector visible. Annotate: navigation, collection, inspector. Avoid capturing personal project names. -->
