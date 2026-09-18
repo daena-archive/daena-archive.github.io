@@ -3,14 +3,12 @@ name: Lore
 package: daena.lore
 author: daena-archive
 summary: The connected world bible for people, places, artifacts, factions, cultures, and concepts.
-image: ../../assets/plugins/lore.webp
-imageAlt: Artistic illustration for the Lore module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/lore
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: sandboxed
-categories: [lore, relationships]
+categories: [people, places, relationships]
 official: true
 bundled: true
 featured: true

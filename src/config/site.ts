@@ -11,69 +11,14 @@ export const siteConfig = {
   discussions: 'https://github.com/daena-archive/daena/discussions',
   contributing: 'https://github.com/daena-archive/daena/blob/main/CONTRIBUTING.md',
   discord: '',
-  platforms:
-    'Daena is in active beta development. Consult the latest release notes for currently published builds and installation requirements.',
-  releaseTag: 'v0.1.0-beta.1',
-  releaseLabel: 'v0.1.0-beta.1',
 } as const;
 
-export function releaseAssetUrl(fileName: string) {
-  return `${siteConfig.repository}/releases/download/${siteConfig.releaseTag}/${fileName}`;
-}
-
-export type ReleaseOs = 'windows' | 'macos' | 'linux';
-export type ReleaseArch = 'x86_64' | 'aarch64';
-
-export const releaseArtifacts: Array<{
-  os: ReleaseOs;
-  arch: ReleaseArch;
-  file: string;
-  ext: string;
-}> = [
-  {
-    os: 'windows',
-    arch: 'x86_64',
-    file: `daena-${siteConfig.releaseTag}-windows-x86_64.zip`,
-    ext: '.zip',
-  },
-  {
-    os: 'windows',
-    arch: 'aarch64',
-    file: `daena-${siteConfig.releaseTag}-windows-aarch64.zip`,
-    ext: '.zip',
-  },
-  {
-    os: 'macos',
-    arch: 'x86_64',
-    file: `daena-${siteConfig.releaseTag}-macos-x86_64.zip`,
-    ext: '.zip',
-  },
-  {
-    os: 'macos',
-    arch: 'aarch64',
-    file: `daena-${siteConfig.releaseTag}-macos-aarch64.zip`,
-    ext: '.zip',
-  },
-  {
-    os: 'linux',
-    arch: 'x86_64',
-    file: `daena-${siteConfig.releaseTag}-linux-x86_64.tar.gz`,
-    ext: '.tar.gz',
-  },
-  {
-    os: 'linux',
-    arch: 'aarch64',
-    file: `daena-${siteConfig.releaseTag}-linux-aarch64.tar.gz`,
-    ext: '.tar.gz',
-  },
-];
-
 export const navItems = [
-  { label: 'Features', href: '/features/' },
+  { label: 'Home', href: '/' },
   { label: 'Docs', href: '/docs/' },
   { label: 'Plugins', href: '/plugins/' },
-  { label: 'Showcase', href: '/showcase/' },
-  { label: 'Roadmap', href: '/roadmap/' },
+  // { label: 'Showcase', href: '/showcase/' },
+  // { label: 'Roadmap', href: '/roadmap/' },
   { label: 'Community', href: '/community/' },
 ] as const;
 

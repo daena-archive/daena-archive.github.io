@@ -7,13 +7,25 @@ import TimelineStrip from '../components/TimelineStrip.astro';
 import LanguageSpecimen from '../components/LanguageSpecimen.astro';
 import StatusBadge from '../components/StatusBadge.astro';
 import { entrySlug, siteConfig, withBase } from '../config/site';
-import { Image } from 'astro:assets';
-import { Crown, Users, PenTool, Swords, TreePine, ArrowRight, ArrowDown, ArrowUpRight, BookOpen, Clock, MapPin, Languages, PenLine, ChevronLeft, ChevronRight } from 'lucide-static';
+import {
+  Crown,
+  Users,
+  PenTool,
+  Sword,
+  TreePine,
+  ArrowRight,
+  ArrowUpRight,
+  Library,
+  CalendarRange,
+  Map,
+  Languages,
+  Castle,
+  Pencil,
+} from 'lucide-static';
 
-const plugins = (await getCollection('plugins')).filter((entry) => entry.data.featured);
-const showcase = (await getCollection('showcase'))
-  .filter((entry) => entry.data.featured)
-  .slice(0, 3);
+const showcase = false
+  ? (await getCollection('showcase')).filter((entry) => entry.data.featured).slice(0, 3)
+  : [];
 ---
 
 <BaseLayout pageClass="home">
@@ -42,39 +54,41 @@ const showcase = (await getCollection('showcase'))
         </h1>
         <p class="lede">
           Daena Archive is a local-first worldbuilding studio. Shape characters, places, factions,
-          languages, timelines, maps, and more — all connected.
+          houses, languages, timelines, maps, and more — all connected.
         </p>
         <div class="button-row">
-          <a class="button button-primary" href={withBase('/features/')}
-            >Explore Features <span aria-hidden="true" set:html={ArrowRight}></span></a
+          <a class="button button-primary" href={withBase('/docs/')}
+            >Read the docs <span aria-hidden="true" set:html={ArrowRight} /></a
           >
           <a class="button button-secondary" href={withBase('/download/')}
-            >Download for Desktop <span aria-hidden="true" set:html={ArrowDown}></span></a
+            >Download for Desktop <span aria-hidden="true" set:html={ArrowRight} /></a
           >
         </div>
       </div>
-      <div class="hero-orbit" aria-hidden="true">
-        <i class="orbit-ring"></i>
-        <i class="orbit-ring orbit-ring-2"></i>
-      </div>
-      <div class="map-marker marker-crown" aria-hidden="true">
-        <span set:html={Crown}></span>
-        <i></i>
-      </div>
-      <div class="map-marker marker-people" aria-hidden="true">
-        <span set:html={Users}></span>
-        <i></i>
-      </div>
-      <div class="map-marker marker-quill" aria-hidden="true">
-        <span set:html={PenTool}></span>
-        <i></i>
-      </div>
-      <div class="map-marker marker-sword" aria-hidden="true">
-        <span class="marker-small" set:html={Swords}></span>
-      </div>
-      <div class="map-marker marker-tree" aria-hidden="true">
-        <span set:html={TreePine}></span>
-        <i></i>
+      <div class="hero-map-pins" aria-hidden="true">
+        <div class="hero-orbit">
+          <i class="orbit-ring"></i>
+          <i class="orbit-ring orbit-ring-2"></i>
+        </div>
+        <div class="map-marker marker-crown">
+          <span set:html={Crown} />
+          <i></i>
+        </div>
+        <div class="map-marker marker-people">
+          <span set:html={Users} />
+          <i></i>
+        </div>
+        <div class="map-marker marker-quill">
+          <span set:html={PenTool} />
+          <i></i>
+        </div>
+        <div class="map-marker marker-sword">
+          <span set:html={Sword} />
+        </div>
+        <div class="map-marker marker-tree">
+          <span set:html={TreePine} />
+          <i></i>
+        </div>
       </div>
       <ArchiveCard class="hero-archive-card" />
     </div>
@@ -97,15 +111,16 @@ const showcase = (await getCollection('showcase'))
       <div class="intro-copy">
         <p>
           Daena brings the pieces of a world into one connected archive. Lore, history, maps,
-          languages, writing, and extensions remain close enough to inform one another without
-          forcing your work into a single rigid workflow.
+          houses, languages, and writing remain close enough to inform one another without forcing
+          your work into a single rigid workflow.
         </p>
         <div class="thread-list" aria-label="Connected archive layers">
-          <span set:html={BookOpen}></span><span>Lore</span>
-          <span set:html={Clock}></span><span>History</span>
-          <span set:html={MapPin}></span><span>Place</span>
-          <span set:html={Languages}></span><span>Language</span>
-          <span set:html={PenLine}></span><span>Writing</span>
+          <span set:html={Library} /><span>Lore</span>
+          <span set:html={CalendarRange} /><span>History</span>
+          <span set:html={Map} /><span>Place</span>
+          <span set:html={Castle} /><span>Houses</span>
+          <span set:html={Languages} /><span>Language</span>
+          <span set:html={Pencil} /><span>Writing</span>
         </div>
       </div>
     </div>
@@ -124,7 +139,7 @@ const showcase = (await getCollection('showcase'))
         <p class="supporting-line">
           From a single artifact to an entire civilization, Daena keeps context close.
         </p>
-        <a class="text-link" href={withBase('/features/lore/')}>Explore Lore</a>
+        <a class="text-link" href={withBase('/docs/lore/creating-entries/')}>Explore Lore</a>
       </div>
       <div class="graph-stage surface">
         <RelationshipGraph />
@@ -142,6 +157,32 @@ const showcase = (await getCollection('showcase'))
     </div>
   </section>
 
+  <section class="section houses-section">
+    <div class="content-shell houses-grid">
+      <div class="house-roster surface">
+        <div class="document-bar">
+          <span>HOUSE · VALE</span><span>3 members</span>
+        </div>
+        <h3>House Vale</h3>
+        <p>Coastfolk lineage of Tidewatch cartographers, bound to Eldermere’s eastern soundings.</p>
+        <ul>
+          <li><strong>Mira Vale</strong><span>Head · Person</span></li>
+          <li><strong>Elian Rook</strong><span>Kin · Person</span></li>
+          <li><strong>Neris Vale</strong><span>Heir · Person</span></li>
+        </ul>
+      </div>
+      <div>
+        <span class="eyebrow">Houses · Kinship</span>
+        <h2 class="feature-heading">Keep lineage on the people you already have.</h2>
+        <p class="section-copy">
+          Houses and family trees use the same Person records as Lore. Parentage, partnership, and
+          membership stay in the archive — no separate genealogy copy.
+        </p>
+        <a class="text-link" href={withBase('/docs/houses/houses-and-tree/')}>Explore Houses</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section timeline-section">
     <div class="content-shell">
       <div class="timeline-intro">
@@ -155,7 +196,7 @@ const showcase = (await getCollection('showcase'))
             needs them, or keep dates simple when it does not. History should add context—not
             bookkeeping.
           </p>
-          <a class="text-link" href={withBase('/features/timeline/')}>Explore Timelines</a>
+          <a class="text-link" href={withBase('/docs/timeline/events/')}>Explore Timelines</a>
         </div>
       </div>
       <div class="timeline-stage"><TimelineStrip /></div>
@@ -163,17 +204,6 @@ const showcase = (await getCollection('showcase'))
   </section>
 
   <section class="maps-section dark-panel">
-    <div class="map-background" aria-hidden="true">
-      <picture
-        ><source srcset={withBase('/images/hero-map.webp')} type="image/webp" /><img
-          src={withBase('/images/hero-map.png')}
-          alt=""
-          width="1536"
-          height="1024"
-          loading="lazy"
-        /></picture
-      >
-    </div>
     <div class="content-shell map-content">
       <div class="map-copy">
         <span class="eyebrow">Maps · Place</span>
@@ -185,8 +215,8 @@ const showcase = (await getCollection('showcase'))
         <div class="status-row">
           <StatusBadge status="beta" /><span>Maps is actively evolving</span>
         </div>
-        <a class="button button-brass" href={withBase('/features/maps/')}
-          >Explore Maps <span aria-hidden="true" set:html={ArrowRight}></span></a
+        <a class="button button-brass" href={withBase('/docs/maps/overview/')}
+          >Explore Maps <span aria-hidden="true" set:html={ArrowRight} /></a
         >
       </div>
       <div class="map-layers" aria-label="Map progression">
@@ -210,7 +240,9 @@ const showcase = (await getCollection('showcase'))
           people and places that use it. Start with a name and a few notes, or go deeper when the
           language demands it.
         </p>
-        <a class="text-link" href={withBase('/features/languages/')}>Explore Languages</a>
+        <a class="text-link" href={withBase('/docs/languages/creating-a-language/')}
+          >Explore Languages</a
+        >
       </div>
       <LanguageSpecimen />
     </div>
@@ -240,7 +272,7 @@ const showcase = (await getCollection('showcase'))
           Keep prose close to the people, places, history, and terminology that shape it. Daena is a
           world archive first, but the archive should never be far away when it is time to write.
         </p>
-        <a class="text-link" href={withBase('/features/writing/')}>Explore Writing</a>
+        <a class="text-link" href={withBase('/docs/writing/documents/')}>Explore Writing</a>
       </div>
     </div>
   </section>
@@ -267,9 +299,36 @@ const showcase = (await getCollection('showcase'))
         </div>
       </div>
       <div class="orbit" aria-hidden="true">
-        <svg class="orbit-ring-outer" viewBox="0 0 330 330"><circle cx="165" cy="165" r="164" fill="none" stroke="rgba(58,78,67,0.2)" stroke-width="1.5" stroke-dasharray="10 8" /></svg>
-        <svg class="orbit-ring-mid" viewBox="0 0 250 250"><circle cx="125" cy="125" r="124" fill="none" stroke="rgba(58,78,67,0.35)" stroke-width="1.5" stroke-dasharray="6 6" /></svg>
-        <svg class="orbit-ring-inner" viewBox="0 0 170 170"><circle cx="85" cy="85" r="84" fill="none" stroke="rgba(58,78,67,0.5)" stroke-width="1.5" stroke-dasharray="3 5" /></svg>
+        <svg class="orbit-ring-outer" viewBox="0 0 330 330"
+          ><circle
+            cx="165"
+            cy="165"
+            r="164"
+            fill="none"
+            stroke="rgba(58,78,67,0.2)"
+            stroke-width="1.5"
+            stroke-dasharray="10 8"></circle></svg
+        >
+        <svg class="orbit-ring-mid" viewBox="0 0 250 250"
+          ><circle
+            cx="125"
+            cy="125"
+            r="124"
+            fill="none"
+            stroke="rgba(58,78,67,0.35)"
+            stroke-width="1.5"
+            stroke-dasharray="6 6"></circle></svg
+        >
+        <svg class="orbit-ring-inner" viewBox="0 0 170 170"
+          ><circle
+            cx="85"
+            cy="85"
+            r="84"
+            fill="none"
+            stroke="rgba(58,78,67,0.5)"
+            stroke-width="1.5"
+            stroke-dasharray="3 5"></circle></svg
+        >
         <span>DAENA</span>
       </div>
     </div>
@@ -284,7 +343,9 @@ const showcase = (await getCollection('showcase'))
           Browse snapshots of the archive, inspect earlier states, and recover work when the project
           changes direction. World history belongs in Timeline. Project history belongs here.
         </p>
-        <a class="text-link" href={withBase('/features/snapshots/')}>Learn about snapshots</a>
+        <a class="text-link" href={withBase('/docs/snapshots-git/snapshots/')}
+          >Learn about snapshots</a
+        >
       </div>
       <div class="snapshot-stack" aria-label="Example project snapshots">
         <article>
@@ -306,110 +367,6 @@ const showcase = (await getCollection('showcase'))
     </div>
   </section>
 
-  <section class="section plugins-section">
-    <div class="content-shell">
-      <div class="section-header-row">
-        <div>
-          <span class="eyebrow">Extensions</span><h2 class="feature-heading">
-            Make the studio your own.
-          </h2>
-        </div>
-        <div>
-          <p class="section-copy">
-            Modules and plugins add focused capabilities through versioned, permission-aware
-            contracts.
-          </p><a class="text-link" href={withBase('/plugins/')}>Browse the registry</a>
-        </div>
-      </div>
-      <div class="plugin-carousel-wrap" data-carousel-wrap>
-        <button class="carousel-btn carousel-btn-prev" type="button" data-carousel-prev aria-label="Previous plugins">
-          <span aria-hidden="true" set:html={ChevronLeft}></span>
-        </button>
-        <div class="plugin-preview-carousel" data-carousel tabindex="0" aria-label="Plugin carousel" aria-roledescription="carousel">
-          {
-            plugins.map((plugin) => (
-              <article class="plugin-preview">
-                <div class="plugin-art" aria-hidden="true">
-                  <Image
-                    src={plugin.data.image}
-                    alt={plugin.data.imageAlt || ''}
-                    widths={[320, 640, 960, 1536]}
-                    sizes="(max-width: 46rem) 84vw, (max-width: 62rem) 18rem, 22rem"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-                <div class="plugin-body">
-                  <>
-                    <h3>{plugin.data.name}</h3>
-                    <p>{plugin.data.summary}</p>
-                    <small>
-                      {plugin.data.package} · v{plugin.data.version}
-                    </small>
-                    <a
-                      href={withBase(`/plugins/${entrySlug(plugin.id)}/`)}
-                      aria-label={`View ${plugin.data.name}`}
-                    >
-                      View module <span aria-hidden="true" set:html={ArrowRight}></span>
-                    </a>
-                  </>
-                </div>
-              </article>
-            ))
-          }
-        </div>
-        <button class="carousel-btn carousel-btn-next" type="button" data-carousel-next aria-label="Next plugins">
-          <span aria-hidden="true" set:html={ChevronRight}></span>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <script is:inline>
-    (() => {
-      const wrap = document.querySelector('[data-carousel-wrap]');
-      if (!wrap) return;
-      const carousel = wrap.querySelector('[data-carousel]');
-      const prev = wrap.querySelector('[data-carousel-prev]');
-      const next = wrap.querySelector('[data-carousel-next]');
-      if (!carousel || !prev || !next) return;
-      const getStep = () => {
-        const card = carousel.querySelector('.plugin-preview');
-        if (!card) return 320;
-        const style = getComputedStyle(carousel);
-        const gap = parseFloat(style.columnGap || style.gap || '16');
-        return card.getBoundingClientRect().width + gap;
-      };
-      const update = () => {
-        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-        const atStart = carousel.scrollLeft <= 2;
-        const atEnd = carousel.scrollLeft >= maxScroll - 2;
-        prev.disabled = atStart;
-        next.disabled = atEnd;
-        prev.setAttribute('aria-disabled', String(atStart));
-        next.setAttribute('aria-disabled', String(atEnd));
-        const needsScroll = carousel.scrollWidth > carousel.clientWidth + 2;
-        wrap.dataset.overflow = String(needsScroll);
-      };
-      prev.addEventListener('click', () => carousel.scrollBy({ left: -getStep(), behavior: 'smooth' }));
-      next.addEventListener('click', () => carousel.scrollBy({ left: getStep(), behavior: 'smooth' }));
-      carousel.addEventListener('scroll', update, { passive: true });
-      carousel.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); }
-        if (e.key === 'ArrowRight') { e.preventDefault(); next.click(); }
-      });
-      window.addEventListener('resize', update);
-      // Observe content changes
-      if ('ResizeObserver' in window) {
-        const ro = new ResizeObserver(update);
-        ro.observe(carousel);
-      }
-      update();
-      // Initial check after images load
-      window.addEventListener('load', update);
-    })();
-  </script>
-
   <section class="section ai-section">
     <div class="content-shell ai-grid surface">
       <div class="ai-copy">
@@ -422,7 +379,7 @@ const showcase = (await getCollection('showcase'))
         <div class="status-row">
           <StatusBadge status="experimental" /><span>Opt-in · proposal only</span>
         </div>
-        <a class="text-link" href={withBase('/features/ai/')}>Read about AI in Daena</a>
+        <a class="text-link" href={withBase('/docs/ai/enabling-ai/')}>Read about AI in Daena</a>
       </div>
       <div class="proposal-card">
         <span>REWRITE PROPOSAL</span>
@@ -435,63 +392,55 @@ const showcase = (await getCollection('showcase'))
     </div>
   </section>
 
-  <section class="section showcase-section">
-    <div class="content-shell">
-      <div class="section-header-row">
-        <div>
-          <span class="eyebrow">From the archive</span><h2 class="feature-heading">
-            See how a connected world takes shape.
-          </h2>
-        </div>
-        <div>
-          <p class="section-copy">
-            The first collection uses clearly labeled demonstration archives. Community submissions
-            can follow through a moderated workflow.
-          </p><a class="text-link" href={withBase('/showcase/')}>Visit the showcase</a>
-        </div>
-      </div>
-      <div class="showcase-preview-grid">
-        {
-          showcase.map((entry, index) => (
-            <a
-              class={`showcase-preview accent-${entry.data.accent} item-${index + 1} ${entry.data.image ? 'has-image' : ''}`}
-              href={withBase(`/showcase/${entrySlug(entry.id)}/`)}
-            >
-              <div class={`showcase-art ${entry.data.image ? 'has-image' : ''}`} aria-hidden="true">
-                {entry.data.image ? (
-                  <>
-                    <Image
-                      src={entry.data.image}
-                    alt={entry.data.imageAlt || ''}
-                    widths={[400, 640, 1080]}
-                    sizes={index === 0
-                        ? '(max-width: 46rem) 92vw, 560px'
-                        : '(max-width: 46rem) 92vw, 400px'}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <b>{String(index + 1).padStart(2, '0')}</b>
-                  </>
-                ) : (
-                  <>
-                    <span />
-                    <i />
-                    <b>{String(index + 1).padStart(2, '0')}</b>
-                  </>
-                )}
-              </div>
+  {
+    false && (
+      <section class="section showcase-section">
+        <div class="content-shell">
+          <div class="section-header-row">
+            <div>
               <>
-                <small>{entry.data.creator}</small>
-                <h3>{entry.data.title}</h3>
-                <p>{entry.data.summary}</p>
-                <span class="view-label">Open archive <span set:html={ArrowRight}></span></span>
+                <span class="eyebrow">From the archive</span>
+                <h2 class="feature-heading">See how a connected world takes shape.</h2>
               </>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+            </div>
+            <div>
+              <>
+                <p class="section-copy">
+                  The first collection uses clearly labeled demonstration archives. Community
+                  submissions can follow through a moderated workflow.
+                </p>
+                <a class="text-link" href={withBase('/showcase/')}>
+                  Visit the showcase
+                </a>
+              </>
+            </div>
+          </div>
+          <div class="showcase-preview-grid">
+            {showcase.map((entry, index) => (
+              <a
+                class={`showcase-preview accent-${entry.data.accent} item-${index + 1}`}
+                href={withBase(`/showcase/${entrySlug(entry.id)}/`)}
+              >
+                <div class="showcase-art" aria-hidden="true">
+                  <span />
+                  <i />
+                  <b>{String(index + 1).padStart(2, '0')}</b>
+                </div>
+                <>
+                  <small>{entry.data.creator}</small>
+                  <h3>{entry.data.title}</h3>
+                  <p>{entry.data.summary}</p>
+                  <span class="view-label">
+                    Open archive <span set:html={ArrowRight} />
+                  </span>
+                </>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <section class="final-cta dark-panel">
     <div class="content-shell">
@@ -504,7 +453,7 @@ const showcase = (await getCollection('showcase'))
       <div class="button-row">
         <a class="button button-brass" href={withBase('/download/')}>Download Daena</a><a
           class="button button-secondary"
-          href={siteConfig.repository}>View on GitHub <span set:html={ArrowUpRight}></span></a
+          href={siteConfig.repository}>View on GitHub <span set:html={ArrowUpRight} /></a
         ><a class="text-link" href={withBase('/docs/')}>Read the documentation</a>
       </div>
     </div>
@@ -569,14 +518,21 @@ const showcase = (await getCollection('showcase'))
     max-width: 34rem;
     color: #4e5049;
   }
+  .hero-map-pins {
+    position: absolute;
+    z-index: 4;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(58%, 54rem);
+    pointer-events: none;
+  }
   .hero-orbit {
     position: absolute;
-    top: 50%;
-    right: 25%;
-    width: 28rem;
-    height: 28rem;
-    transform: translate(20%, -50%);
-    pointer-events: none;
+    top: 28%;
+    left: 18%;
+    width: clamp(16rem, 28vw, 28rem);
+    height: clamp(16rem, 28vw, 28rem);
   }
   .orbit-ring {
     position: absolute;
@@ -585,13 +541,13 @@ const showcase = (await getCollection('showcase'))
     border-radius: 50%;
   }
   .orbit-ring-2 {
-    inset: 3rem;
+    inset: clamp(1.6rem, 3vw, 3rem);
     border-color: rgba(151, 103, 51, 0.3);
   }
   :global(.hero-archive-card) {
     position: absolute;
     z-index: 5;
-    top: 36%;
+    top: 42%;
     right: 6%;
   }
   .map-marker {
@@ -603,37 +559,37 @@ const showcase = (await getCollection('showcase'))
   .map-marker span {
     position: relative;
     z-index: 1;
-    width: 3.2rem;
-    height: 3.2rem;
+    width: clamp(2.45rem, 3.4vw, 3.2rem);
+    height: clamp(2.45rem, 3.4vw, 3.2rem);
     display: grid;
     place-items: center;
-    border: 5px solid rgba(255, 254, 250, 0.85);
+    border: 0;
     border-radius: 50%;
     background: #2c493a;
     color: #fff;
     box-shadow: 0 8px 20px rgba(30, 45, 37, 0.22);
   }
   .map-marker span :global(svg) {
-    width: 1.15rem;
-    height: 1.15rem;
+    width: clamp(0.9rem, 1.2vw, 1.15rem);
+    height: clamp(0.9rem, 1.2vw, 1.15rem);
   }
   .map-marker i {
     position: absolute;
-    width: 7.5rem;
-    height: 7.5rem;
+    width: clamp(5.4rem, 8vw, 7.5rem);
+    height: clamp(5.4rem, 8vw, 7.5rem);
     border: 1px dashed rgba(151, 103, 51, 0.5);
     border-radius: 50%;
   }
   .marker-crown {
-    top: 18%;
-    right: 18%;
+    top: 86%;
+    left: 42%;
   }
   .marker-crown span {
     background: #2c493a;
   }
   .marker-people {
-    top: 30%;
-    right: 30%;
+    top: 12%;
+    left: 42%;
   }
   .marker-people span {
     background: #a0713c;
@@ -642,32 +598,24 @@ const showcase = (await getCollection('showcase'))
     border-color: rgba(160, 113, 60, 0.4);
   }
   .marker-quill {
-    top: 42%;
-    right: 42%;
+    top: 40%;
+    left: 12%;
   }
   .marker-quill span {
     background: #f0ebe0;
     color: #3a3630;
-    border-color: rgba(255, 254, 250, 0.95);
   }
   .marker-sword {
-    top: 56%;
-    right: 36%;
+    top: 58%;
+    left: 30%;
   }
   .marker-sword span {
     background: #fffefa;
     color: #3a3630;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-width: 4px;
-  }
-  .marker-sword span :global(svg) {
-    width: 0.9rem;
-    height: 0.9rem;
   }
   .marker-tree {
-    bottom: 24%;
-    right: 35%;
+    top: 16%;
+    left: 68%;
   }
   .marker-tree span {
     background: #2c493a;
@@ -765,6 +713,51 @@ const showcase = (await getCollection('showcase'))
   .lore-section {
     padding-top: 3rem;
   }
+  .houses-section {
+    background: var(--paper-warm);
+  }
+  .houses-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: center;
+  }
+  .houses-grid .text-link {
+    margin-top: 2rem;
+  }
+  .house-roster {
+    min-height: 22rem;
+    padding: clamp(1.6rem, 4vw, 2.6rem);
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-soft);
+  }
+  .house-roster h3 {
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1;
+  }
+  .house-roster > p {
+    max-width: 32rem;
+    margin-top: 1rem;
+    color: var(--muted);
+    font: 400 1rem/1.6 var(--font-serif);
+  }
+  .house-roster ul {
+    margin: 1.8rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .house-roster li {
+    padding: 0.7rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid var(--line-soft);
+    font-size: 0.82rem;
+  }
+  .house-roster li span {
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
   .lore-grid {
     display: grid;
     grid-template-columns: 0.72fr 1.28fr;
@@ -857,33 +850,6 @@ const showcase = (await getCollection('showcase'))
     min-height: 52rem;
     padding-block: clamp(6rem, 11vw, 10rem);
     overflow: hidden;
-  }
-  .map-background {
-    position: absolute;
-    inset: 0;
-    opacity: 0.29;
-    mix-blend-mode: luminosity;
-  }
-  .map-background::after {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      #17241e 0%,
-      rgba(23, 36, 30, 0.88) 38%,
-      rgba(23, 36, 30, 0.25)
-    );
-    content: '';
-  }
-  .map-background picture,
-  .map-background img {
-    width: 100%;
-    height: 100%;
-  }
-  .map-background img {
-    object-fit: cover;
-    object-position: 70% center;
-    filter: saturate(0.7) sepia(0.12);
   }
   .map-content {
     position: relative;
@@ -1085,7 +1051,9 @@ const showcase = (await getCollection('showcase'))
     animation: orbit-rotate 50s linear infinite;
   }
   @keyframes orbit-rotate {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
   .orbit span {
     color: #d5a55f;
@@ -1096,7 +1064,9 @@ const showcase = (await getCollection('showcase'))
     animation: orbit-counter 120s linear infinite;
   }
   @keyframes orbit-counter {
-    to { transform: rotate(-360deg); }
+    to {
+      transform: rotate(-360deg);
+    }
   }
   .snapshot-grid {
     display: grid;
@@ -1155,129 +1125,6 @@ const showcase = (await getCollection('showcase'))
   }
   .section-header-row .text-link {
     margin-top: 1.3rem;
-  }
-  .plugin-preview-carousel {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 1rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
-    padding-bottom: 0.5rem;
-  }
-  .plugin-preview-carousel::-webkit-scrollbar {
-    display: none;
-  }
-  .plugin-preview {
-    flex: 0 0 22rem;
-    max-width: calc(100vw - 2rem);
-    scroll-snap-align: start;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--paper-raised);
-    overflow: hidden;
-  }
-  .plugin-art {
-    position: relative;
-    height: 12rem;
-    overflow: hidden;
-  }
-  .plugin-art img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-  .plugin-body {
-    padding: 1.3rem;
-  }
-  .plugin-body h3 {
-    margin: 1rem 0 0.5rem;
-    font-size: 1.65rem;
-  }
-  .plugin-body p {
-    min-height: 4.6rem;
-    color: var(--muted);
-    font-size: 0.82rem;
-  }
-  .plugin-body small {
-    display: block;
-    margin-top: 1rem;
-    color: var(--muted);
-    font-size: 0.65rem;
-  }
-  .plugin-body a {
-    margin-top: 1.1rem;
-    display: flex;
-    justify-content: space-between;
-    color: var(--copper-text);
-    font-size: 0.76rem;
-    font-weight: 750;
-    text-decoration: none;
-  }
-  .plugin-carousel-wrap {
-    position: relative;
-  }
-  .plugin-preview-carousel:focus-visible {
-    outline: 2px solid var(--copper);
-    outline-offset: 3px;
-    border-radius: var(--radius);
-  }
-  .carousel-btn {
-    position: absolute;
-    top: 44%;
-    z-index: 2;
-    width: 2.6rem;
-    height: 2.6rem;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    background: var(--paper-raised);
-    color: var(--ink);
-    box-shadow: 0 8px 24px rgba(35, 38, 30, 0.12);
-    cursor: pointer;
-    transition:
-      background-color 160ms ease,
-      border-color 160ms ease,
-      color 160ms ease,
-      opacity 160ms ease,
-      transform 160ms ease;
-  }
-  .carousel-btn:hover:not(:disabled) {
-    border-color: var(--brass);
-    background: var(--paper);
-    transform: translateY(-50%) scale(1.04);
-  }
-  .carousel-btn:active:not(:disabled) {
-    transform: translateY(-50%) scale(0.97);
-  }
-  .carousel-btn:disabled {
-    opacity: 0.38;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-  .carousel-btn:focus-visible {
-    outline: 2px solid var(--copper);
-    outline-offset: 2px;
-  }
-  .carousel-btn :global(svg) {
-    width: 1.15rem;
-    height: 1.15rem;
-  }
-  .carousel-btn-prev {
-    left: -1rem;
-    transform: translateY(-50%);
-  }
-  .carousel-btn-next {
-    right: -1rem;
-    transform: translateY(-50%);
-  }
-  .plugin-carousel-wrap[data-overflow='false'] .carousel-btn {
-    display: none;
   }
   .ai-section {
     background: var(--paper-warm);
@@ -1354,27 +1201,6 @@ const showcase = (await getCollection('showcase'))
     background: linear-gradient(150deg, #b5c9c3, #426a67);
     overflow: hidden;
   }
-  .showcase-art.has-image {
-    background: var(--paper-warm);
-  }
-  .showcase-art.has-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-  .showcase-art.has-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(23, 36, 30, 0) 55%, rgba(23, 36, 30, 0.42) 100%);
-    pointer-events: none;
-  }
-  .showcase-art.has-image b {
-    z-index: 1;
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
-  }
   .item-1 .showcase-art {
     height: 27rem;
   }
@@ -1383,10 +1209,6 @@ const showcase = (await getCollection('showcase'))
   }
   .accent-ember .showcase-art {
     background: linear-gradient(145deg, #d0b097, #80513b);
-  }
-  .accent-marsh .showcase-art.has-image,
-  .accent-ember .showcase-art.has-image {
-    background: var(--paper-warm);
   }
   .showcase-art span {
     position: absolute;
@@ -1473,13 +1295,10 @@ const showcase = (await getCollection('showcase'))
     }
     .hero-orbit {
       opacity: 0.4;
-      transform: translate(10%, -50%) scale(0.8);
-    }
-    .map-marker {
-      transform: scale(0.85);
     }
     .intro-grid,
     .lore-grid,
+    .houses-grid,
     .language-grid,
     .writing-grid,
     .snapshot-grid {
@@ -1489,8 +1308,12 @@ const showcase = (await getCollection('showcase'))
       margin-bottom: 3rem;
     }
     .language-grid > :first-child,
-    .writing-grid > :last-child {
+    .writing-grid > :last-child,
+    .houses-grid > :last-child {
       max-width: 42rem;
+    }
+    .houses-grid .house-roster {
+      order: 2;
     }
     .writing-grid .writing-sheet {
       order: 2;
@@ -1507,20 +1330,6 @@ const showcase = (await getCollection('showcase'))
     }
     .orbit {
       opacity: 0.55;
-    }
-    .plugin-preview {
-      flex: 0 0 18rem;
-      max-width: calc(100vw - 2rem);
-    }
-    .carousel-btn {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-    .carousel-btn-prev {
-      left: -0.7rem;
-    }
-    .carousel-btn-next {
-      right: -0.7rem;
     }
   }
   @media (max-width: 46rem) {
@@ -1573,10 +1382,7 @@ const showcase = (await getCollection('showcase'))
       width: 15rem;
       margin: 2rem 0 3rem;
     }
-    .map-marker {
-      display: none;
-    }
-    .hero-orbit {
+    .hero-map-pins {
       display: none;
     }
     .hero-facts {
@@ -1630,35 +1436,6 @@ const showcase = (await getCollection('showcase'))
     .snapshot-stack article:nth-child(3) {
       right: 1.6rem;
     }
-    .plugin-preview-carousel {
-      scroll-padding-inline: 1rem;
-      padding-inline: 0;
-      gap: 0.85rem;
-    }
-    .plugin-preview {
-      flex: 0 0 min(82vw, 19rem);
-      max-width: calc(100vw - 2rem);
-    }
-    .plugin-art {
-      height: 11rem;
-    }
-    .plugin-body {
-      padding: 1.1rem;
-    }
-    .plugin-body p {
-      min-height: auto;
-    }
-    .carousel-btn {
-      width: 2.35rem;
-      height: 2.35rem;
-      box-shadow: 0 6px 18px rgba(35, 38, 30, 0.16);
-    }
-    .carousel-btn-prev {
-      left: 0.45rem;
-    }
-    .carousel-btn-next {
-      right: 0.45rem;
-    }
     .showcase-preview-grid {
       grid-template-columns: 1fr;
     }
@@ -1670,26 +1447,6 @@ const showcase = (await getCollection('showcase'))
     }
     .final-cta .button-row {
       flex-direction: column;
-    }
-  }
-  @media (max-width: 30rem) {
-    .plugin-preview {
-      flex: 0 0 84vw;
-    }
-    .plugin-art {
-      height: auto;
-      aspect-ratio: 16 / 10;
-    }
-    .plugin-body h3 {
-      font-size: 1.45rem;
-    }
-    .carousel-btn {
-      width: 2.15rem;
-      height: 2.15rem;
-    }
-    .carousel-btn :global(svg) {
-      width: 1rem;
-      height: 1rem;
     }
   }
 </style>

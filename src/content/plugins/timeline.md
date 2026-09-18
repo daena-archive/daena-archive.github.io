@@ -3,14 +3,12 @@ name: Timeline
 package: daena.timeline
 author: daena-archive
 summary: Events, encounters, eras, calendars, dates, locations, and participants in one historical view.
-image: ../../assets/plugins/timeline.webp
-imageAlt: Artistic illustration for the Timeline module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/timeline
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: sandboxed
-categories: [timeline, calendars]
+categories: [events, eras, calendars]
 official: true
 bundled: true
 featured: true

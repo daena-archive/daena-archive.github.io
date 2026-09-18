@@ -3,14 +3,12 @@ name: Houses
 package: daena.houses
 author: daena-archive
 summary: Houses, kinship, and bounded family trees built on the people already in your archive.
-image: ../../assets/plugins/houses.webp
-imageAlt: Artistic illustration for the Houses module
 repository: https://github.com/daena-archive/daena/tree/main/packages/modules/houses
 version: 0.1.0
 daenaCompatibility: 'Daena 0.1 beta'
 hostApi: '>=1.0.0 <2.0.0'
 runtimeKind: declarative
-categories: [houses, genealogy]
+categories: [lineage, kinship, trees]
 official: true
 bundled: true
 featured: true

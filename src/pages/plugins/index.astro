@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import { moduleIcon } from '../../config/icons';
 import { entrySlug, withBase } from '../../config/site';
 import { ArrowRight } from 'lucide-static';
 
@@ -73,20 +73,11 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
               data-categories={plugin.data.categories.join(' ')}
               data-status={plugin.data.status}
             >
-              <a href={withBase(`/plugins/${entrySlug(plugin.id)}/`)} class="registry-art" aria-hidden="true">
-                <Image
-                  src={plugin.data.image}
-                  alt={plugin.data.imageAlt || ''}
-                  widths={[320, 640, 960]}
-                  sizes="(max-width: 38rem) 92vw, (max-width: 60rem) 45vw, 360px"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </a>
               <div class="registry-card-body">
                 <div class="card-meta">
                   <>
-                    <span>{plugin.data.categories.join(' · ')}</span>
+                    <span class="card-icon" aria-hidden="true" set:html={moduleIcon(plugin.data.package)}></span>
+                    <span class="card-cats">{plugin.data.categories.join(' · ')}</span>
                     {typeof plugin.data.status === 'string' && <StatusBadge status={plugin.data.status} />}
                   </>
                 </div>
@@ -251,31 +242,26 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
     background: var(--paper-raised);
     overflow: hidden;
   }
-  .registry-art {
-    position: relative;
-    display: block;
-    height: 11rem;
-    overflow: hidden;
-    background: var(--paper-warm);
-  }
-  .registry-art img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 220ms ease;
-  }
-  .registry-card:hover .registry-art img {
-    transform: scale(1.02);
-  }
   .registry-card-body {
     padding: 1.25rem;
   }
   .card-meta {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.55rem;
+  }
+  .card-icon {
+    display: grid;
+    place-items: center;
+    color: var(--copper-text);
+  }
+  .card-icon :global(svg) {
+    width: 1.15rem;
+    height: 1.15rem;
+    stroke-width: 1.8;
+  }
+  .card-cats {
+    margin-right: auto;
   }
   .card-meta > span {
     color: var(--copper-text);
@@ -375,9 +361,6 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
     .registry-grid {
       gap: 0.85rem;
     }
-    .registry-art {
-      height: 10rem;
-    }
     .registry-card-body {
       padding: 1.1rem;
     }
@@ -386,10 +369,6 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
     .registry-grid {
       grid-template-columns: 1fr;
       gap: 1rem;
-    }
-    .registry-art {
-      height: auto;
-      aspect-ratio: 16 / 10;
     }
     .registry-card p {
       min-height: auto;
@@ -410,9 +389,6 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
     }
   }
   @media (max-width: 30rem) {
-    .registry-art {
-      aspect-ratio: 3 / 2;
-    }
     .registry-card h2 {
       font-size: 1.6rem;
     }

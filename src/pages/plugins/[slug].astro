@@ -1,8 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import { moduleIcon } from '../../config/icons';
 import { entrySlug, withBase } from '../../config/site';
 import { ArrowUpRight } from 'lucide-static';
 
@@ -16,21 +16,14 @@ const { Content } = await render(plugin);
 
 <BaseLayout title={`${plugin.data.name} plugin`} description={plugin.data.summary}>
   <header class="plugin-detail-hero">
-    <div class="plugin-hero-image">
-      <Image
-        src={plugin.data.image}
-        alt={plugin.data.imageAlt || ''}
-        widths={[640, 960, 1536]}
-        sizes="(max-width: 55rem) 100vw, 58vw"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
-    </div>
     <div class="plugin-hero-text">
       <nav class="breadcrumb">
         <a href={withBase('/plugins/')}>Plugin registry</a><span>/</span>{plugin.data.package}
-      </nav><span class="eyebrow">{plugin.data.categories.join(' · ')}</span><h1
+      </nav>
+      <span class="eyebrow">
+        <span class="plugin-hero-icon" aria-hidden="true" set:html={moduleIcon(plugin.data.package)}></span>
+        {plugin.data.categories.join(' · ')}
+      </span><h1
         class="page-heading"
       >
         {plugin.data.name}
@@ -101,37 +94,27 @@ const { Content } = await render(plugin);
 
 <style>
   .plugin-detail-hero {
-    display: grid;
-    grid-template-columns: 0.42fr 0.58fr;
-    min-height: 28rem;
     border-bottom: 1px solid var(--line);
-  }
-  .plugin-hero-image {
-    order: 1;
-    position: relative;
-    overflow: hidden;
     background: var(--paper-warm);
   }
   .plugin-hero-text {
-    order: 0;
+    max-width: var(--content);
+    margin-inline: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: clamp(2rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem) clamp(3rem, 6vw, 6rem);
-    background: var(--paper-warm);
+    padding: clamp(3rem, 8vw, 6rem) 1.5rem;
   }
-  .plugin-hero-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, transparent 70%, var(--paper-warm) 100%);
-    pointer-events: none;
+  .plugin-hero-icon {
+    display: inline-flex;
+    margin-right: 0.45rem;
+    vertical-align: -0.15em;
+    color: var(--copper-text);
   }
-  .plugin-hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+  .plugin-hero-icon :global(svg) {
+    width: 0.95rem;
+    height: 0.95rem;
+    stroke-width: 1.8;
   }
   .plugin-flags {
     margin-top: 2rem;
@@ -207,33 +190,8 @@ const { Content } = await render(plugin);
     background: transparent;
     color: #f2eee4;
   }
-  @media (max-width: 68rem) {
-    .plugin-detail-hero {
-      grid-template-columns: 0.9fr 1.1fr;
-      min-height: 24rem;
-    }
-    .plugin-hero-text {
-      padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 4vw, 3rem)
-        clamp(2rem, 4vw, 3.5rem);
-    }
-  }
   @media (max-width: 55rem) {
-    .plugin-detail-hero {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-    .plugin-hero-image {
-      order: 0;
-      aspect-ratio: 16 / 9;
-      min-height: 16rem;
-      max-height: 28rem;
-    }
-    .plugin-hero-image::after {
-      background: radial-gradient(ellipse at center, transparent 65%, var(--paper) 100%);
-      opacity: 0.35;
-    }
     .plugin-hero-text {
-      order: 1;
       padding: 2rem 1.5rem 2.2rem;
     }
     .plugin-detail-grid {
@@ -245,10 +203,6 @@ const { Content } = await render(plugin);
     }
   }
   @media (max-width: 38rem) {
-    .plugin-hero-image {
-      aspect-ratio: 3 / 2;
-      min-height: 13rem;
-    }
     .plugin-hero-text {
       padding: 1.6rem 1.25rem 1.8rem;
     }
