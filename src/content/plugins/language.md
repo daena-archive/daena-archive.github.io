@@ -23,9 +23,15 @@ capabilities:
     'field.write:self',
     'record.read:self',
     'record.write:self',
+    'asset.read:self',
+    'asset.read:shared',
+    'asset.write:self',
+    asset.register,
+    'host.surface:daena.language/workspace@1',
+    'event.publish:daena.language/state@1',
   ]
 license: Apache-2.0
-updated: 2026-09-04
+updated: 2026-11-07
 ---
 
 Language gives each invented language a steady home — from a name and a few words to sounds, scripts, grammar, and examples — without pulling it away from the cultures and places that use it.

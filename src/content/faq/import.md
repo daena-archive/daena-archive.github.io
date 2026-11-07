@@ -4,4 +4,4 @@ order: 80
 category: workflow
 ---
 
-Import support is being developed incrementally. Consult the current documentation and roadmap for released formats; the site deliberately does not list an importer until its workflow is available.
+Yes, through an explicit review before anything commits. A format is supported only when the [import guide](/docs/import-export/importing-worlds/) lists it. Formats that guide does not name are not selectable.

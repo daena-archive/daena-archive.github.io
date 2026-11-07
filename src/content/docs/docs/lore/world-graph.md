@@ -2,7 +2,7 @@
 title: World graph
 description: Explore related records without losing the larger archive.
 sidebar:
-  order: 2
+  order: 3
 ---
 
 The graph visualizes shared entities and relationships. Use it to follow context, discover densely connected areas, and return to the inspector for detailed editing. The graph never duplicates records — it draws the same stable entities you edit elsewhere.
@@ -12,7 +12,7 @@ Category colors distinguish node types but do not replace readable labels. When 
 ## Using the graph well
 
 - **Start from one record.** Open the graph around a person, place, or artifact and expand outward, rather than trying to read the whole archive at once.
-- **Follow edges, then edit in the inspector.** The graph is for orientation; detailed changes belong in the editor where revisions and validation apply.
+- **Follow edges, then open the record to edit it.** Selecting a node shows that record and its connections in the graph's detail strip. Detailed changes belong in the record editor, where revisions and validation apply.
 - **Give dense areas room.** On smaller surfaces, focus the graph around the selected record rather than shrinking the entire archive.
 
 Lore entries also appear in Library and Wiki views over the same records. A Person additionally lists Tree as a projection when Houses is enabled.

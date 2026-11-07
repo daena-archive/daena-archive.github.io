@@ -6,4 +6,4 @@ area: plugins
 order: 70
 ---
 
-The website registry begins with bundled first-party modules. Community submission and review can follow without adding a runtime marketplace backend.
+This item is submission and review of third-party listings on the website. The website registry still begins with bundled first-party modules. Local `.daenaplugin` install and the desktop catalog already exist in the app, and they are not this item.

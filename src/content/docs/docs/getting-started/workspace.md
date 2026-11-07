@@ -19,6 +19,14 @@ The workspace is assembled from enabled modules. Navigation, entity types, views
 
 Names and availability follow the active modules. If an area is missing, check which modules are enabled before assuming the feature is gone.
 
+## Tabs
+
+The top bar holds Back, Forward, a tab strip, and Quick Open (`⌘K` / `Ctrl+K`). Each tab is one place — a workspace, an entity, a module view, or a setting — and keeps its own Back and Forward history. Ordinary clicks stay in the current tab.
+
+Open a new tab with `+` or `⌘T` / `Ctrl+T` (that tab starts on Home), with **Open in new tab**, or with ⌘-click, Ctrl-click, or middle-click on a rail item, collection row, Quick Open result, wiki link, graph node, or hover card. The tab menu can close, pin, close others, or close all. Close all keeps pinned tabs. Side-by-side tabs are not available. On a narrow window the strip becomes one button that opens the tab list.
+
+Switching tabs flushes pending edits or asks first. Closing the window saves.
+
 ## Finding things
 
 Use Quick Open (`⌘K` / `Ctrl+K`) to find shared records across the whole project. A person shown in Lore, pinned on a map, referenced by an event, and linked from a manuscript is still one entity, so search for the record rather than the view that showed it.

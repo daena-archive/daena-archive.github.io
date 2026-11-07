@@ -15,11 +15,11 @@ const macCommand = 'sudo xattr -cr "/Applications/Daena Archive.app"';
   <header class="page-hero">
     <div class="content-shell page-hero-grid">
       <div>
-        <span class="eyebrow">{siteConfig.status}</span>
+        <span class="eyebrow">{siteConfig.status} · {siteConfig.latestRelease}</span>
         <h1 class="page-heading">Download Daena Archive.</h1>
         <p class="lede">
-          Builds are published on GitHub Releases. This page lists currently supported platforms and
-          what to expect on first launch.
+          The newest published build is {siteConfig.latestRelease}. Builds are published on GitHub
+          Releases. This page lists currently supported platforms and what to expect on first launch.
         </p>
         <div class="button-row">
           <a class="button button-primary" href={siteConfig.releases} target="_blank" rel="noopener noreferrer"

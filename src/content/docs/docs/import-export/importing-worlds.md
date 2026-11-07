@@ -19,6 +19,6 @@ Duplicate and conflict decisions (`create`, `skip`, `map to existing`) offer onl
 
 - Snapshot the project or back up the folder — the commit is one logical project change, and beta storage may still evolve.
 - Prefer the smallest source that proves the mapping, then repeat at full size.
-- Only currently available importers are shown — generic documents (Markdown, HTML, DOCX, plain text, ZIP, folders), Obsidian vaults, and MediaWiki XML. Plugin-provided importers are still planned.
+- Built-in importers cover Markdown, plain text, HTML, DOCX, folders, ZIP, Obsidian vaults (folder only), and MediaWiki XML. Enabled plugin importers join the same preview and commit pipeline, and they receive file bytes rather than a project path. ODT and RTF are not advertised and are not selectable.
 
 <!-- TODO(screenshot): import preview — staged item list with mapping overrides and one acknowledged warning. Caption that nothing commits before confirmation. -->

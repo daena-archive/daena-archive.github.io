@@ -5,7 +5,7 @@ sidebar:
   order: 1
 ---
 
-Maps is a beta workspace. It supports creating physical worlds and editing OpenLayers vector maps, including image import — and it is being actively improved, so expect details to evolve.
+Maps is a beta workspace. It supports creating physical worlds and editing OpenLayers vector maps, including image import — and it is being actively improved, so expect details to evolve. Generated physical worlds include climate, biomes, Find Place, suggested routes, and landmass selection. Those details are still beta.
 
 Map records use the same stable identity as other entities. Provider files remain opaque assets; Daena-owned locations, roles, dates, and relationships remain in the shared project model. Renaming a map or changing its identity metadata never replaces provider IDs, asset bytes, or derived projections.
 

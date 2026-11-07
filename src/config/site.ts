@@ -3,7 +3,8 @@ export const siteConfig = {
   shortName: 'Daena',
   description:
     'A free, open-source, local-first desktop studio for building fictional worlds and writing stories in them.',
-  status: 'Beta · v0.1.0-beta.1',
+  status: 'Beta',
+  latestRelease: 'v0.1.0-beta.2',
   license: 'Apache-2.0',
   repository: 'https://github.com/daena-archive/daena',
   releases: 'https://github.com/daena-archive/daena/releases',

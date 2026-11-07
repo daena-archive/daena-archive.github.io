@@ -28,11 +28,13 @@ capabilities:
     asset.register,
     search.query,
     schema.overlay,
+    'record.read:self',
+    'record.write:self',
     ai.text.generate-structured,
     'service.call:daena.maps/navigation',
   ]
 license: Apache-2.0
-updated: 2026-09-04
+updated: 2026-11-07
 ---
 
 Lore contributes Daena's first-party people, places, artifacts, factions, cultures, and concepts. Each entry holds a readable article and structured details, and links to others through relationships that work in both directions.

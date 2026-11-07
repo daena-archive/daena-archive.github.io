@@ -7,7 +7,9 @@ sidebar:
 
 Daena itself is beta software, so treat the third-party plugin platform as evolving too. Bundled modules (Lore, Timeline, Writing Studio, Maps, Houses, Language) and runtime plugins use the same manifest, lifecycle, and broker-backed contract — the difference is who authored the package, not a separate technology.
 
-Before installing a package, verify its publisher and signature, version, supported Daena API range, and requested capabilities. A manifest declares identity, versions, kind, capabilities, namespaces, schemas, templates, views, commands, dependencies, services, and migrations.
+Before installing a package, verify its publisher and signature, version, supported Daena API range, and requested capabilities. A manifest declares identity, versions, kind, capabilities, namespaces, schemas, templates, views, commands, dependencies, services, importers, and migrations.
+
+A local `.daenaplugin` installs without the catalog. The app can also refresh a static catalog. A catalog listing does not grant capabilities, skip signature checks, or replace this review.
 
 ## Managing modules
 
