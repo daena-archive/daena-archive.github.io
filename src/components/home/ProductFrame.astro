@@ -1,0 +1,390 @@
+---
+// The product frame: a Daena-style window (forest rail, top bar, workspace)
+// with a working section switcher that needs no JavaScript.
+//
+// Chrome is modelled on the real app shell (../daena/src/lib/shell), reduced to
+// what says where you are: the rail's project line and the six workspace
+// entries (AppSidebar.svelte) and a strip of open tabs with New tab (TabStrip.svelte). History
+// arrows, quick open, status, Home/New/Project/Settings are left out. The six
+// workspace entries are <label>s wrapping visually hidden radios; the checked
+// radio is found with :has() on the figure, which shows the matching view,
+// caption, window title and tab. Arrow keys move between radios natively.
+//
+// Slots: `view-<id>` holds the rendition, `caption-<id>` the figcaption text.
+import { ChevronDown, Plus, X } from 'lucide-static';
+import './app-window.css';
+
+interface Item {
+  id: string;
+  label: string;
+  title: string;
+  icon: string;
+  tab: string;
+  tabIcon: string;
+  beta?: boolean;
+}
+interface Props {
+  name: string;
+  groupLabel: string;
+  projectName: string;
+  items: Item[];
+}
+
+const { name, groupLabel, projectName, items } = Astro.props;
+---
+
+<figure class="archive-figure">
+  <div class="frame">
+    <div class="frame__chrome" aria-hidden="true">
+      <i></i><i></i><i></i>
+      <span class="frame__title">
+        {
+          items.map((item) => (
+            <span class="frame-title" data-view={item.id}>
+              {item.title}
+            </span>
+          ))
+        }
+      </span>
+    </div>
+    <div class="frame__body">
+      <div class="rail on-rail">
+        <div class="rail__static" aria-hidden="true">
+          <div class="rail__project">
+            <i></i><span>{projectName}</span><span set:html={ChevronDown} />
+          </div>
+        </div>
+        <div class="rail__group" role="radiogroup" aria-label={groupLabel}>
+          {
+            items.map((item, index) => (
+              <label class="rail__item">
+                <input
+                  class="rail-radio"
+                  type="radio"
+                  name={name}
+                  value={item.id}
+                  checked={index === 0}
+                />
+                <span aria-hidden="true" set:html={item.icon} />
+                <span class="rail__text">
+                  {item.label}
+                  {item.beta && <em class="rail__beta">Beta</em>}
+                </span>
+              </label>
+            ))
+          }
+        </div>
+      </div>
+      <div class="app" aria-hidden="true">
+        <div class="app-toolbar">
+          <div class="app-toolbar__lead">
+            {
+              items.map((item) => (
+                <span class="app-tab tab-item" data-view={item.id}>
+                  <span class="app-tab__icon" set:html={item.tabIcon} />
+                  <span class="app-tab__title">{item.tab}</span>
+                  <span class="app-tab__close" set:html={X} />
+                </span>
+              ))
+            }
+            <span class="app-tab-new" set:html={Plus} />
+          </div>
+        </div>
+        <div class="frame__content">
+          {
+            items.map((item) => (
+              <div class="view" data-view={item.id}>
+                <slot name={`view-${item.id}`} />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="frame__caption">
+    {
+      items.map((item) => (
+        <div class="caption" data-view={item.id}>
+          <slot name={`caption-${item.id}`} />
+        </div>
+      ))
+    }
+  </figcaption>
+</figure>
+
+<style>
+  .archive-figure {
+    margin: 0;
+  }
+
+  /* Desktop: a fixed-height workspace (about 16:10 at the 1200px content
+     width). All views share one grid cell so the height never changes. */
+  .frame__body {
+    height: 620px;
+  }
+  .frame__body > .rail {
+    width: 200px;
+    padding: var(--space-3) 10px;
+  }
+  .frame__content,
+  .frame__caption {
+    display: grid;
+  }
+  .frame__content {
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .view,
+  .caption {
+    visibility: hidden;
+  }
+  .view,
+  .caption {
+    grid-area: 1 / 1;
+    min-width: 0;
+  }
+  .view {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .frame-title {
+    display: none;
+  }
+  .caption {
+    max-width: var(--measure);
+  }
+
+  /* Rail (src/lib/shell/AppSidebar.svelte + AppSidebar.css) */
+  .rail__group {
+    display: grid;
+    gap: 6px;
+  }
+  .rail__static {
+    display: grid;
+    gap: 4px;
+  }
+  .rail :global(.rail__item),
+  .rail__project {
+    min-height: 36px;
+    margin: 0;
+  }
+  .rail__item :global(svg),
+  .rail__project :global(svg) {
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+  .rail__item :global(svg) {
+    color: var(--rail-accent);
+  }
+  .rail__project {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    margin-bottom: var(--space-4);
+    color: var(--rail-text);
+    font: 600 13px/1.2 var(--font-ui);
+  }
+  .rail__project i {
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--rail-online);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--rail-online) 16%, transparent);
+  }
+  .rail__project span:nth-child(2) {
+    flex: 1;
+  }
+  .rail__project :global(svg) {
+    color: var(--rail-text-muted);
+  }
+  .rail__text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    white-space: nowrap;
+  }
+  .rail__beta {
+    color: var(--rail-accent);
+    font: 800 11px/1 var(--font-ui);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .rail-radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    opacity: 0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  /* Current item: the rail's "current" look plus the brass marker. */
+  .rail__item:has(.rail-radio:checked) {
+    background: var(--rail-surface);
+    color: var(--rail-text);
+  }
+  .rail__item:has(.rail-radio:checked)::before {
+    position: absolute;
+    top: 9px;
+    bottom: 9px;
+    left: 0;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--rail-accent);
+    content: '';
+  }
+  .rail__item:has(.rail-radio:focus-visible) {
+    outline: 2px solid var(--rail-accent);
+    outline-offset: -2px;
+  }
+
+  /* View switching */
+  .archive-figure:has(.rail-radio[value='lore']:checked) :is(.view, .caption)[data-view='lore'],
+  .archive-figure:has(.rail-radio[value='houses']:checked) :is(.view, .caption)[data-view='houses'],
+  .archive-figure:has(.rail-radio[value='timeline']:checked)
+    :is(.view, .caption)[data-view='timeline'],
+  .archive-figure:has(.rail-radio[value='writing']:checked)
+    :is(.view, .caption)[data-view='writing'],
+  .archive-figure:has(.rail-radio[value='language']:checked)
+    :is(.view, .caption)[data-view='language'],
+  .archive-figure:has(.rail-radio[value='maps']:checked) :is(.view, .caption)[data-view='maps'] {
+    visibility: visible;
+  }
+  .archive-figure:has(.rail-radio[value='lore']:checked) :is(.frame-title)[data-view='lore'],
+  .archive-figure:has(.rail-radio[value='houses']:checked) :is(.frame-title)[data-view='houses'],
+  .archive-figure:has(.rail-radio[value='timeline']:checked)
+    :is(.frame-title)[data-view='timeline'],
+  .archive-figure:has(.rail-radio[value='writing']:checked) :is(.frame-title)[data-view='writing'],
+  .archive-figure:has(.rail-radio[value='language']:checked)
+    :is(.frame-title)[data-view='language'],
+  .archive-figure:has(.rail-radio[value='maps']:checked) :is(.frame-title)[data-view='maps'] {
+    display: inline;
+  }
+  .archive-figure:has(.rail-radio[value='lore']:checked) .tab-item[data-view='lore'],
+  .archive-figure:has(.rail-radio[value='houses']:checked) .tab-item[data-view='houses'],
+  .archive-figure:has(.rail-radio[value='timeline']:checked) .tab-item[data-view='timeline'],
+  .archive-figure:has(.rail-radio[value='writing']:checked) .tab-item[data-view='writing'],
+  .archive-figure:has(.rail-radio[value='language']:checked) .tab-item[data-view='language'],
+  .archive-figure:has(.rail-radio[value='maps']:checked) .tab-item[data-view='maps'] {
+    border-color: var(--line);
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .archive-figure:has(.rail-radio[value='lore']:checked)
+    .tab-item[data-view='lore']
+    .app-tab__close,
+  .archive-figure:has(.rail-radio[value='houses']:checked)
+    .tab-item[data-view='houses']
+    .app-tab__close,
+  .archive-figure:has(.rail-radio[value='timeline']:checked)
+    .tab-item[data-view='timeline']
+    .app-tab__close,
+  .archive-figure:has(.rail-radio[value='writing']:checked)
+    .tab-item[data-view='writing']
+    .app-tab__close,
+  .archive-figure:has(.rail-radio[value='language']:checked)
+    .tab-item[data-view='language']
+    .app-tab__close,
+  .archive-figure:has(.rail-radio[value='maps']:checked)
+    .tab-item[data-view='maps']
+    .app-tab__close {
+    opacity: 1;
+  }
+
+  /* Without :has() support there is no way to read the radios, so fall back
+     to the first view and its caption rather than a broken switcher. */
+  @supports not selector(:has(*)) {
+    .view[data-view='lore'],
+    .caption[data-view='lore'] {
+      visibility: visible;
+    }
+    .frame-title[data-view='lore'] {
+      display: inline;
+    }
+    .tab-item[data-view='lore'] {
+      border-color: var(--line);
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .tab-item[data-view='lore'] .app-tab__close {
+      opacity: 1;
+    }
+  }
+
+  /* Phones: the rail becomes a horizontally scrolling row above the app, and
+     the workspace scrolls inside the frame (never sideways on the page). */
+  @media (max-width: 52rem) {
+    .frame__body {
+      height: auto;
+      flex-direction: column;
+    }
+    .frame__body > .rail {
+      width: auto;
+      flex-direction: row;
+      gap: 2px;
+      padding: var(--space-2);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+    }
+    .rail__static {
+      display: none;
+    }
+    .rail__group {
+      display: flex;
+      gap: 2px;
+    }
+    .rail__item {
+      flex: none;
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+    .rail__item:has(.rail-radio:checked)::before {
+      top: auto;
+      right: 12px;
+      bottom: 0;
+      left: 12px;
+      width: auto;
+      height: 2px;
+    }
+    .app {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .frame__content {
+      display: block;
+      overflow: visible;
+    }
+    .view {
+      display: none;
+      overflow: visible;
+    }
+    .archive-figure:has(.rail-radio[value='lore']:checked) .view[data-view='lore'],
+    .archive-figure:has(.rail-radio[value='houses']:checked) .view[data-view='houses'],
+    .archive-figure:has(.rail-radio[value='timeline']:checked) .view[data-view='timeline'],
+    .archive-figure:has(.rail-radio[value='writing']:checked) .view[data-view='writing'],
+    .archive-figure:has(.rail-radio[value='language']:checked) .view[data-view='language'],
+    .archive-figure:has(.rail-radio[value='maps']:checked) .view[data-view='maps'] {
+      display: flex;
+    }
+    @supports not selector(:has(*)) {
+      .view[data-view='lore'] {
+        display: flex;
+      }
+    }
+  }
+</style>

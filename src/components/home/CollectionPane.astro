@@ -1,0 +1,48 @@
+---
+import { Search } from 'lucide-static';
+import EntityGlyph from './EntityGlyph.astro';
+import type { EntityType } from './entityTypes';
+
+// The collection list pane (../daena/src/lib/shell/CollectionPane.svelte and the
+// row markup in src/routes/+page.svelte): kicker, count, search field, rows of
+// type glyph + name + subtitle. The flat/grouped toggle, filter button and
+// pager are left out.
+interface Row {
+  type: EntityType;
+  name: string;
+  subtitle: string;
+}
+interface Props {
+  kicker: string;
+  count: number;
+  label: string;
+  search: string;
+  rows: Row[];
+  selected?: number;
+}
+
+const { kicker, count, label, search, rows, selected = 0 } = Astro.props;
+---
+
+<aside class="app-pane app-collection">
+  <div class="app-pane__head">
+    <span class="overline">{kicker}</span>
+    <strong>{count} {label}</strong>
+  </div>
+  <div class="app-field">
+    <span set:html={Search} /><span>{search}</span>
+  </div>
+  <div class="app-list">
+    {
+      rows.map((row, index) => (
+        <div class:list={['app-row', { 'is-selected': index === selected }]}>
+          <EntityGlyph type={row.type} size={36} />
+          <span class="app-row__copy">
+            <strong>{row.name}</strong>
+            <small>{row.subtitle}</small>
+          </span>
+        </div>
+      ))
+    }
+  </div>
+</aside>

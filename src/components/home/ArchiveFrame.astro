@@ -1,0 +1,764 @@
+---
+import {
+  BookOpenText,
+  Bold,
+  CalendarRange,
+  Castle,
+  ChevronDown,
+  Circle,
+  Eye,
+  Hand,
+  Hexagon,
+  Image as ImageIcon,
+  Italic,
+  Languages,
+  Library,
+  Link,
+  List,
+  Map as MapIcon,
+  MousePointer2,
+  Pencil,
+  Slash,
+  UserRound,
+  UsersRound,
+} from 'lucide-static';
+import { withBase } from '../../config/site';
+import ProductFrame from './ProductFrame.astro';
+import WorkspaceHeading from './WorkspaceHeading.astro';
+import CollectionPane from './CollectionPane.astro';
+import TreeCanvas from './TreeCanvas.astro';
+import TimelineCanvas from './TimelineCanvas.astro';
+import MapCanvas from './MapCanvas.astro';
+
+// The window is a reduced rendition of the real workspace: each view keeps the
+// panes and one or two controls that say what the section is, and leaves out
+// chrome that only matters while working. Order, labels and icons are the real
+// rail's (AppSidebar.svelte, workspace-icons.ts, workspace-presentation.ts).
+// Maps carries the app's Beta badge.
+const items = [
+  {
+    id: 'lore',
+    label: 'Lore library',
+    title: 'Eldermere · Lore library',
+    icon: Library,
+    tab: 'Mira Vale',
+    tabIcon: UserRound,
+  },
+  {
+    id: 'houses',
+    label: 'Houses',
+    title: 'Eldermere · Houses',
+    icon: Castle,
+    tab: 'House Vale',
+    tabIcon: Castle,
+  },
+  {
+    id: 'timeline',
+    label: 'Timeline',
+    title: 'Eldermere · Timeline',
+    icon: CalendarRange,
+    tab: 'Chronology',
+    tabIcon: CalendarRange,
+  },
+  {
+    id: 'writing',
+    label: 'Writing Studio',
+    title: 'Eldermere · Writing Studio',
+    icon: Pencil,
+    tab: 'The Sounding Bell',
+    tabIcon: BookOpenText,
+  },
+  {
+    id: 'language',
+    label: 'Languages',
+    title: 'Eldermere · Languages',
+    icon: Languages,
+    tab: 'Coastfolk',
+    tabIcon: Languages,
+  },
+  {
+    id: 'maps',
+    label: 'Maps',
+    title: 'Eldermere · Maps',
+    icon: MapIcon,
+    tab: 'Eldermere',
+    tabIcon: MapIcon,
+    beta: true,
+  },
+];
+
+const words = [
+  ['vaerith', 'noun', 'sea'],
+  ['vaer', 'noun', 'water'],
+  ['sael', 'verb', 'to sound, to measure depth'],
+  ['harren', 'adjective', 'deep'],
+] as const;
+---
+
+<ProductFrame
+  name="archive-view"
+  groupLabel="Workspace section"
+  projectName="Eldermere"
+  items={items}
+>
+  <!-- Lore: heading + collection + article + inspector (+page.svelte, CollectionPane, InspectorOverview) -->
+  <div slot="view-lore" class="app-screen">
+    <WorkspaceHeading
+      kicker="World bible"
+      title="Lore library"
+      nav={['Library', 'Wiki', 'Graph']}
+      create="New"
+    />
+    <div class="app-grid">
+      <CollectionPane
+        kicker="Lore library"
+        count={4}
+        label="entries"
+        search="Search entries"
+        rows={[
+          { type: 'person', name: 'Mira Vale', subtitle: 'Person' },
+          { type: 'place', name: 'Eldermere', subtitle: 'Place' },
+          { type: 'culture', name: 'Coastfolk', subtitle: 'Culture' },
+          { type: 'artifact', name: 'Crown of Salt', subtitle: 'Artifact' },
+        ]}
+      />
+      <article class="app-pane app-content">
+        <div class="app-entry-head">
+          <div>
+            <span class="overline">Person</span>
+            <h2>Mira Vale</h2>
+          </div>
+          <div class="app-nav"><span class="is-active">Article</span><span>Edit</span></div>
+        </div>
+        <div class="app-article">
+          <p>
+            Cartographer of the <span class="ref">Tidewatch</span> and keeper of the western soundings.
+            Raised among the <span class="ref">Coastfolk</span> of
+            <span class="ref">Eldermere</span>, she charts the tides for
+            <span class="ref">House Vale</span>.
+          </p>
+          <p>
+            Her tables are still read aloud on the eastern quay, and no captain sails the western
+            soundings without them.
+          </p>
+        </div>
+      </article>
+      <aside class="app-pane app-inspector">
+        <div class="app-inspector__head">
+          <span class="overline">Inspector</span>
+          <strong>Person</strong>
+          <p>Mira Vale</p>
+        </div>
+        <div class="app-props">
+          <div class="app-prop">
+            <span>Occupation</span>
+            <div class="app-input">Cartographer</div>
+          </div>
+          <div class="app-prop">
+            <span>Aliases</span>
+            <div class="app-input is-empty">Add aliases</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <p slot="caption-lore">
+    Record people, places, cultures, artifacts, and factions, then connect them through structured
+    relationships. Structured profiles are optional. Example archive.{' '}
+    <a class="link" href={withBase('/docs/lore/creating-entries/')}>Explore Lore</a>
+  </p>
+
+  <!-- Houses: the family tree surface (TreeSurface.svelte, TreeCanvas.svelte) -->
+  <div slot="view-houses" class="app-screen">
+    <header class="app-topbar">
+      <div class="app-topbar__brand">
+        <span class="app-topbar__mark" set:html={UsersRound} />
+        <div class="app-topbar__copy">
+          <strong>House Vale</strong>
+          <small>House Vale · 3 members</small>
+        </div>
+        <div class="app-nav"><span>Houses</span><span class="is-active">Tree</span></div>
+      </div>
+    </header>
+    <div class="card">
+      <TreeCanvas />
+    </div>
+  </div>
+  <p slot="caption-houses">
+    Houses and family trees use the same Person records as Lore. Parentage, partnership, and
+    membership stay in the archive. Example archive.{' '}
+    <a class="link" href={withBase('/docs/houses/houses-and-tree/')}>Explore Houses</a>
+  </p>
+
+  <!-- Timeline: the Chronology projection (packages/modules/timeline/src/index.ts) -->
+  <div slot="view-timeline" class="app-screen">
+    <header class="app-topbar">
+      <div class="app-topbar__brand">
+        <span class="app-topbar__mark" set:html={CalendarRange} />
+        <div class="app-topbar__copy">
+          <strong>Chronology</strong>
+          <small>Explore your world across time</small>
+        </div>
+        <div class="app-nav">
+          <span>Events</span><span>Calendars</span><span class="is-active">Timeline</span>
+        </div>
+      </div>
+    </header>
+    <div class="card tl">
+      <aside class="tl-outline">
+        <span class="tl-heading">Chronological outline</span>
+        <div class="tl-year">812</div>
+        <div class="tl-card">
+          <strong>Founding of Eldermere</strong><small>Starts: 812</small>
+          <span><b>Timeline event</b><small>Timeline event</small></span>
+        </div>
+        <div class="tl-year">819</div>
+        <div class="tl-card">
+          <strong>Mira Vale</strong><small>Birth: 819 – Death: 880</small>
+          <span><b>Lifeline</b><small>Person</small></span>
+        </div>
+        <div class="tl-year">843</div>
+        <div class="tl-card is-selected">
+          <strong>War of Tides</strong><small>Starts: 843 – Ends: 861</small>
+          <span><b>Timeline event</b><small>Timeline event</small></span>
+        </div>
+      </aside>
+      <TimelineCanvas />
+    </div>
+  </div>
+  <p slot="caption-timeline">
+    Build timelines for events, eras, characters, and places. Use calendars when your world needs
+    them, or keep dates simple when it does not. Example archive.{' '}
+    <a class="link" href={withBase('/docs/timeline/events/')}>Explore Timelines</a>
+  </p>
+
+  <!-- Writing: heading + collection + editor + inspector (WritingWorkspace.svelte, RichTextEditor.svelte) -->
+  <div slot="view-writing" class="app-screen">
+    <WorkspaceHeading
+      kicker="Drafting desk"
+      title="Writing Studio"
+      nav={['Manuscripts', 'Reference']}
+      create="New"
+    />
+    <div class="app-grid">
+      <CollectionPane
+        kicker="Manuscripts"
+        count={3}
+        label="manuscripts"
+        search="Search manuscripts"
+        rows={[
+          { type: 'manuscript', name: 'The Sounding Bell', subtitle: 'Manuscript' },
+          { type: 'manuscript', name: 'The Salt Ledger', subtitle: 'Manuscript' },
+          { type: 'manuscript', name: 'Lantern Marsh Letters', subtitle: 'Manuscript' },
+        ]}
+      />
+      <article class="app-pane write">
+        <div class="write__head">
+          <h2>The Sounding Bell</h2>
+          <div class="app-nav"><span>Article</span><span class="is-active">Edit</span></div>
+        </div>
+        <div class="write__toolbar">
+          <span class="write__style">Normal text<span set:html={ChevronDown} /></span>
+          <span class="write__tool" set:html={Bold} />
+          <span class="write__tool" set:html={Italic} />
+          <span class="write__tool" set:html={Link} />
+          <span class="write__tool" set:html={List} />
+        </div>
+        <div class="write__body">
+          <p>
+            At first light, <span class="ref">Mira Vale</span> found the tide three marks higher than
+            the tables allowed. Beyond the glass, <span class="ref">Eldermere</span>’s eastern quay
+            was already awake.
+          </p>
+          <p>
+            Ropes creaked against wet timber, lanterns went dark one by one, and every gull had
+            turned inland.
+          </p>
+        </div>
+      </article>
+      <aside class="app-pane app-inspector">
+        <div class="app-inspector__head">
+          <span class="overline">Inspector</span>
+          <strong>Manuscript</strong>
+          <p>The Sounding Bell</p>
+        </div>
+        <div class="app-props">
+          <div class="app-prop">
+            <span>Status</span>
+            <div class="app-input">drafting<span set:html={ChevronDown} /></div>
+          </div>
+          <div class="app-prop">
+            <span>Genre</span>
+            <div class="app-input is-empty">Add genre</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <p slot="caption-writing">
+    Keep prose close to the people, places, history, and terminology that shape it. The archive is
+    never far away when it is time to write. Example archive.{' '}
+    <a class="link" href={withBase('/docs/writing/documents/')}>Explore Writing</a>
+  </p>
+
+  <!-- Languages: heading + collection + Language workspace (LanguageWorkspace.svelte, panes/Lexicon.svelte) -->
+  <div slot="view-language" class="app-screen">
+    <WorkspaceHeading kicker="Language workshop" title="Languages" create="New" />
+    <div class="app-grid app-grid--two">
+      <CollectionPane
+        kicker="Languages"
+        count={2}
+        label="languages"
+        search="Search languages"
+        rows={[
+          { type: 'language', name: 'Coastfolk', subtitle: 'Language' },
+          { type: 'language', name: 'Marsh Cant', subtitle: 'Language' },
+        ]}
+      />
+      <article class="app-pane lang">
+        <div class="lang__tabs">
+          <span>Overview</span><span class="is-active">Lexicon</span><span>Sounds</span><span
+            >Writing</span
+          ><span>Grammar</span><span>Morphology</span><span>Samples</span>
+        </div>
+        <div class="lang__bar">
+          <h2>Lexicon</h2>
+          <span class="app-primary">Add word</span>
+        </div>
+        <ul class="lang__list">
+          {
+            words.map(([lemma, pos, meaning]) => (
+              <li>
+                <strong>{lemma}</strong>
+                <small>{pos}</small>
+                <span>{meaning}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+    </div>
+  </div>
+  <p slot="caption-language">
+    Develop sounds, words, grammar, and writing systems alongside the people and places that use
+    them. Start with a name and a few notes, or go deeper when the language demands it. Example
+    archive.{' '}
+    <a class="link" href={withBase('/docs/languages/creating-a-language/')}>Explore Languages</a>
+  </p>
+
+  <!-- Maps: an image map in the vector map editor (NativeVectorMapEditor.svelte, MapEditorTools.svelte) -->
+  <div slot="view-maps" class="app-screen">
+    <header class="app-topbar">
+      <div class="app-topbar__brand">
+        <span class="app-topbar__mark" set:html={MapIcon} />
+        <div class="app-topbar__copy">
+          <strong>Vector map</strong>
+          <small>Units: pixels</small>
+        </div>
+      </div>
+    </header>
+    <div class="card maped">
+      <nav class="maped__tools">
+        <span class="maped__tool" set:html={Hand} />
+        <span class="maped__tool is-on" set:html={MousePointer2} />
+        <span class="maped__tool" set:html={Circle} />
+        <span class="maped__tool" set:html={Slash} />
+        <span class="maped__tool" set:html={Hexagon} />
+      </nav>
+      <aside class="maped__layers">
+        <div class="mapl-head">
+          <span class="overline">Map layers</span>
+          <strong>2 layers · 5 features</strong>
+          <small>Units: pixels</small>
+        </div>
+        <div class="mapl-body">
+          <div class="mapl-group">
+            <div class="mapl-group__head">Overlays</div>
+            <div class="mapl-card is-active">
+              <span class="mapl-card__kind" set:html={Hexagon} />
+              <span class="mapl-card__copy"
+                ><strong>Political</strong><small>Political · 1 feats</small></span
+              >
+              <span class="mapl-card__eye" set:html={Eye} />
+            </div>
+            <div class="mapl-card">
+              <span class="mapl-card__kind" set:html={Hexagon} />
+              <span class="mapl-card__copy"
+                ><strong>Places</strong><small>Custom · 4 feats</small></span
+              >
+              <span class="mapl-card__eye" set:html={Eye} />
+            </div>
+          </div>
+          <div class="mapl-group">
+            <div class="mapl-group__head">Rasters</div>
+            <div class="mapl-card">
+              <span class="mapl-card__kind" set:html={ImageIcon} />
+              <span class="mapl-card__copy"><strong>eldermere-map.png</strong></span>
+              <span class="mapl-card__eye" set:html={Eye} />
+            </div>
+          </div>
+        </div>
+      </aside>
+      <MapCanvas />
+    </div>
+  </div>
+  <p slot="caption-maps">
+    Maps can use your own map image, a GeoJSON vector map, or a generated physical world. Link
+    places and entities to geography, and build visual layers on top. Example archive.{' '}
+    <a class="link" href={withBase('/docs/maps/overview/')}>Explore Maps</a>
+  </p>
+</ProductFrame>
+
+<style>
+  /* A framed canvas under a top bar: house tree, chronology, map. */
+  .card {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    margin: 0 var(--app-pad) var(--app-pad);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  /* Timeline (packages/modules/timeline/src/index.ts styles) */
+  .tl {
+    display: grid;
+    grid-template-columns: 252px minmax(0, 1fr);
+  }
+  .tl-outline {
+    min-height: 0;
+    overflow: hidden;
+    padding: var(--space-4);
+    border-right: 1px solid var(--line-soft);
+  }
+  .tl-heading {
+    display: block;
+    margin: 0 0 var(--space-3);
+    color: var(--ink-muted);
+    font: 600 11px/1.2 var(--font-ui);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tl-year {
+    margin: var(--space-3) 4px 4px;
+    color: var(--ink-muted);
+    font: 600 14px/1 var(--font-display);
+  }
+  .tl-card {
+    display: grid;
+    gap: 4px;
+    padding: 8px 10px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+  }
+  .tl-card.is-selected {
+    border-color: var(--line-strong);
+    background: var(--warning-bg);
+  }
+  .tl-card strong {
+    color: var(--ink);
+    font: 600 13px/1.3 var(--font-ui);
+  }
+  .tl-card small {
+    color: var(--ink-muted);
+    font: 400 12px/1.35 var(--font-ui);
+  }
+  .tl-card span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .tl-card b {
+    padding: 2px 7px;
+    border-radius: var(--radius-pill);
+    background: var(--warning-bg);
+    color: var(--ink-soft);
+    font: 600 12px/1.2 var(--font-ui);
+  }
+
+  /* Writing (WritingWorkspace.svelte, RichTextEditor.svelte) */
+  .write__head {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-5) var(--space-5) var(--space-3);
+  }
+  .write__head h2 {
+    margin: 0;
+    color: var(--ink);
+    font: 500 28px/1.15 var(--font-display);
+  }
+  .write__toolbar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-5);
+    background: var(--surface-muted);
+  }
+  .write__style {
+    display: inline-flex;
+    height: 30px;
+    align-items: center;
+    gap: 8px;
+    margin-right: var(--space-2);
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    font: 500 13px/1 var(--font-ui);
+  }
+  .write__style :global(svg) {
+    width: 12px;
+    height: 12px;
+  }
+  .write__tool {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    color: var(--ink-soft);
+  }
+  .write__tool :global(svg) {
+    width: 15px;
+    height: 15px;
+  }
+  .write__body {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+    padding: var(--space-5);
+    color: var(--ink);
+    font: 400 15px/1.8 var(--font-ui);
+  }
+  .write__body p {
+    margin: 0 0 1em;
+  }
+  .write__body .ref {
+    border-bottom: 1px solid var(--accent);
+    color: var(--accent-dark);
+  }
+
+  /* Languages (packages/modules/language/src) */
+  .lang {
+    padding: 0 var(--space-5);
+  }
+  .lang__tabs {
+    display: flex;
+    flex: none;
+    gap: var(--space-1);
+    margin-bottom: var(--space-5);
+    border-bottom: 1px solid var(--line);
+  }
+  .lang__tabs span {
+    padding: var(--space-4) 10px var(--space-3);
+    border-bottom: 2px solid transparent;
+    color: var(--ink-soft);
+    font: 600 13px/1 var(--font-ui);
+  }
+  .lang__tabs .is-active {
+    border-bottom-color: var(--accent);
+    color: var(--ink);
+  }
+  .lang__bar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .lang__bar h2 {
+    margin: 0;
+    color: var(--ink);
+    font: 500 24px/1.2 var(--font-display);
+  }
+  .lang__list {
+    min-height: 0;
+    margin: 0;
+    padding: 0 0 var(--space-5);
+    overflow: hidden;
+    list-style: none;
+  }
+  .lang__list li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 90px minmax(0, 2fr);
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 48px;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .lang__list li + li {
+    margin-top: var(--space-2);
+  }
+  .lang__list strong {
+    color: var(--ink);
+    font: 700 14px/1.2 var(--font-ui);
+  }
+  .lang__list small {
+    color: var(--ink-soft);
+    font: 500 12px/1.2 var(--font-ui);
+  }
+  .lang__list span {
+    overflow: hidden;
+    color: var(--ink-muted);
+    font: 400 14px/1.2 var(--font-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Maps (NativeVectorMapEditor.svelte .editor-body: tool rail | layers panel | canvas) */
+  .maped {
+    display: grid;
+    grid-template-columns: 52px 232px minmax(0, 1fr);
+  }
+  .maped__tools {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-3) 0;
+    background: var(--surface);
+  }
+  .maped__tool {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: var(--radius-md);
+    color: var(--ink-soft);
+  }
+  .maped__tool.is-on {
+    background: var(--success-bg);
+    color: var(--success);
+  }
+  .maped__tool :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+  .maped__layers {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface-muted);
+  }
+  .mapl-head {
+    padding: var(--space-4);
+  }
+  .mapl-head strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--ink);
+    font: 650 13px/1.3 var(--font-ui);
+  }
+  .mapl-head small {
+    color: var(--ink-soft);
+    font: 400 12px/1.3 var(--font-ui);
+  }
+  .mapl-body {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 var(--space-3) var(--space-4);
+  }
+  .mapl-group + .mapl-group {
+    margin-top: var(--space-4);
+  }
+  .mapl-group__head {
+    margin: 0 4px var(--space-2);
+    color: var(--ink-soft);
+    font: 700 11px/1 var(--font-ui);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .mapl-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 48px;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .mapl-card + .mapl-card {
+    margin-top: var(--space-2);
+  }
+  .mapl-card.is-active {
+    border-color: var(--accent-soft);
+  }
+  .mapl-card__kind,
+  .mapl-card__eye {
+    display: inline-flex;
+    color: var(--ink-soft);
+  }
+  .mapl-card__eye {
+    color: var(--ink-faint);
+  }
+  .mapl-card :global(svg) {
+    width: 14px;
+    height: 14px;
+  }
+  .mapl-card__copy {
+    display: grid;
+    min-width: 0;
+    flex: 1;
+    gap: 2px;
+  }
+  .mapl-card__copy strong {
+    overflow: hidden;
+    color: var(--ink);
+    font: 650 13px/1.2 var(--font-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mapl-card__copy small {
+    color: var(--ink-soft);
+    font: 400 12px/1.2 var(--font-ui);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 70rem) {
+    .maped {
+      grid-template-columns: 52px 200px minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 52rem) {
+    .card {
+      margin-inline: var(--space-4);
+    }
+    .tl {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .tl-outline {
+      display: none;
+    }
+    .maped {
+      grid-template-columns: 52px minmax(0, 1fr);
+    }
+    .maped__layers {
+      display: none;
+    }
+    .lang__list li {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    }
+    .lang__list li > :nth-child(2) {
+      display: none;
+    }
+    .lang__tabs,
+    .write__toolbar {
+      overflow: hidden;
+    }
+  }
+</style>

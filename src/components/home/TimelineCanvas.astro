@@ -1,0 +1,171 @@
+---
+// The vis-timeline canvas of the Timeline projection: axis on top, group labels
+// on the left, boxes for events, pills for lifelines.
+//   ../daena/packages/modules/timeline/src/index.ts  (options: orientation top, groups "Events (N)" etc.;
+//                                                      item classes timeline-lifeline / timeline-imprecise)
+//   ../daena/packages/modules/timeline/src/event-utils.ts (colours per layer)
+// Positions are percentages of a 790 to 880 year window; example dates only.
+const from = 790;
+const span = 90;
+const at = (year: number) => ((year - from) / span) * 100;
+const ticks = [800, 820, 840, 860, 880];
+const events = [
+  { name: 'Founding of Eldermere', year: 812, row: 0, type: 'amber' },
+  { name: 'The Crown of Salt changes hands', year: 834, row: 1, type: 'amber' },
+  { name: 'The Lantern Marsh Accord', year: 861, row: 2, type: 'amber' },
+] as const;
+---
+
+<div class="vis">
+  <div class="vis__axis">
+    <span class="vis__corner"></span>
+    <span class="vis__plot">
+      {
+        ticks.map((year) => (
+          <span class="tick" style={`left: ${at(year)}%`}>
+            {year}
+          </span>
+        ))
+      }
+    </span>
+  </div>
+  <div class="vis__group vis__group--events">
+    <span class="vis__label">Events (4)</span>
+    <span class="vis__plot">
+      {ticks.map((year) => <i class="grid" style={`left: ${at(year)}%`} />)}
+      {
+        events.map((event) => (
+          <span
+            class="box"
+            style={`left: ${at(event.year)}%; top: ${8 + event.row * 38}px; --item-fg: var(--type-${event.type}); --item-bg: var(--type-${event.type}-bg);`}
+          >
+            {event.name}
+          </span>
+        ))
+      }
+      <span
+        class="range is-selected"
+        style={`left: ${at(843)}%; width: ${at(861) - at(843)}%; top: 8px; --item-fg: var(--type-amber); --item-bg: var(--type-amber-bg);`}
+        >War of Tides</span
+      >
+    </span>
+  </div>
+  <div class="vis__group vis__group--lifelines">
+    <span class="vis__label">Lifelines (2)</span>
+    <span class="vis__plot">
+      {ticks.map((year) => <i class="grid" style={`left: ${at(year)}%`} />)}
+      <span class="life" style={`left: ${at(819)}%; width: ${at(880) - at(819)}%; top: 8px;`}
+        >Mira Vale</span
+      >
+      <span class="life" style={`left: ${at(823)}%; width: ${at(878) - at(823)}%; top: 46px;`}
+        >Elian Rook</span
+      >
+    </span>
+  </div>
+</div>
+
+<style>
+  .vis {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface-warm);
+  }
+  .vis__axis,
+  .vis__group {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .vis__axis {
+    flex: none;
+    height: 32px;
+    color: var(--ink-soft);
+    font: 500 12px/1 var(--font-ui);
+  }
+  .vis__plot {
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  .tick {
+    position: absolute;
+    top: 11px;
+    padding-left: 4px;
+    white-space: nowrap;
+  }
+  .vis__label {
+    padding: 8px 10px;
+    border-right: 1px solid var(--line-soft);
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    color: var(--ink-soft);
+    font: 600 12px/1.3 var(--font-ui);
+  }
+  .vis__group--events {
+    min-height: 128px;
+    flex: 1.4;
+  }
+  .vis__group--lifelines {
+    min-height: 90px;
+    flex: 1;
+  }
+  .grid {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--line-soft);
+  }
+  .box,
+  .range,
+  .life {
+    position: absolute;
+    box-sizing: border-box;
+    height: 28px;
+    padding: 0 8px;
+    overflow: hidden;
+    border: 1px solid var(--item-fg, var(--line-strong));
+    border-radius: 7px;
+    background: var(--item-bg, var(--surface));
+    color: var(--item-fg, var(--ink));
+    font: 600 12px/26px var(--font-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .range {
+    padding: 0 6px;
+  }
+  .box {
+    transform: translateX(-50%);
+  }
+  .range.is-selected {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+  /* Lifelines: pill shape with a circle at each end (.timeline-lifeline). */
+  .life {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-color: var(--success);
+    border-radius: var(--radius-pill);
+    background: var(--success-bg);
+    color: var(--success);
+  }
+  .life::before,
+  .life::after {
+    width: 6px;
+    height: 6px;
+    flex: none;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: var(--surface);
+    content: '';
+  }
+  .life::after {
+    margin-left: auto;
+  }
+</style>

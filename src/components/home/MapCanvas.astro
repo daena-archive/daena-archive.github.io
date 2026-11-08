@@ -1,0 +1,180 @@
+---
+import { Minus, Plus } from 'lucide-static';
+import { withBase } from '../../config/site';
+
+// An image map as the app's map editor shows it: a picture used as the raster
+// background, with vector features drawn on top in the editor's own styles.
+//   ../daena/src/routes/+page.svelte (~9340-9380): "Import image map" -
+//       "Use any picture (PNG, JPG, SVG) as a background and draw your map on top of it."
+//   ../daena/src/lib/maps/openlayers/style-factory.ts   (feature style: fill, stroke, 12px 600 label)
+//   ../daena/src/lib/maps/native-vector/types.ts        (DEFAULT_VECTOR_LAYER_STYLE: point radius 5,
+//       label colour, halo colour and width 3, offset 14px above the point)
+//   ../daena/src/lib/maps/atlas/overlay-family.ts       (political overlay fill and stroke)
+//   ../daena/src/lib/maps/native-vector/MapViewControls.svelte (zoom stack)
+// The picture is the site's hand-drawn Eldermere map, cropped toward the coast.
+// Feature positions are percentages of the canvas, so they stay on the same
+// coastline whatever the window width. Pan pad, measure readout and the other
+// vector layers are left out.
+const places = [
+  { name: 'Eldermere', x: 56, y: 38 },
+  { name: 'Tidewatch', x: 43, y: 46 },
+  { name: 'Lantern Marsh', x: 67, y: 68 },
+  { name: 'Eastern Quay', x: 77, y: 55 },
+] as const;
+---
+
+<div class="mapx">
+  <img
+    class="mapx__img"
+    src={withBase('/images/hero-map-960.webp')}
+    alt=""
+    width="960"
+    height="640"
+    loading="lazy"
+    decoding="async"
+  />
+  <svg
+    class="mapx__region"
+    viewBox="0 0 100 100"
+    preserveAspectRatio="none"
+    role="presentation"
+    focusable="false"
+  >
+    <polygon points="50,24 66,19 80,30 84,54 76,69 60,64 51,48"></polygon>
+  </svg>
+  {
+    places.map((place) => (
+      <span class="mapx__place" style={`left: ${place.x}%; top: ${place.y}%;`}>
+        <i />
+        <b>{place.name}</b>
+      </span>
+    ))
+  }
+  <span class="mapx__label" style="left: 68%; top: 28%;">Eldermere Reach</span>
+  <div class="mapx__zoom" aria-hidden="true">
+    <span set:html={Plus} />
+    <span set:html={Minus} />
+  </div>
+</div>
+
+<style>
+  .mapx {
+    /* Map-only colours, from the files named above. The overlay and label values
+       are the app's own and do not change with the app theme, so the dark
+       values equal the light ones. */
+    --map-label: #f7f0e5;
+    --map-halo: #0d1b2a;
+    --map-political-fill: rgba(176, 48, 48, 0.38);
+    --map-political-stroke: #5c1818;
+    --map-point-fill: rgba(143, 111, 209, 0.35);
+    --map-point-stroke: #5e4893;
+    --map-control-bg: rgb(27 40 34 / 92%);
+    --map-control-border: #405047;
+    --map-control-text: #d8e3d9;
+
+    position: relative;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+    background: var(--surface-warm);
+  }
+  :global(:root[data-theme='dark']) .mapx {
+    --map-label: #f7f0e5;
+    --map-halo: #0d1b2a;
+    --map-political-fill: rgba(176, 48, 48, 0.38);
+    --map-political-stroke: #5c1818;
+    --map-point-fill: rgba(143, 111, 209, 0.35);
+    --map-point-stroke: #5e4893;
+    --map-control-bg: rgb(27 40 34 / 92%);
+    --map-control-border: #405047;
+    --map-control-text: #d8e3d9;
+  }
+  .mapx__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 100% 50%;
+    transform: scale(1.35);
+    transform-origin: 100% 55%;
+  }
+  .mapx__region {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .mapx__region polygon {
+    fill: var(--map-political-fill);
+    stroke: var(--map-political-stroke);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .mapx__place {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  .mapx__place i {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    width: 12px;
+    height: 12px;
+    box-sizing: border-box;
+    border: 1.5px solid var(--map-point-stroke);
+    border-radius: 50%;
+    background: var(--map-point-fill);
+  }
+  .mapx__place b,
+  .mapx__label {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    color: var(--map-label);
+    font:
+      600 12px/1 system-ui,
+      sans-serif;
+    white-space: nowrap;
+    paint-order: stroke fill;
+    -webkit-text-stroke: 3px var(--map-halo);
+  }
+  .mapx__place b {
+    top: -14px;
+    left: 0;
+  }
+  .mapx__label {
+    transform: translate(-50%, -50%);
+  }
+
+  .mapx__zoom {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: grid;
+    border: 1px solid var(--map-control-border);
+    border-radius: var(--radius-md);
+    background: var(--map-control-bg);
+    color: var(--map-control-text);
+  }
+  .mapx__zoom span {
+    display: grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    place-items: center;
+  }
+  .mapx__zoom span + span {
+    border-top: 1px solid var(--map-control-border);
+  }
+  .mapx__zoom :global(svg) {
+    width: 14px;
+    height: 14px;
+  }
+
+  @media (max-width: 52rem) {
+    .mapx {
+      min-height: 22rem;
+    }
+  }
+</style>

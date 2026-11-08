@@ -1,0 +1,427 @@
+/* Vocabulary for the home page's Daena app window (ProductFrame + ArchiveFrame).
+   Each class mirrors a piece of the real workspace chrome; the source file it is
+   modelled on is named beside it. Everything is namespaced `app-` and scoped to
+   .archive-figure, and uses site tokens only. The window is deliberately
+   reduced: it keeps what says what each section is and leaves out chrome that
+   only matters while you work (history arrows, quick open, pane toggles,
+   pagination, filters, secondary buttons). */
+
+.archive-figure {
+  --app-gap: var(--space-3);
+  --app-pad: var(--space-5);
+}
+
+/* Main column: tab bar + screen (src/lib/shell/GlobalToolbar.svelte, TabStrip.svelte) */
+.archive-figure .app {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  background: var(--canvas);
+  color: var(--ink);
+  font: 400 13px/1.4 var(--font-ui);
+}
+.archive-figure .app-toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 var(--app-pad);
+}
+.archive-figure .app-toolbar__lead {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+.archive-figure .app-toolbar__lead {
+  gap: 2px;
+  overflow: hidden;
+}
+/* Open tabs, after src/lib/shell/TabStrip.svelte: inactive tabs are flat in
+   ink-soft; the active tab gets a line border, the surface fill and its close
+   button. Which tab is active is set in ProductFrame.astro. */
+.archive-figure .app-tab {
+  display: inline-flex;
+  min-width: 96px;
+  max-width: 200px;
+  height: 30px;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px 0 10px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: 600 12px/1 var(--font-ui);
+}
+.archive-figure .app-tab svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+.archive-figure .app-tab__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-figure .app-tab__close {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  place-items: center;
+  opacity: 0;
+}
+.archive-figure .app-tab__close svg {
+  width: 12px;
+  height: 12px;
+}
+.archive-figure .app-tab-new {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  place-items: center;
+  color: var(--ink-soft);
+}
+.archive-figure .app-tab-new svg {
+  width: 14px;
+  height: 14px;
+}
+.archive-figure .app-screen {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+/* Workspace heading (src/lib/shell/WorkspaceHeader.svelte) */
+.archive-figure .app-heading {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-1) var(--app-pad) var(--space-4);
+}
+.archive-figure .app-heading__title {
+  margin: 4px 0 0;
+  color: var(--ink);
+  font: 500 28px/1.15 var(--font-display);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.archive-figure .app-heading__actions {
+  margin-left: auto;
+}
+.archive-figure .app-primary {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  background: var(--accent-dark);
+  color: var(--on-accent);
+  font: 700 13px/1 var(--font-ui);
+  white-space: nowrap;
+}
+.archive-figure .app-primary svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Segmented view nav (src/lib/shell/WorkspaceViewNav.svelte) */
+.archive-figure .app-nav {
+  display: inline-flex;
+  max-width: 100%;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+}
+.archive-figure .app-nav span {
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  font: 700 12px/18px var(--font-ui);
+  white-space: nowrap;
+}
+.archive-figure .app-nav span.is-active {
+  background: var(--accent-dark);
+  color: var(--on-accent);
+}
+
+/* Panes (+page.svelte .workspace-grid) */
+.archive-figure .app-grid {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: 224px minmax(0, 1fr) 232px;
+  gap: var(--app-gap);
+  padding: 0 var(--app-pad) var(--app-pad);
+}
+.archive-figure .app-grid--two {
+  grid-template-columns: 224px minmax(0, 1fr);
+}
+.archive-figure .app-pane {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.archive-figure .app-pane__head {
+  padding: var(--space-4) var(--space-4) var(--space-3);
+}
+.archive-figure .app-pane__head strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font: 500 24px/1.1 var(--font-display);
+}
+
+/* Collection pane (src/lib/shell/CollectionPane.svelte) */
+.archive-figure .app-field {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  margin: 0 var(--space-3) var(--space-3);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink-faint);
+  font: 400 13px/1.2 var(--font-ui);
+}
+.archive-figure .app-field svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+.archive-figure .app-list {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3) var(--space-4);
+}
+.archive-figure .app-row {
+  display: flex;
+  height: 58px;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+}
+.archive-figure .app-row.is-selected {
+  border-color: var(--line);
+  background: var(--surface);
+  box-shadow: inset 3px 0 var(--accent);
+}
+.archive-figure .app-row__copy {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+.archive-figure .app-row__copy strong {
+  overflow: hidden;
+  color: var(--ink);
+  font: 700 13px/1.2 var(--font-ui);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-figure .app-row__copy small {
+  width: max-content;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  background: var(--surface-warm);
+  color: var(--ink-soft);
+  font: 500 12px/1.25 var(--font-ui);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Content pane / entry header (+page.svelte .editor-header) */
+.archive-figure .app-content {
+  padding: var(--space-5) var(--space-5) var(--space-4);
+}
+.archive-figure .app-entry-head {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+.archive-figure .app-entry-head h2 {
+  margin: 4px 0 0;
+  color: var(--ink);
+  font: 500 32px/1.15 var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* Article body (src/lib/markdown/MarkdownArticle.svelte) */
+.archive-figure .app-article {
+  margin-top: var(--space-5);
+  color: var(--ink);
+  font: 400 15px/1.75 var(--font-ui);
+}
+.archive-figure .app-article p {
+  margin: 0 0 1em;
+}
+.archive-figure .app-article .ref {
+  border-bottom: 1px solid var(--accent);
+  color: var(--accent-dark);
+}
+
+/* Inspector (src/lib/shell/InspectorOverview.svelte) */
+.archive-figure .app-inspector__head {
+  padding: var(--space-4) var(--space-4) var(--space-3);
+}
+.archive-figure .app-inspector__head strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font: 500 22px/1.2 var(--font-display);
+}
+.archive-figure .app-inspector__head p {
+  margin: 4px 0 0;
+  overflow: hidden;
+  color: var(--ink-soft);
+  font: 400 13px/1.35 var(--font-ui);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-figure .app-props {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+.archive-figure .app-prop {
+  display: grid;
+  gap: 6px;
+}
+.archive-figure .app-prop > span {
+  color: var(--ink-muted);
+  font: 600 12px/1.2 var(--font-ui);
+}
+.archive-figure .app-input {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font: 400 13px/1.35 var(--font-ui);
+}
+.archive-figure .app-input.is-empty {
+  color: var(--ink-faint);
+}
+.archive-figure .app-input > span {
+  display: inline-flex;
+  margin-left: auto;
+}
+.archive-figure .app-input svg {
+  width: 13px;
+  height: 13px;
+  color: var(--ink-soft);
+}
+
+/* Specialised-surface top bar (src/lib/layout/WorkspaceTopbar.svelte) */
+.archive-figure .app-topbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 64px;
+  padding: var(--space-2) var(--app-pad) var(--space-3);
+}
+.archive-figure .app-topbar__brand {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-3);
+}
+.archive-figure .app-topbar__mark {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--success-bg);
+  color: var(--success);
+}
+.archive-figure .app-topbar__mark svg {
+  width: 18px;
+  height: 18px;
+}
+.archive-figure .app-topbar__copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+.archive-figure .app-topbar__copy strong {
+  overflow: hidden;
+  color: var(--ink);
+  font: 600 14px/1.2 var(--font-ui);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-figure .app-topbar__copy small {
+  overflow: hidden;
+  color: var(--ink-soft);
+  font: 500 12px/1.2 var(--font-ui);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Narrow windows: drop the inspector, then the collection, so the window stays compact. */
+@media (max-width: 70rem) {
+  .archive-figure .app-grid {
+    grid-template-columns: 208px minmax(0, 1fr);
+  }
+  .archive-figure .app-inspector {
+    display: none;
+  }
+}
+@media (max-width: 52rem) {
+  .archive-figure {
+    --app-pad: var(--space-4);
+  }
+  .archive-figure .app-grid,
+  .archive-figure .app-grid--two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .archive-figure .app-collection {
+    display: none;
+  }
+  .archive-figure .app-heading__title {
+    white-space: normal;
+  }
+  .archive-figure .app-heading__actions {
+    display: none;
+  }
+  .archive-figure .app-content {
+    padding: var(--space-4);
+  }
+  .archive-figure .app-entry-head h2 {
+    font-size: 26px;
+  }
+}

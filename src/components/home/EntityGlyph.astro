@@ -1,0 +1,35 @@
+---
+import { entityTypes, type EntityType } from './entityTypes';
+
+// The app's EntityGlyph: a circle in the type's background colour holding the
+// type icon in the type's foreground colour (src/lib/entity-colors/EntityGlyph.svelte).
+interface Props {
+  type: EntityType;
+  size?: number;
+}
+
+const { type, size = 36 } = Astro.props;
+const { preset, icon } = entityTypes[type];
+---
+
+<span
+  class="glyph"
+  style={`--glyph-fg: var(--type-${preset}); --glyph-bg: var(--type-${preset}-bg); width: ${size}px; height: ${size}px;`}
+  aria-hidden="true"
+  set:html={icon}
+/>
+
+<style>
+  .glyph {
+    display: grid;
+    flex: none;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--glyph-bg);
+    color: var(--glyph-fg);
+  }
+  .glyph :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+</style>

@@ -15,8 +15,8 @@ const {
 } = Astro.props;
 ---
 
-<article class:list={['archive-card', className]}>
-  <span>{label}</span>
+<article class:list={['archive-card', 'panel', className]}>
+  <span class="overline">{label}</span>
   {title && <h3>{title}</h3>}
   <p>{quote}</p>
   <small>{meta}</small>
@@ -25,30 +25,22 @@ const {
 <style>
   .archive-card {
     width: min(17rem, 46vw);
-    padding: 1.35rem 1.45rem;
-    border: 1px solid var(--line);
-    border-radius: 0.8rem;
-    background: color-mix(in srgb, var(--paper-raised) 94%, transparent);
-    box-shadow: var(--shadow-medium);
+    padding: var(--space-4) var(--space-5);
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
     color: var(--ink);
   }
-  span {
-    color: var(--copper-text);
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-  }
   h3 {
-    margin: 0.65rem 0 0;
-    font: 600 1.1rem/1.2 var(--font-serif);
+    margin: var(--space-2) 0 0;
+    font: 500 1.125rem/1.2 var(--font-display);
   }
   p {
-    margin: 0.7rem 0 1rem;
-    font: 500 clamp(1.05rem, 1.5vw, 1.35rem)/1.2 var(--font-serif);
+    margin: var(--space-2) 0 var(--space-3);
+    font: 500 clamp(1.05rem, 1.5vw, 1.25rem)/1.25 var(--font-display);
     text-wrap: balance;
   }
   small {
-    color: var(--muted);
-    font-size: 0.7rem;
+    color: var(--ink-soft);
+    font: 500 0.75rem/1.4 var(--font-ui);
   }
 </style>

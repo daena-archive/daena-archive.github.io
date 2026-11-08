@@ -1,0 +1,42 @@
+---
+import { Plus } from 'lucide-static';
+
+// The workspace heading: kicker, section title, the view switcher and the New
+// button (../daena/src/lib/shell/WorkspaceHeader.svelte). Pane toggles, guide
+// and secondary buttons are left out.
+interface Props {
+  kicker: string;
+  title: string;
+  nav?: string[];
+  active?: number;
+  create?: string;
+}
+
+const { kicker, title, nav = [], active = 0, create } = Astro.props;
+---
+
+<header class="app-heading">
+  <div>
+    <span class="overline">{kicker}</span>
+    <div class="app-heading__title">{title}</div>
+  </div>
+  {
+    nav.length > 0 && (
+      <div class="app-nav">
+        {nav.map((label, index) => (
+          <span class:list={[{ 'is-active': index === active }]}>{label}</span>
+        ))}
+      </div>
+    )
+  }
+  {
+    create && (
+      <div class="app-heading__actions">
+        <span class="app-primary">
+          <span set:html={Plus} />
+          {create}
+        </span>
+      </div>
+    )
+  }
+</header>

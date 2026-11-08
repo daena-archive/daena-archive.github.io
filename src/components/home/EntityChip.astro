@@ -1,0 +1,18 @@
+---
+import { entityTypes, type EntityType } from './entityTypes';
+
+// Decorative entity chip for the product-frame renditions. Type colours and
+// icons mirror the app's module manifests (see entityTypes.ts); the real chip
+// is a link, this one is not.
+interface Props {
+  type: EntityType;
+  name: string;
+}
+
+const { type, name } = Astro.props;
+const { preset, icon } = entityTypes[type];
+---
+
+<span class="chip" style={`--chip-fg: var(--type-${preset}); --chip-bg: var(--type-${preset}-bg);`}
+  ><span aria-hidden="true" set:html={icon} /><span class="chip__name">{name}</span></span
+>
