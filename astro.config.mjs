@@ -26,7 +26,7 @@ export default defineConfig({
     starlight({
       title: 'Daena Archive',
       description: 'Guides and reference documentation for Daena Archive.',
-      favicon: '/branding/daena-icon.png',
+      favicon: '/branding/favicon-32.png',
       social: [
         {
           icon: 'github',
@@ -34,7 +34,13 @@ export default defineConfig({
           href: siteConfig.repository,
         },
       ],
-      customCss: ['./src/styles/starlight.css'],
+      customCss: [
+        '@fontsource-variable/newsreader/wght.css',
+        '@fontsource-variable/newsreader/wght-italic.css',
+        './src/styles/tokens.css',
+        './src/styles/foundation.css',
+        './src/styles/starlight.css',
+      ],
       sidebar: [
         {
           label: 'Getting Started',

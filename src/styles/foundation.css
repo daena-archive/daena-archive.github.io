@@ -1,0 +1,39 @@
+/* hand-written foundation tokens shared with the app; colours come from tokens.css. */
+
+@layer tokens {
+  :root {
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --space-9: 96px;
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 2px 8px rgba(38, 42, 33, 0.05);
+    --shadow-md: 0 8px 24px rgba(38, 42, 33, 0.12);
+    --shadow-lg: 0 18px 50px rgba(38, 42, 33, 0.08);
+    --control-height: 36px;
+    --control-height-lg: 44px;
+    --topbar-height: 44px;
+    --rail-width: 220px;
+    --rail-collapsed-width: 56px;
+    --measure: 68ch;
+    --content-width: 1200px;
+    --font-display: 'Newsreader Variable', 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-ui: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+
+  :root[data-theme='dark'] {
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.22);
+    --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.28);
+    --shadow-lg: 0 22px 70px rgba(0, 0, 0, 0.34);
+  }
+}

@@ -16,9 +16,15 @@ npm run check
 npm run build
 npm run format:check
 npm run verify:registry -- ../daena
+npm run gen:tokens -- ../daena
+npm run verify:tokens -- ../daena
 ```
 
 The registry verifier compares the five website entries with the authoritative module manifests in a Daena checkout. Pass its path as the first argument, or set `DAENA_SOURCE_DIR`.
+
+`npm run gen:tokens` writes `src/styles/tokens.css` from the Daena theme catalog. Pass the checkout path as the first argument, or set `DAENA_SOURCE_DIR`.
+
+`npm run verify:tokens` fails when `src/styles/tokens.css` differs from that generated file. Pass the checkout path as the first argument, or set `DAENA_SOURCE_DIR`.
 
 ## GitHub Pages
 
