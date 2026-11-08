@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig, withBase } from '../config/site';
-import { ArrowUpRight } from 'lucide-static';
+import { ArrowUpRight, ChevronDown } from 'lucide-static';
 
 const entries = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
 const rendered = await Promise.all(
@@ -21,114 +21,110 @@ const categories = [
   description="Clear answers about Daena's beta status, ownership model, AI, plugins, Git, and supported workflows."
 >
   <header class="page-hero">
-    <div class="content-shell page-hero-grid">
-      <div>
-        <span class="eyebrow">Questions · Answers</span><h1 class="page-heading">
-          What should you know before opening the archive?
-        </h1>
-      </div><div class="page-hero-aside">
-        <p>
-          Short answers are useful. The documentation carries the details and the current release
-          notes remain the authority for changing platform and format support.
-        </p>
-      </div>
+    <div class="content-shell">
+      <span class="overline">Questions · Answers</span>
+      <h1 class="page-heading">What should you know before opening the archive?</h1>
+      <p class="lede">
+        Short answers are useful. The documentation carries the details and the current release
+        notes remain the authority for changing platform and format support.
+      </p>
     </div>
   </header>
-  <section class="section-tight">
-    <div class="content-shell faq-layout">
-      <aside>
-        <span>ON THIS PAGE</span>{categories.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}<a
-          href={withBase('/docs/')}>Documentation <span set:html={ArrowUpRight}></span></a
+
+  <div class="content-shell page-body">
+    <div class="faq-column">
+      <nav class="faq-jump" aria-label="On this page">
+        {categories.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
+        <a href={withBase('/docs/')}
+          >Documentation <span aria-hidden="true" set:html={ArrowUpRight} /></a
         >
-      </aside>
-      <div class="faq-groups">
-        {
-          categories.map(([category, label]) => {
-            const questions = rendered.filter(({ entry }) => entry.data.category === category);
-            return (
-              <section id={category}>
-                <>
-                  <span class="eyebrow">{label}</span>
-                  <div class="faq-list">
-                    {questions.map(({ entry, Content }) => (
-                      <details>
-                        <summary>
-                          <h2>{entry.data.question}</h2>
-                          <span aria-hidden="true">+</span>
-                        </summary>
-                        <div class="faq-answer content-prose">
-                          <Content />
-                        </div>
-                      </details>
-                    ))}
-                  </div>
-                </>
-              </section>
-            );
-          })
-        }
-      </div>
+      </nav>
+
+      {
+        categories.map(([category, label]) => {
+          const questions = rendered.filter(({ entry }) => entry.data.category === category);
+          return (
+            <section id={category} class="faq-group">
+              <span class="overline">{label}</span>
+              <div class="faq-list">
+                {questions.map(({ entry, Content }) => (
+                  <details>
+                    <summary>
+                      <h2>{entry.data.question}</h2>
+                      <span class="faq-chevron" aria-hidden="true" set:html={ChevronDown} />
+                    </summary>
+                    <div class="faq-answer content-prose">
+                      <Content />
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </section>
+          );
+        })
+      }
+
+      <section class="panel faq-cta" aria-labelledby="faq-cta-heading">
+        <h2 id="faq-cta-heading">Still looking for a detail?</h2>
+        <p>Read the guides for current behavior or open a project discussion on GitHub.</p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href={withBase('/docs/')}>Read documentation</a>
+          <a class="btn btn--quiet" href={siteConfig.discussions}
+            >GitHub discussions <span aria-hidden="true" set:html={ArrowUpRight} /></a
+          >
+        </div>
+      </section>
     </div>
-  </section>
-  <section class="final-cta dark-panel">
-    <div class="content-shell">
-      <h2>Still looking for a detail?</h2><p>
-        Read the guides for current behavior or open a project discussion on GitHub.
-      </p><div class="button-row">
-        <a class="button button-brass" href={withBase('/docs/')}>Read documentation</a><a
-          class="button button-secondary"
-          href={siteConfig.discussions}>GitHub discussions <span set:html={ArrowUpRight}></span></a
-        >
-      </div>
-    </div>
-  </section>
+  </div>
 </BaseLayout>
 
 <style>
-  .faq-layout {
+  .page-body {
+    padding-block: var(--space-5) var(--space-9);
+  }
+  .faq-column {
     display: grid;
-    grid-template-columns: 14rem 1fr;
-    gap: clamp(3rem, 8vw, 8rem);
-    align-items: start;
+    gap: var(--space-6);
+    max-width: var(--measure);
   }
-  aside {
-    position: sticky;
-    top: calc(var(--header-height) + 2rem);
-    display: grid;
-    gap: 0.75rem;
+  .faq-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
   }
-  .faq-layout aside > span {
-    margin-bottom: 0.3rem;
-    color: var(--copper-text);
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-  }
-  .faq-layout aside a {
-    color: var(--muted);
-    font-size: 0.78rem;
+  .faq-jump a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--ink-soft);
+    font: 500 13px/1.4 var(--font-ui);
     text-decoration: none;
+    transition: color 160ms ease;
   }
-  .faq-layout aside a:hover {
+  .faq-jump a:hover {
     color: var(--ink);
   }
-  .faq-groups {
-    display: grid;
-    gap: 5rem;
+  .faq-jump :global(svg) {
+    width: 14px;
+    height: 14px;
+  }
+  .faq-group {
+    scroll-margin-top: calc(var(--header-height) + var(--space-4));
   }
   .faq-list {
-    margin-top: 1.4rem;
+    margin-top: var(--space-2);
     border-top: 1px solid var(--line);
   }
   .faq-list details {
     border-bottom: 1px solid var(--line);
   }
   .faq-list summary {
-    padding: 1.35rem 0;
-    display: grid;
-    grid-template-columns: 1fr 2rem;
+    display: flex;
     align-items: center;
-    gap: 2rem;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: 52px;
+    padding-block: var(--space-2);
     cursor: pointer;
     list-style: none;
   }
@@ -136,45 +132,58 @@ const categories = [
     display: none;
   }
   .faq-list summary h2 {
-    font-size: clamp(1.35rem, 2.4vw, 2rem);
+    color: var(--ink);
+    font: 600 16px/1.4 var(--font-ui);
   }
-  .faq-list summary span {
-    width: 2rem;
-    height: 2rem;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    color: var(--copper-text);
-    transition: transform 180ms ease;
+  .faq-chevron {
+    display: inline-flex;
+    flex: none;
+    color: var(--ink-soft);
+    transition: transform 160ms ease;
   }
-  .faq-list details[open] summary span {
-    transform: rotate(45deg);
+  .faq-chevron :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+  .faq-list details[open] .faq-chevron {
+    transform: rotate(180deg);
   }
   .faq-answer {
-    padding: 0 3.5rem 1.5rem 0;
-    color: var(--muted);
+    padding-bottom: var(--space-4);
+    color: var(--ink-muted);
+    font: 400 15px/1.6 var(--font-ui);
+  }
+  .faq-answer :global(p) {
+    margin: 0 0 var(--space-3);
   }
   .faq-answer :global(p:last-child) {
     margin-bottom: 0;
   }
-  .final-cta .button-secondary {
-    border-color: #45584d;
-    background: transparent;
-    color: #f2eee4;
+  .faq-cta {
+    padding: var(--space-5);
   }
-  @media (max-width: 48rem) {
-    .faq-layout {
-      grid-template-columns: 1fr;
-    }
-    .faq-layout aside {
-      position: static;
-      grid-template-columns: 1fr 1fr;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--line);
-    }
-    .faq-layout aside > span {
-      grid-column: 1 / -1;
+  .faq-cta h2 {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+  .faq-cta p {
+    margin-top: var(--space-1);
+    color: var(--ink-soft);
+    font: 400 14px/1.5 var(--font-ui);
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+  .cta-row :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-chevron {
+      transition: none;
     }
   }
 </style>

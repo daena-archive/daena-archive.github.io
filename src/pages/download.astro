@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig, withBase } from '../config/site';
-import { ArrowUpRight, Download, ShieldCheck } from 'lucide-static';
+import { ArrowUpRight, Check, Copy, Download, ShieldCheck, TriangleAlert } from 'lucide-static';
 
 const windowsLogo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z"/></svg>`;
 const appleLogo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>`;
@@ -13,93 +13,122 @@ const macCommand = 'sudo xattr -cr "/Applications/Daena Archive.app"';
   description="Download Daena Archive for Windows x64 and macOS Apple Silicon from GitHub Releases."
 >
   <header class="page-hero">
-    <div class="content-shell page-hero-grid">
-      <div>
-        <span class="eyebrow">{siteConfig.status} · {siteConfig.latestRelease}</span>
-        <h1 class="page-heading">Download Daena Archive.</h1>
-        <p class="lede">
-          The newest published build is {siteConfig.latestRelease}. Builds are published on GitHub
-          Releases. This page lists currently supported platforms and what to expect on first launch.
-        </p>
-        <div class="button-row">
-          <a class="button button-primary" href={siteConfig.releases} target="_blank" rel="noopener noreferrer"
-            >Open GitHub Releases <span aria-hidden="true" set:html={ArrowUpRight}></span></a
-          >
-          <a class="button button-secondary" href={withBase('/docs/getting-started/installing-daena/')}
-            >Installation guide</a
-          >
-        </div>
-      </div>
-      <div class="page-hero-aside">
-        <p>
-          The website does not re-host installers. Pick the asset that matches your OS on the
-          release page.
-        </p>
+    <div class="content-shell">
+      <span class="overline">{siteConfig.status} · {siteConfig.latestRelease}</span>
+      <h1 class="page-heading">Download Daena Archive.</h1>
+      <p class="lede">
+        The newest published build is {siteConfig.latestRelease}. Builds are published on GitHub
+        Releases. This page lists currently supported platforms and what to expect on first launch.
+      </p>
+      <div class="button-row">
+        <a
+          class="btn btn--primary"
+          href={siteConfig.releases}
+          target="_blank"
+          rel="noopener noreferrer"
+          >Open GitHub Releases <span aria-hidden="true" set:html={ArrowUpRight} /></a
+        >
+        <a class="btn btn--quiet" href={withBase('/docs/getting-started/installing-daena/')}
+          >Installation guide</a
+        >
       </div>
     </div>
   </header>
 
-  <section class="section-tight">
-    <div class="content-shell">
-      <span class="eyebrow">Supported platforms</span>
-      <h2 class="feature-heading">Windows x64 and macOS Apple Silicon.</h2>
-      <div class="platform-grid">
-        <article class="surface platform-card">
-          <span class="os-icon" aria-hidden="true" set:html={windowsLogo}></span>
-          <h3>Windows</h3>
-          <p>64-bit Intel/AMD (<code>x86_64</code>). Windows 10 or 11.</p>
-        </article>
-        <article class="surface platform-card">
-          <span class="os-icon" aria-hidden="true" set:html={appleLogo}></span>
-          <h3>macOS</h3>
-          <p>Apple Silicon (<code>aarch64</code>). macOS 12 or later.</p>
-        </article>
+  <div class="content-shell page-body">
+    <div class="notice notice--warning" role="note">
+      <Fragment set:html={TriangleAlert} />
+      <strong>Daena is in beta.</strong>
+      <p>Behavior and project format can still change before 1.0.</p>
+    </div>
+
+    <section class="block" aria-labelledby="platforms-heading">
+      <span class="overline">Supported platforms</span>
+      <h2 id="platforms-heading">Windows x64 and macOS Apple Silicon.</h2>
+      <div class="panel">
+        <ul class="panel__rows platform-rows">
+          <li>
+            <span class="platform">
+              <span class="os-icon" aria-hidden="true" set:html={windowsLogo} />
+              <span>
+                <strong>Windows</strong>
+                <small>64-bit Intel/AMD (<code>x86_64</code>). Windows 10 or 11.</small>
+              </span>
+            </span>
+            <a
+              class="btn btn--quiet"
+              href={siteConfig.releases}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Get the Windows build on GitHub Releases"
+              >Get build <span aria-hidden="true" set:html={ArrowUpRight} /></a
+            >
+          </li>
+          <li>
+            <span class="platform">
+              <span class="os-icon" aria-hidden="true" set:html={appleLogo} />
+              <span>
+                <strong>macOS</strong>
+                <small>Apple Silicon (<code>aarch64</code>). macOS 12 or later.</small>
+              </span>
+            </span>
+            <a
+              class="btn btn--quiet"
+              href={siteConfig.releases}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Get the macOS build on GitHub Releases"
+              >Get build <span aria-hidden="true" set:html={ArrowUpRight} /></a
+            >
+          </li>
+        </ul>
       </div>
-      <p class="muted note">
-        Intel Macs, Windows ARM, and Linux are not published yet. If a GitHub asset is not listed
-        for your system, that platform is not supported in this release.
+      <p class="note">
+        The website does not re-host installers. Pick the asset that matches your OS on the release
+        page. Intel Macs, Windows ARM, and Linux are not published yet. If a GitHub asset is not
+        listed for your system, that platform is not supported in this release.
       </p>
-    </div>
-  </section>
+    </section>
 
-  <section class="section-tight channel-section">
-    <div class="content-shell">
-      <span class="eyebrow">Release channels</span>
-      <h2 class="feature-heading">Alpha is pre-release. Beta is the current channel.</h2>
-      <div class="channel-grid">
-        <article class="surface">
-          <span>Beta</span>
-          <h3>Current published builds</h3>
-          <p>
-            GitHub releases that are <strong>not</strong> marked Pre-release. Use these unless you
-            were asked to try something newer. Behavior and project format can still change before
-            1.0.
-          </p>
-        </article>
-        <article class="surface">
-          <span>Alpha</span>
-          <h3>Pre-release snapshots</h3>
-          <p>
-            GitHub tags marked <strong>Pre-release</strong>. Earlier or experimental builds, more
-            likely to break or migrate data. Do not use them for work you cannot restore.
-          </p>
-        </article>
+    <section class="block" aria-labelledby="channels-heading">
+      <span class="overline">Release channels</span>
+      <h2 id="channels-heading">Alpha is pre-release. Beta is the current channel.</h2>
+      <div class="panel">
+        <ul class="panel__rows channel-rows">
+          <li>
+            <div>
+              <h3>Beta · Current published builds</h3>
+              <p>
+                GitHub releases that are <strong>not</strong> marked Pre-release. Use these unless you
+                were asked to try something newer. Behavior and project format can still change before
+                1.0.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Alpha · Pre-release snapshots</h3>
+              <p>
+                GitHub tags marked <strong>Pre-release</strong>. Earlier or experimental builds,
+                more likely to break or migrate data. Do not use them for work you cannot restore.
+              </p>
+            </div>
+          </li>
+        </ul>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section-tight first-launch-section" id="first-launch">
-    <div class="content-shell">
-      <span class="eyebrow">First launch</span>
-      <h2 class="feature-heading">Unsigned builds — what to expect</h2>
-      <p class="section-copy">
+    <section class="block" id="first-launch" aria-labelledby="first-launch-heading">
+      <span class="overline">First launch</span>
+      <h2 id="first-launch-heading">Unsigned builds — what to expect</h2>
+      <p class="block-copy">
         Daena Archive is currently distributed <strong>without a code-signing certificate</strong>,
         so your operating system may warn you when launching it.
       </p>
       <div class="first-launch-grid">
-        <article class="surface first-launch-card">
+        <article class="panel first-launch-card">
           <div class="first-launch-head">
-            <span class="os-icon" aria-hidden="true" set:html={appleLogo}></span>
+            <span class="os-icon" aria-hidden="true" set:html={appleLogo} />
             <div>
               <h3>macOS</h3>
               <small>“Apple can’t check app for malicious software”</small>
@@ -108,15 +137,22 @@ const macCommand = 'sudo xattr -cr "/Applications/Daena Archive.app"';
           <p>If macOS blocks the application, run the following command in Terminal:</p>
           <div class="code-block">
             <pre><code>{macCommand}</code></pre>
-            <button class="copy-btn" type="button" data-copy={macCommand} aria-label="Copy command"
-              >Copy</button
+            <button
+              class="btn btn--ghost btn--icon copy-btn"
+              type="button"
+              data-copy={macCommand}
+              aria-label="Copy command"
             >
+              <span class="icon-copy" aria-hidden="true" set:html={Copy} />
+              <span class="icon-check" aria-hidden="true" set:html={Check} />
+            </button>
+            <span class="sr-only" role="status" aria-live="polite" data-copy-status></span>
           </div>
-          <p class="muted">Then launch Daena Archive normally from Applications.</p>
+          <p>Then launch Daena Archive normally from Applications.</p>
         </article>
-        <article class="surface first-launch-card">
+        <article class="panel first-launch-card">
           <div class="first-launch-head">
-            <span class="os-icon" aria-hidden="true" set:html={windowsLogo}></span>
+            <span class="os-icon" aria-hidden="true" set:html={windowsLogo} />
             <div>
               <h3>Windows</h3>
               <small>Microsoft Defender SmartScreen</small>
@@ -132,194 +168,252 @@ const macCommand = 'sudo xattr -cr "/Applications/Daena Archive.app"';
         </article>
       </div>
       <p class="verify-line">
-        <span aria-hidden="true" set:html={ShieldCheck}></span>
+        <span aria-hidden="true" set:html={ShieldCheck} />
         Compare the SHA-256 on the GitHub release before opening the archive.
       </p>
-    </div>
-  </section>
+    </section>
 
-  <section class="final-cta dark-panel">
-    <div class="content-shell">
-      <span class="eyebrow">GitHub Releases</span>
-      <h2>Get the current build.</h2>
-      <p>Release notes, checksums, and assets stay on GitHub. Open the latest beta there.</p>
+    <section class="panel get-build" aria-labelledby="get-build-heading">
+      <div>
+        <span class="overline">GitHub Releases</span>
+        <h2 id="get-build-heading">Get the current build.</h2>
+        <p>Release notes, checksums, and assets stay on GitHub. Open the latest beta there.</p>
+      </div>
       <div class="button-row">
-        <a class="button button-brass" href={siteConfig.releases} target="_blank" rel="noopener noreferrer"
-          >Download from GitHub <span aria-hidden="true" set:html={Download}></span></a
+        <a
+          class="btn btn--primary"
+          href={siteConfig.releases}
+          target="_blank"
+          rel="noopener noreferrer"
+          >Download from GitHub <span aria-hidden="true" set:html={Download} /></a
         >
-        <a class="text-link" href={withBase('/docs/getting-started/installing-daena/')}
+        <a class="btn btn--quiet" href={withBase('/docs/getting-started/installing-daena/')}
           >Installation guide</a
         >
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>
 
 <script is:inline>
   document.querySelectorAll('[data-copy]').forEach((button) => {
+    const status = button.parentElement?.querySelector('[data-copy-status]');
     button.addEventListener('click', async () => {
       const value = button.getAttribute('data-copy') || '';
       try {
         await navigator.clipboard.writeText(value);
         button.dataset.copied = 'true';
-        button.textContent = 'Copied';
+        if (status) status.textContent = 'Copied';
         setTimeout(() => {
           button.dataset.copied = 'false';
-          button.textContent = 'Copy';
+          if (status) status.textContent = '';
         }, 1600);
       } catch {
-        button.textContent = 'Copy failed';
+        if (status) status.textContent = 'Copy failed';
       }
     });
   });
 </script>
 
 <style>
-  .lede {
-    max-width: 36rem;
-    margin-top: 1.2rem;
-  }
-  .button-row {
-    margin-top: 1.8rem;
-  }
-  .platform-grid,
-  .channel-grid,
-  .first-launch-grid {
-    margin-top: 2rem;
+  .page-body {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: var(--space-7);
+    padding-block: var(--space-5) var(--space-9);
   }
-  .platform-card,
-  .channel-grid article,
-  .first-launch-card {
-    padding: 1.4rem;
+  .page-hero .button-row {
+    margin-top: var(--space-4);
+  }
+  .notice p {
+    margin: 0;
+    color: var(--ink-muted);
+  }
+  .block > h2 {
+    margin-top: var(--space-1);
+    font-size: 24px;
+    line-height: 1.2;
+  }
+  .block > .panel,
+  .first-launch-grid {
+    margin-top: var(--space-4);
+  }
+  .block-copy,
+  .note {
+    max-width: var(--measure);
+    margin-top: var(--space-2);
+    color: var(--ink-soft);
+    font: 400 14px/1.6 var(--font-ui);
+  }
+  .block-copy strong,
+  .channel-rows strong,
+  .first-launch-card strong {
+    color: var(--ink);
+  }
+  .platform-rows li {
+    min-height: 64px;
+    padding-block: var(--space-3);
+  }
+  .platform {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+  .platform strong {
+    display: block;
+    color: var(--ink);
+    font: 600 14px/1.3 var(--font-ui);
+  }
+  .platform small {
+    display: block;
+    color: var(--ink-soft);
+    font: 400 13px/1.4 var(--font-ui);
   }
   .os-icon {
-    width: 2.2rem;
-    height: 2.2rem;
     display: grid;
+    flex: none;
     place-items: center;
+    width: 36px;
+    height: 36px;
     border: 1px solid var(--line);
-    border-radius: 0.55rem;
-    background: var(--paper-warm);
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
     color: var(--ink);
   }
   .os-icon :global(svg) {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 18px;
+    height: 18px;
   }
-  .platform-card h3,
-  .channel-grid h3,
-  .first-launch-head h3 {
-    margin-top: 0.9rem;
-    font-size: 1.6rem;
+  small code,
+  .first-launch-card p code {
+    padding: 1px 6px;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-xs);
+    background: var(--surface-muted);
+    font: 12px/1.5 var(--font-mono);
   }
-  .platform-card p,
-  .channel-grid p,
-  .first-launch-card p,
-  .note {
-    margin-top: 0.7rem;
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
+  .channel-rows li {
+    display: block;
+    min-height: 0;
+    padding-block: var(--space-3);
   }
-  .channel-section {
-    background: var(--paper-warm);
+  .channel-rows h3 {
+    color: var(--ink);
+    font: 600 14px/1.4 var(--font-ui);
   }
-  .channel-grid span {
-    color: var(--copper-text);
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+  .channel-rows p {
+    margin-top: 2px;
+    color: var(--ink-soft);
+    font: 400 14px/1.55 var(--font-ui);
   }
-  .channel-grid h3 {
-    margin-top: 0.7rem;
+  .first-launch-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
   }
-  .first-launch-section {
-    border-top: 1px solid var(--line);
+  .first-launch-card {
+    padding: var(--space-4);
+  }
+  .first-launch-card p {
+    margin-top: var(--space-3);
+    color: var(--ink-soft);
+    font: 400 14px/1.55 var(--font-ui);
   }
   .first-launch-head {
     display: flex;
     align-items: center;
-    gap: 0.9rem;
+    gap: var(--space-3);
   }
   .first-launch-head h3 {
-    margin-top: 0;
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.25;
   }
   .first-launch-head small {
     display: block;
-    margin-top: 0.15rem;
-    color: var(--muted);
-    font-size: 0.7rem;
-  }
-  .first-launch-card p strong {
-    color: var(--ink);
+    margin-top: 2px;
+    color: var(--ink-soft);
+    font: 400 12px/1.4 var(--font-ui);
   }
   .code-block {
-    margin-top: 0.4rem;
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.7rem 0.8rem;
-    border: 1px solid var(--line);
-    border-radius: 0.6rem;
-    background: var(--paper-warm);
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
   }
   .code-block pre {
+    flex: 1;
+    min-width: 0;
     margin: 0;
     overflow-x: auto;
   }
   .code-block code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.78rem;
     color: var(--ink);
+    font: 13px/1.5 var(--font-mono);
     white-space: nowrap;
   }
   .copy-btn {
-    padding: 0.42rem 0.6rem;
-    border: 1px solid var(--line);
-    border-radius: 0.4rem;
-    background: var(--paper-raised);
-    color: var(--ink);
-    font-size: 0.72rem;
-    font-weight: 700;
-    cursor: pointer;
+    flex: none;
   }
-  .copy-btn:hover,
-  .copy-btn[data-copied='true'] {
-    border-color: var(--brass);
+  .copy-btn :global(svg) {
+    width: 16px;
+    height: 16px;
   }
-  .copy-btn[data-copied='true'] {
-    background: var(--brass);
-    color: #2f2619;
+  .copy-btn .icon-check,
+  .copy-btn[data-copied='true'] .icon-copy {
+    display: none;
+  }
+  .copy-btn[data-copied='true'] .icon-check {
+    display: inline-flex;
+    color: var(--success);
   }
   .verify-line {
-    margin-top: 1.6rem;
     display: flex;
     align-items: center;
-    gap: 0.55rem;
-    color: var(--muted);
-    font-size: 0.82rem;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    color: var(--ink-soft);
+    font: 400 13px/1.4 var(--font-ui);
   }
   .verify-line :global(svg) {
-    width: 1rem;
-    height: 1rem;
-    color: var(--copper-text);
+    width: 16px;
+    height: 16px;
+    color: var(--accent-text);
   }
-  .final-cta .text-link {
-    color: #e4c786;
+  .get-build {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+  .get-build h2 {
+    margin-top: var(--space-1);
+    font-size: 24px;
+    line-height: 1.2;
+  }
+  .get-build p {
+    margin-top: var(--space-1);
+    color: var(--ink-soft);
+    font: 400 14px/1.5 var(--font-ui);
+  }
+  .get-build .button-row {
+    margin-top: 0;
   }
   @media (max-width: 50rem) {
-    .platform-grid,
-    .channel-grid,
     .first-launch-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
-    .code-block {
-      grid-template-columns: 1fr;
+  }
+  @media (max-width: 38rem) {
+    .platform-rows li {
+      align-items: flex-start;
+      flex-direction: column;
+      padding-block: var(--space-3);
     }
   }
 </style>

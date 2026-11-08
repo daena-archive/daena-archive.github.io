@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StatusBadge from '../components/StatusBadge.astro';
 import { siteConfig, withBase } from '../config/site';
+import { Info } from 'lucide-static';
 
 const items = (await getCollection('roadmap')).sort((a, b) => a.data.order - b.data.order);
 const statuses = ['stable', 'beta', 'experimental', 'planned', 'exploring'] as const;
@@ -26,71 +27,65 @@ const descriptions = {
   title="Roadmap"
   description="See what is stable, beta, experimental, planned, and still only being explored in Daena Archive."
 >
-  <header class="roadmap-hero page-hero">
-    <div class="content-shell page-hero-grid">
-      <div>
-        <span class="eyebrow">Where Daena is going</span><h1 class="page-heading">
-          Built in public, one layer at a time.
-        </h1>
-      </div><div class="page-hero-aside">
-        <p>
-          Daena grows through practical iterations. This roadmap shows what is established, what is
-          being tested, and what remains only a direction.
-        </p><a class="text-link" href={siteConfig.issues}>Follow development on GitHub</a>
-      </div>
+  <header class="page-hero">
+    <div class="content-shell">
+      <span class="overline">Where Daena is going</span>
+      <h1 class="page-heading">Built in public, one layer at a time.</h1>
+      <p class="lede">
+        Daena grows through practical iterations. This roadmap shows what is established, what is
+        being tested, and what remains only a direction.{' '}
+        <a class="link" href={siteConfig.issues}>Follow development on GitHub</a>
+      </p>
     </div>
   </header>
 
-  <section class="roadmap-controls">
-    <div class="content-shell">
-      <div class="filter-bar" role="group" aria-label="Filter roadmap">
-        <button type="button" class="active" data-roadmap-filter="all" aria-pressed="true"
-          >All</button
-        >{
-          statuses.map((status) => (
-            <button type="button" data-roadmap-filter={status} aria-pressed="false">
-              {labels[status]}
-            </button>
-          ))
-        }<span class="filter-count" data-roadmap-count>{items.length} directions</span>
-      </div>
+  <div class="content-shell page-body">
+    <div class="roadmap-controls" role="group" aria-label="Filter roadmap">
+      <button type="button" class="btn btn--ghost" data-roadmap-filter="all" aria-pressed="true"
+        >All</button
+      >{
+        statuses.map((status) => (
+          <button
+            type="button"
+            class="btn btn--ghost"
+            data-roadmap-filter={status}
+            aria-pressed="false"
+          >
+            {labels[status]}
+          </button>
+        ))
+      }<span class="filter-count" aria-live="polite" data-roadmap-count
+        >{items.length} directions</span
+      >
     </div>
-  </section>
 
-  <section class="section-tight">
-    <div class="content-shell roadmap-lanes">
+    <div class="roadmap-groups">
       {
-        statuses.map((status, laneIndex) => {
-          const laneItems = items.filter((item) => item.data.status === status);
+        statuses.map((status) => {
+          const groupItems = items.filter((item) => item.data.status === status);
           return (
-            laneItems.length > 0 && (
-              <section class="roadmap-lane" data-roadmap-lane data-status={status}>
-                <>
-                  <header>
-                    <>
-                      <div>
-                        <>
-                          <span>{String(laneIndex + 1).padStart(2, '0')}</span>
-                          <h2>{labels[status]}</h2>
-                        </>
-                      </div>
-                      <p>{descriptions[status]}</p>
-                    </>
-                  </header>
-                  <div class="lane-items">
-                    {laneItems.map((item) => (
-                      <article data-roadmap-item data-status={status}>
-                        <div>
-                          <StatusBadge status={status} />
-                          <span>{item.data.area}</span>
-                        </div>
+            groupItems.length > 0 && (
+              <section class="roadmap-group" data-roadmap-lane data-status={status}>
+                <header>
+                  <h2 class="overline overline--quiet">
+                    {labels[status]} · {groupItems.length}
+                  </h2>
+                  <p>{descriptions[status]}</p>
+                </header>
+                <ul class="roadmap-rows">
+                  {groupItems.map((item) => (
+                    <li data-roadmap-item data-status={status}>
+                      <div class="row-text">
                         <h3>{item.data.title}</h3>
                         <p>{item.data.summary}</p>
-                        {item.body && <small>Direction note available in source content</small>}
-                      </article>
-                    ))}
-                  </div>
-                </>
+                      </div>
+                      <div class="row-side">
+                        <span class="row-area">{item.data.area}</span>
+                        <StatusBadge status={status} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </section>
             )
           );
@@ -98,18 +93,19 @@ const descriptions = {
       }
       <div class="empty-state" data-roadmap-empty>No roadmap items match this filter.</div>
     </div>
-  </section>
 
-  <section class="roadmap-note dark-panel">
-    <div class="reading-shell">
-      <span class="eyebrow">No invented dates</span><h2>Direction before deadlines.</h2><p>
-        Roadmap lanes describe product outcomes, not an issue tracker or a promise of delivery
-        dates. Release notes remain the authority for what has actually shipped.
-      </p><a class="button button-brass" href={withBase('/download/')}
-        >Read the current release path</a
-      >
-    </div>
-  </section>
+    <aside class="notice roadmap-note" aria-labelledby="no-dates">
+      <Fragment set:html={Info} />
+      <strong id="no-dates">Direction before deadlines.</strong>
+      <p>
+        No invented dates. Roadmap groups describe product outcomes, not an issue tracker or a
+        promise of delivery dates. Release notes remain the authority for what has actually shipped.{
+          ' '
+        }
+        <a class="link" href={withBase('/download/')}>Read the current release path</a>
+      </p>
+    </aside>
+  </div>
 </BaseLayout>
 
 <script is:inline>
@@ -122,7 +118,6 @@ const descriptions = {
       button.addEventListener('click', () => {
         const filter = button.dataset.roadmapFilter;
         buttons.forEach((candidate) => {
-          candidate.classList.toggle('active', candidate === button);
           candidate.setAttribute('aria-pressed', String(candidate === button));
         });
         let visible = 0;
@@ -139,131 +134,96 @@ const descriptions = {
 </script>
 
 <style>
-  .page-hero-aside .text-link {
-    margin-top: 1.2rem;
+  .page-body {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-5) var(--space-9);
   }
   .roadmap-controls {
-    position: sticky;
-    z-index: 10;
-    top: var(--header-height);
-    padding-top: 1rem;
-    background: color-mix(in srgb, var(--paper) 92%, transparent);
-    backdrop-filter: blur(10px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
   }
-  .roadmap-controls .filter-bar {
-    margin-bottom: 0;
+  .roadmap-controls .btn[aria-pressed='true'] {
+    background: var(--accent-bg);
+    color: var(--ink);
   }
-  .filter-bar button {
-    padding: 0.6rem 0.8rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--muted);
-    font-size: 0.72rem;
-    cursor: pointer;
+  .filter-count {
+    margin-left: auto;
+    color: var(--ink-soft);
+    font: 500 13px/1 var(--font-ui);
   }
-  .filter-bar button.active {
-    border-color: var(--forest-900);
-    background: var(--forest-900);
-    color: var(--paper);
-  }
-  .roadmap-lane {
+  .roadmap-groups {
     display: grid;
-    grid-template-columns: 0.6fr 1.4fr;
-    gap: 4rem;
-    padding: 3.5rem 0;
-    border-bottom: 1px solid var(--line);
+    gap: var(--space-6);
   }
-  .roadmap-lane[hidden] {
+  .roadmap-group[hidden] {
     display: none;
   }
-  .roadmap-lane > header > div {
+  .roadmap-group header {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    gap: 1rem;
+    gap: var(--space-1) var(--space-3);
+    padding-bottom: var(--space-2);
   }
-  .roadmap-lane header span {
-    color: var(--copper-text);
-    font: italic 1rem var(--font-serif);
+  .roadmap-group header p {
+    color: var(--ink-soft);
+    font: 400 13px/1.4 var(--font-ui);
   }
-  .roadmap-lane h2 {
-    font-size: 3.2rem;
+  .roadmap-rows {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
   }
-  .roadmap-lane header > p {
-    max-width: 22rem;
-    margin-top: 0.8rem;
-    color: var(--muted);
-    font-size: 0.82rem;
-  }
-  .lane-items {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-  .lane-items article {
-    padding: 1.3rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--paper-raised);
-  }
-  .lane-items article > div {
+  .roadmap-rows li {
     display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
     align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: 56px;
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--line-soft);
   }
-  .lane-items article > div > span {
-    color: var(--muted);
-    font-size: 0.62rem;
-    font-weight: 720;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  .row-text {
+    min-width: 0;
   }
-  .lane-items h3 {
-    margin-top: 1.2rem;
-    font-size: 1.6rem;
+  .row-text h3 {
+    color: var(--ink);
+    font: 600 15px/1.35 var(--font-ui);
   }
-  .lane-items p {
-    margin-top: 0.6rem;
-    color: var(--muted);
-    font-size: 0.8rem;
+  .row-text p {
+    color: var(--ink-soft);
+    font: 400 14px/1.45 var(--font-ui);
   }
-  .lane-items small {
-    margin-top: 1rem;
-    display: block;
-    color: var(--muted-light);
-    font-size: 0.65rem;
+  .row-side {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-3);
   }
-  .roadmap-note {
-    padding-block: clamp(5rem, 9vw, 8rem);
+  .row-area {
+    color: var(--ink-soft);
+    font: 500 12px/1.3 var(--font-ui);
   }
-  .roadmap-note h2 {
-    margin-top: 1rem;
-    font-size: 4.3rem;
-    line-height: 1;
+  .empty-state {
+    padding: var(--space-6);
   }
-  .roadmap-note p {
-    margin-top: 1.2rem;
-    color: #b8b1a5;
-  }
-  .roadmap-note .button {
-    margin-top: 2rem;
-  }
-  @media (max-width: 54rem) {
-    .roadmap-lane {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 2rem;
-    }
-    .roadmap-controls {
-      position: static;
-    }
+  .notice p {
+    margin: 0;
+    color: var(--ink-muted);
   }
   @media (max-width: 38rem) {
-    .lane-items {
-      grid-template-columns: minmax(0, 1fr);
+    .roadmap-rows li {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-2);
     }
-    .roadmap-lane h2 {
-      font-size: clamp(2.6rem, 13vw, 3.2rem);
+    .filter-count {
+      width: 100%;
+      margin-left: 0;
     }
   }
 </style>

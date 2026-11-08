@@ -15,54 +15,81 @@ const { Content } = await render(plugin);
 ---
 
 <BaseLayout title={`${plugin.data.name} plugin`} description={plugin.data.summary}>
-  <header class="plugin-detail-hero">
-    <div class="plugin-hero-text">
-      <nav class="breadcrumb">
-        <a href={withBase('/plugins/')}>Plugin registry</a><span>/</span>{plugin.data.package}
-      </nav>
-      <span class="eyebrow">
-        <span class="plugin-hero-icon" aria-hidden="true" set:html={moduleIcon(plugin.data.package)}></span>
-        {plugin.data.categories.join(' · ')}
-      </span><h1
-        class="page-heading"
-      >
-        {plugin.data.name}
-      </h1><p class="lede">{plugin.data.summary}</p>
-      <div class="plugin-flags">
-        {typeof plugin.data.status === 'string' && <StatusBadge status={plugin.data.status} />}
-        <span>{plugin.data.official ? 'Official' : 'Community'}</span>
-        <span>{plugin.data.bundled ? 'Bundled' : 'Optional'}</span>
+  <div class="content-shell plugin-layout">
+    <div class="plugin-main">
+      <header class="plugin-head">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href={withBase('/plugins/')}>Plugin registry</a><span aria-hidden="true">/</span>{
+            plugin.data.package
+          }
+        </nav>
+        <span class="overline">
+          <span class="plugin-icon" aria-hidden="true" set:html={moduleIcon(plugin.data.package)} />
+          {plugin.data.categories.join(' · ')}
+        </span>
+        <h1 class="page-heading">{plugin.data.name}</h1>
+        <p class="lede">{plugin.data.summary}</p>
+      </header>
+
+      <div class="content-prose plugin-prose">
+        <Content />
       </div>
+
+      <section class="panel plugin-cta" aria-labelledby="inspect-heading">
+        <h2 id="inspect-heading">Inspect before you enable.</h2>
+        <p>
+          Identity, source, compatibility, license, and requested access belong together in every
+          registry entry.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href={withBase('/plugins/')}>Back to registry</a>
+          <a class="btn btn--quiet" href={withBase('/docs/plugins/permissions/')}
+            >Understand permissions</a
+          >
+        </div>
+      </section>
     </div>
-  </header>
-  <section class="section-tight">
-    <div class="content-shell plugin-detail-grid">
-      <aside>
-        <h2>Package record</h2><dl>
-          <div><dt>Author</dt><dd>{plugin.data.author}</dd></div><div>
-            <dt>Version</dt><dd>{plugin.data.version}</dd>
-          </div><div><dt>Daena</dt><dd>{plugin.data.daenaCompatibility}</dd></div><div>
-            <dt>Host API</dt><dd><code>{plugin.data.hostApi}</code></dd>
-          </div><div><dt>Runtime</dt><dd>{plugin.data.runtimeKind}</dd></div><div>
-            <dt>Updated</dt><dd>
-              {
-                plugin.data.updated.toLocaleDateString('en', {
-                  dateStyle: 'medium',
-                  timeZone: 'UTC',
-                })
-              }
-            </dd>
-          </div><div><dt>License</dt><dd>{plugin.data.license}</dd></div>
-        </dl>{
-          plugin.data.repository && (
-            <a class="button button-secondary" href={plugin.data.repository}>
-              View source <span set:html={ArrowUpRight}></span>
-            </a>
+
+    <aside class="panel manifest" aria-labelledby="manifest-heading">
+      <div class="panel__header">
+        <h2 id="manifest-heading" class="panel__title">Manifest</h2>
+      </div>
+      <ul class="panel__rows">
+        <li><small>Package id</small><code>{plugin.data.package}</code></li>
+        <li><small>Version</small><code>{plugin.data.version}</code></li>
+        <li><small>Daena</small><span>{plugin.data.daenaCompatibility}</span></li>
+        <li><small>Host API</small><code>{plugin.data.hostApi}</code></li>
+        <li><small>Runtime</small><span>{plugin.data.runtimeKind}</span></li>
+        <li><small>Publisher</small><span>{plugin.data.author}</span></li>
+        <li><small>License</small><span>{plugin.data.license}</span></li>
+        {
+          typeof plugin.data.status === 'string' && (
+            <li>
+              <small>Status</small>
+              <StatusBadge status={plugin.data.status} />
+            </li>
           )
         }
-      </aside>
-      <div class="content-prose">
-        <Content /><h2>Declared capabilities</h2><ul class="capabilities">
+        <li>
+          <small>Distribution</small><span>{plugin.data.bundled ? 'Bundled' : 'Optional'}</span>
+        </li>
+        <li><small>Origin</small><span>{plugin.data.official ? 'Official' : 'Community'}</span></li>
+        <li>
+          <small>Updated</small>
+          <span>
+            {
+              plugin.data.updated.toLocaleDateString('en', {
+                dateStyle: 'medium',
+                timeZone: 'UTC',
+              })
+            }
+          </span>
+        </li>
+      </ul>
+
+      <div class="manifest-caps">
+        <h3 class="overline overline--quiet">Declared capabilities</h3>
+        <ul>
           {
             plugin.data.capabilities.map((capability: string) => (
               <li>
@@ -70,162 +97,147 @@ const { Content } = await render(plugin);
               </li>
             ))
           }
-        </ul><p class="capability-note">
+        </ul>
+        <p>
           These identifiers mirror the current module manifest. The host still validates the active
           session, project, namespace, payload, and current revisions.
         </p>
       </div>
-    </div>
-  </section>
-  <section class="final-cta dark-panel">
-    <div class="content-shell">
-      <h2>Inspect before you enable.</h2><p>
-        Identity, source, compatibility, license, and requested access belong together in every
-        registry entry.
-      </p><div class="button-row">
-        <a class="button button-brass" href={withBase('/plugins/')}>Back to registry</a><a
-          class="button button-secondary"
-          href={withBase('/docs/plugins/permissions/')}>Understand permissions</a
-        >
-      </div>
-    </div>
-  </section>
+
+      {
+        plugin.data.repository && (
+          <div class="manifest-source">
+            <a class="btn btn--quiet" href={plugin.data.repository}>
+              View source <span aria-hidden="true" set:html={ArrowUpRight} />
+            </a>
+          </div>
+        )
+      }
+    </aside>
+  </div>
 </BaseLayout>
 
 <style>
-  .plugin-detail-hero {
+  .plugin-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--space-7);
+    align-items: start;
+    padding-block: var(--space-6) var(--space-9);
+  }
+  .plugin-main {
+    min-width: 0;
+  }
+  .plugin-head {
+    padding-bottom: var(--space-5);
     border-bottom: 1px solid var(--line);
-    background: var(--paper-warm);
   }
-  .plugin-hero-text {
-    max-width: var(--content);
-    margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: clamp(3rem, 8vw, 6rem) 1.5rem;
+  .breadcrumb {
+    margin-bottom: var(--space-4);
+    font: 500 12px/1.3 var(--font-ui);
   }
-  .plugin-hero-icon {
+  .plugin-icon {
     display: inline-flex;
-    margin-right: 0.45rem;
-    vertical-align: -0.15em;
-    color: var(--copper-text);
+    margin-right: var(--space-1);
+    vertical-align: -0.2em;
+    color: var(--accent-text);
   }
-  .plugin-hero-icon :global(svg) {
-    width: 0.95rem;
-    height: 0.95rem;
-    stroke-width: 1.8;
+  .plugin-icon :global(svg) {
+    width: 14px;
+    height: 14px;
   }
-  .plugin-flags {
-    margin-top: 2rem;
+  .plugin-prose {
+    max-width: var(--measure);
+    padding-top: var(--space-5);
+  }
+  .plugin-cta {
+    max-width: var(--measure);
+    margin-top: var(--space-7);
+    padding: var(--space-5);
+  }
+  .plugin-cta h2 {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+  .plugin-cta p {
+    margin-top: var(--space-1);
+    color: var(--ink-soft);
+    font: 400 14px/1.5 var(--font-ui);
+  }
+  .cta-row {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 0.65rem;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
   }
-  .plugin-flags > span {
-    padding: 0.4rem 0.6rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--muted);
-    font-size: 0.68rem;
-  }
-  .plugin-detail-grid {
-    display: grid;
-    grid-template-columns: 0.65fr 1.35fr;
-    gap: clamp(3rem, 8vw, 8rem);
-    align-items: start;
-  }
-  aside {
+  .manifest {
     position: sticky;
-    top: calc(var(--header-height) + 2rem);
-    padding: 1.4rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--paper-raised);
+    top: calc(var(--header-height) + var(--space-4));
+    padding-bottom: var(--space-4);
   }
-  aside h2 {
-    font-size: 1.5rem;
+  .manifest .panel__header {
+    padding-bottom: var(--space-2);
   }
-  aside dl {
-    margin: 1rem 0;
+  .manifest .panel__title {
+    margin-top: 0;
   }
-  aside dl div {
-    padding: 0.65rem 0;
-    display: grid;
-    grid-template-columns: 6rem 1fr;
-    border-bottom: 1px solid var(--line-soft);
-    font-size: 0.74rem;
-  }
-  aside dt {
-    color: var(--muted);
-  }
-  aside dd {
-    color: var(--ink);
+  .manifest .panel__rows li {
+    align-items: baseline;
+    padding-block: var(--space-2);
+    text-align: right;
     overflow-wrap: anywhere;
   }
-  .capabilities {
-    padding: 0 !important;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  .manifest .panel__rows li > small {
+    flex: none;
+    text-align: left;
+  }
+  .manifest .panel__rows li :global(.badge) {
+    align-self: center;
+  }
+  .manifest code,
+  .manifest-caps code {
+    padding: 1px 6px;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-xs);
+    background: var(--surface-muted);
+    color: var(--ink);
+    font: 12px/1.5 var(--font-mono);
+    overflow-wrap: anywhere;
+  }
+  .manifest-caps {
+    padding: var(--space-3) var(--space-5) 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .manifest-caps ul {
+    display: grid;
+    justify-items: start;
+    gap: 6px;
+    margin: var(--space-2) 0 0;
+    padding: 0;
     list-style: none;
   }
-  .capabilities li {
-    min-width: 0;
-    max-width: 100%;
-    margin: 0;
+  .manifest-caps p {
+    margin-top: var(--space-3);
+    color: var(--ink-soft);
+    font: 400 13px/1.5 var(--font-ui);
   }
-  .capabilities code {
-    overflow-wrap: anywhere;
+  .manifest-source {
+    padding: var(--space-4) var(--space-5) 0;
   }
-  .capability-note {
-    padding: 1rem;
-    border-left: 2px solid var(--brass);
-    background: var(--paper-warm);
-    font-size: 0.85rem;
+  .manifest-source .btn {
+    width: 100%;
   }
-  .final-cta .button-secondary {
-    border-color: #45584d;
-    background: transparent;
-    color: #f2eee4;
+  .manifest-source :global(svg) {
+    width: 16px;
+    height: 16px;
   }
-  @media (max-width: 55rem) {
-    .plugin-hero-text {
-      padding: 2rem 1.5rem 2.2rem;
+  @media (max-width: 900px) {
+    .plugin-layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
     }
-    .plugin-detail-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    aside {
+    .manifest {
       position: static;
-    }
-  }
-  @media (max-width: 38rem) {
-    .plugin-hero-text {
-      padding: 1.6rem 1.25rem 1.8rem;
-    }
-    .plugin-hero-text .page-heading {
-      font-size: clamp(2.2rem, 9vw, 3rem);
-    }
-    .plugin-hero-text .lede {
-      font-size: 0.98rem;
-    }
-    .plugin-detail-grid {
-      gap: 1.5rem;
-    }
-    aside {
-      padding: 1.1rem;
-    }
-    aside dl div {
-      grid-template-columns: 5.2rem 1fr;
-      font-size: 0.7rem;
-    }
-  }
-  @media (max-width: 22rem) {
-    .plugin-hero-text {
-      padding-inline: 1rem;
     }
   }
 </style>

@@ -1,7 +1,39 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig, withBase } from '../config/site';
-import { ArrowUpRight } from 'lucide-static';
+import { ArrowUpRight, GitFork, MessagesSquare, Puzzle } from 'lucide-static';
+
+const links = [
+  {
+    icon: GitFork,
+    title: 'Contribute to Daena',
+    body: 'Read the repository guidance, choose a bounded issue, and keep architectural contracts and user data ownership in view.',
+    label: 'Contribution guide',
+    href: siteConfig.contributing,
+  },
+  {
+    icon: MessagesSquare,
+    title: 'Ask and propose',
+    body: 'Use GitHub Discussions for product questions and design directions. Use Issues for reproducible defects and scoped work.',
+    label: 'Open discussions',
+    href: siteConfig.discussions,
+  },
+  {
+    icon: Puzzle,
+    title: 'Prepare a plugin',
+    body: 'The third-party platform is experimental. Inspect current manifests, SDK contracts, and capability rules before treating a package as distributable.',
+    label: 'Plugin development',
+    href: withBase('/docs/developer/plugin-development/'),
+  },
+  // Hidden until the showcase returns to the navigation.
+  // {
+  //   icon: GalleryVerticalEnd,
+  //   title: 'Prepare a showcase',
+  //   body: 'Future entries will be moderated, content-driven project exhibitions—not a social feed. Creator consent, useful context, and accurate attribution come first.',
+  //   label: 'See the initial format',
+  //   href: withBase('/showcase/'),
+  // },
+];
 ---
 
 <BaseLayout
@@ -9,113 +41,138 @@ import { ArrowUpRight } from 'lucide-static';
   description="Contribute to Daena, discuss the project, and understand the planned plugin and showcase submission principles."
 >
   <header class="page-hero">
-    <div class="content-shell page-hero-grid">
-      <div>
-        <span class="eyebrow">Community · Contribution</span><h1 class="page-heading">
-          Build worlds together, even when the archives are your own.
-        </h1>
-      </div><div class="page-hero-aside">
-        <p>
-          Daena is local-first, but its source, design decisions, bug reports, plugins, and showcase
-          can be shaped in public.
-        </p>
-      </div>
+    <div class="content-shell">
+      <span class="overline">Community · Contribution</span>
+      <h1 class="page-heading">Build worlds together, even when the archives are your own.</h1>
+      <p class="lede">
+        Daena is local-first, but its source, design decisions, bug reports, plugins, and showcase
+        can be shaped in public.
+      </p>
     </div>
   </header>
-  <section class="section-tight">
-    <div class="content-shell community-grid">
-      <article>
-        <span>CODE</span><h2>Contribute to Daena</h2><p>
-          Read the repository guidance, choose a bounded issue, and keep architectural contracts and
-          user data ownership in view.
-        </p><a class="text-link" href={siteConfig.contributing}>Contribution guide</a>
-      </article><article>
-        <span>DISCUSS</span><h2>Ask and propose</h2><p>
-          Use GitHub Discussions for product questions and design directions. Use Issues for
-          reproducible defects and scoped work.
-        </p><a class="text-link" href={siteConfig.discussions}>Open discussions</a>
-      </article><article>
-        <span>EXTEND</span><h2>Prepare a plugin</h2><p>
-          The third-party platform is experimental. Inspect current manifests, SDK contracts, and
-          capability rules before treating a package as distributable.
-        </p><a class="text-link" href={withBase('/docs/developer/plugin-development/')}
-          >Plugin development</a
+
+  <div class="content-shell page-body">
+    <div class="community-grid">
+      {
+        links.map((link) => (
+          <a class="community-card panel panel--interactive" href={link.href}>
+            <span class="card-icon" aria-hidden="true" set:html={link.icon} />
+            <h2>{link.title}</h2>
+            <p>{link.body}</p>
+            <span class="card-link">
+              {link.label} <span aria-hidden="true" set:html={ArrowUpRight} />
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <section class="panel principles" aria-labelledby="principles-heading">
+      <div>
+        <span class="overline">Participation principles</span>
+        <h2 id="principles-heading">Specific, kind, and technically honest.</h2>
+      </div>
+      <div>
+        <ul>
+          <li>Do not present roadmap ideas as released behavior.</li>
+          <li>Respect project ownership, privacy, and creator attribution.</li>
+          <li>Report evidence and reproduction steps rather than vague failure.</li>
+          <li>Keep changes bounded enough to review and verify.</li>
+        </ul>
+        <a class="btn btn--quiet" href={siteConfig.repository}
+          >Visit GitHub <span aria-hidden="true" set:html={ArrowUpRight} /></a
         >
-      </article>{false && <article>
-        <span>SHOW</span><h2>Prepare a showcase</h2><p>
-          Future entries will be moderated, content-driven project exhibitions—not a social feed.
-          Creator consent, useful context, and accurate attribution come first.
-        </p><a class="text-link" href={withBase('/showcase/')}>See the initial format</a>
-      </article>}
-    </div>
-  </section>
-  <section class="principles dark-panel">
-    <div class="reading-shell">
-      <span class="eyebrow">Participation principles</span><h2>
-        Specific, kind, and technically honest.
-      </h2><ul>
-        <li>Do not present roadmap ideas as released behavior.</li><li>
-          Respect project ownership, privacy, and creator attribution.
-        </li><li>Report evidence and reproduction steps rather than vague failure.</li><li>
-          Keep changes bounded enough to review and verify.
-        </li>
-      </ul><a class="button button-brass" href={siteConfig.repository}>Visit GitHub <span set:html={ArrowUpRight}></span></a>
-    </div>
-  </section>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
+  .page-body {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-5) var(--space-9);
+  }
   .community-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
   }
-  .community-grid article {
-    padding: 2rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--paper-raised);
+  .community-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4);
+    color: inherit;
+    text-decoration: none;
   }
-  .community-grid article > span {
-    color: var(--copper-text);
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.15em;
+  .card-icon {
+    display: inline-flex;
+    color: var(--accent);
   }
-  .community-grid h2 {
-    margin-top: 1rem;
-    font-size: 2rem;
+  .card-icon :global(svg) {
+    width: 20px;
+    height: 20px;
   }
-  .community-grid p {
-    min-height: 5rem;
-    margin-top: 0.8rem;
-    color: var(--muted);
+  .community-card h2 {
+    margin-top: var(--space-3);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.25;
   }
-  .community-grid .text-link {
-    margin-top: 1rem;
+  .community-card p {
+    margin-top: var(--space-1);
+    color: var(--ink-soft);
+    font: 400 14px/1.5 var(--font-ui);
+  }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-top: auto;
+    padding-top: var(--space-3);
+    color: var(--accent-text);
+    font: 600 13px/1.3 var(--font-ui);
+  }
+  .card-link :global(svg) {
+    width: 14px;
+    height: 14px;
   }
   .principles {
-    padding-block: clamp(5rem, 9vw, 8rem);
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: var(--space-6);
+    padding: var(--space-5);
   }
   .principles h2 {
-    margin-top: 1rem;
-    font-size: 4rem;
-    line-height: 1;
+    margin-top: var(--space-2);
+    font-size: 24px;
+    line-height: 1.2;
   }
   .principles ul {
-    margin: 2rem 0;
-    padding-left: 1.2rem;
-    color: #c1baae;
+    margin: 0 0 var(--space-4);
+    padding-left: 1.1rem;
+    color: var(--ink-muted);
+    font: 400 14px/1.5 var(--font-ui);
   }
-  .principles li {
-    margin: 0.7rem 0;
+  .principles li + li {
+    margin-top: var(--space-1);
   }
-  @media (max-width: 42rem) {
+  .principles .btn :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+  @media (max-width: 60rem) {
     .community-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    .community-grid p {
-      min-height: auto;
+    .principles {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-4);
+    }
+  }
+  @media (max-width: 38rem) {
+    .community-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

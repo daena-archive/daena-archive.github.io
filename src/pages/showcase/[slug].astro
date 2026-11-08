@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArchiveCard from '../../components/ArchiveCard.astro';
 import RelationshipGraph from '../../components/RelationshipGraph.astro';
 import TimelineStrip from '../../components/TimelineStrip.astro';
 import { entrySlug, withBase } from '../../config/site';
@@ -15,220 +14,177 @@ const { Content } = await render(entry);
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.summary}>
-  <header class={`showcase-detail-hero accent-${entry.data.accent}`}>
-    <div class="archive-landscape" aria-hidden="true"><span></span><i></i><b></b></div>
-    <div class="content-shell showcase-title">
-      <nav class="breadcrumb">
-        <a href={withBase('/showcase/')}>Showcase</a><span>/</span>Demonstration archive
-      </nav><span class="eyebrow">{entry.data.creator}</span><h1 class="page-heading">
-        {entry.data.title}
-      </h1><p>{entry.data.summary}</p>
+  <header class="page-hero">
+    <div class="content-shell">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={withBase('/showcase/')}>Showcase</a><span aria-hidden="true">/</span>Demonstration
+        archive
+      </nav>
+      <span class="badge badge--outline">{entry.data.creator}</span>
+      <h1 class="page-heading">{entry.data.title}</h1>
+      <p class="lede">{entry.data.summary}</p>
     </div>
-    <ArchiveCard
-      class="detail-card"
-      label={entry.data.title.toUpperCase()}
-      quote={entry.data.summary}
-      meta="Demonstration archive"
-    />
   </header>
 
-  <section class="section-tight">
-    <div class="content-shell statement-grid">
-      <div class="content-prose"><Content /></div><dl>
+  <div class={`content-shell page-body accent-${entry.data.accent}`}>
+    <div class="detail-art" aria-hidden="true">
+      <em>{entry.data.tags.join(' · ')}</em>
+      <b>{entry.data.title}</b>
+    </div>
+
+    <section class="statement-grid" aria-label="About this archive">
+      <div class="content-prose"><Content /></div>
+      <dl>
         {
           entry.data.stats.map((stat: { label: string; value: string }) => (
             <div>
-              <>
-                <dt>{stat.value}</dt>
-                <dd>{stat.label}</dd>
-              </>
+              <dt>{stat.value}</dt>
+              <dd>{stat.label}</dd>
             </div>
           ))
         }
       </dl>
-    </div>
-  </section>
-  <section class="section-tight graph-exhibit">
-    <div class="content-shell">
-      <div class="exhibit-header">
-        <span class="eyebrow">Selected connections</span><p>
-          A small archive study showing how stable records gather context across modules.
-        </p>
-      </div><div class="surface graph-frame"><RelationshipGraph /></div>
-    </div>
-  </section>
-  <section class="section-tight timeline-exhibit dark-panel">
-    <div class="content-shell">
-      <span class="eyebrow">History excerpt</span><h2>Four moments from the same world.</h2><div
-        class="timeline-dark"
-      >
+    </section>
+
+    <section aria-labelledby="connections-heading">
+      <h2 id="connections-heading" class="overline">Selected connections</h2>
+      <p class="section-note">
+        A small archive study showing how stable records gather context across modules.
+      </p>
+      <div class="panel graph-frame"><RelationshipGraph /></div>
+    </section>
+
+    <section aria-labelledby="history-heading">
+      <span class="overline">History excerpt</span>
+      <h2 id="history-heading" class="section-title">Four moments from the same world.</h2>
+      <div class="panel timeline-frame">
         <TimelineStrip />
       </div>
-    </div>
-  </section>
-  <section class="final-cta">
-    <div class="content-shell">
-      <h2>Build an archive with your own shape.</h2><p>
-        Daena is free, open source, and local-first.
-      </p><div class="button-row">
-        <a class="button button-primary" href={withBase('/download/')}>Download Daena</a><a
-          class="button button-secondary"
-          href={withBase('/showcase/')}>Back to showcase</a
-        >
+    </section>
+
+    <section class="panel detail-cta" aria-labelledby="cta-heading">
+      <div>
+        <h2 id="cta-heading" class="section-title">Build an archive with your own shape.</h2>
+        <p>Daena is free, open source, and local-first.</p>
       </div>
-    </div>
-  </section>
+      <div class="cta-row">
+        <a class="btn btn--primary" href={withBase('/download/')}>Download Daena</a>
+        <a class="btn btn--quiet" href={withBase('/showcase/')}>Back to showcase</a>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
-  .showcase-detail-hero {
-    position: relative;
-    min-height: 46rem;
-    padding-block: 7rem;
+  .page-hero .badge {
+    margin-top: var(--space-1);
+  }
+  .breadcrumb {
+    margin-bottom: var(--space-4);
+    font: 500 12px/1.3 var(--font-ui);
+  }
+  .page-body {
+    --art: var(--type-ocean);
+    --art-bg: var(--type-ocean-bg);
+    display: grid;
+    gap: var(--space-7);
+    padding-block: var(--space-5) var(--space-9);
+  }
+  .page-body.accent-marsh {
+    --art: var(--type-moss);
+    --art-bg: var(--type-moss-bg);
+  }
+  .page-body.accent-ember {
+    --art: var(--type-ember);
+    --art-bg: var(--type-ember-bg);
+  }
+  .detail-art {
     display: flex;
-    align-items: end;
-    background: linear-gradient(145deg, #c8d7d2, #416663);
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-5);
+    min-height: 14rem;
+    padding: var(--space-4) var(--space-5);
     overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--art-bg);
+    color: var(--art);
   }
-  .showcase-detail-hero.accent-marsh {
-    background: linear-gradient(145deg, #d3cda8, #5b7056);
+  .detail-art em {
+    font: 600 12px/1.3 var(--font-ui);
+    font-style: normal;
   }
-  .showcase-detail-hero.accent-ember {
-    background: linear-gradient(145deg, #d9bca4, #785342);
-  }
-  .archive-landscape span {
-    position: absolute;
-    width: 58rem;
-    height: 58rem;
-    right: -12rem;
-    bottom: -30rem;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 42% 58% 48% 52%;
-  }
-  .archive-landscape::before,
-  .archive-landscape::after {
-    position: absolute;
-    width: 30rem;
-    height: 30rem;
-    right: 3rem;
-    bottom: -10rem;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 50%;
-    content: '';
-  }
-  .archive-landscape::after {
-    width: 16rem;
-    height: 16rem;
-    right: 12rem;
-    bottom: 2rem;
-    border-style: dashed;
-  }
-  .showcase-title {
-    position: relative;
-    z-index: 2;
-    color: #17241e;
-  }
-  .showcase-title .page-heading {
-    color: #17241e;
-  }
-  .showcase-title > p {
-    max-width: 36rem;
-    margin-top: 1.2rem;
-    font: 500 1.25rem/1.5 var(--font-serif);
-  }
-  .showcase-title .breadcrumb {
-    color: #2e4b41;
-  }
-  .showcase-title .eyebrow {
-    color: #744a2a;
-  }
-  :global(.detail-card) {
-    position: absolute;
-    z-index: 3;
-    right: 10%;
-    bottom: 4rem;
+  .detail-art b {
+    font: italic 400 36px/1.1 var(--font-display);
   }
   .statement-grid {
     display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    gap: 5rem;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+    gap: var(--space-7);
+    align-items: start;
   }
   .statement-grid dl {
     display: grid;
-    align-content: start;
     grid-template-columns: 1fr 1fr;
     gap: 1px;
-    background: var(--line);
+    overflow: hidden;
     border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--line);
   }
   .statement-grid dl div {
-    padding: 1.5rem;
-    background: var(--paper-raised);
+    padding: var(--space-4);
+    background: var(--surface);
   }
   .statement-grid dt {
     color: var(--ink);
-    font: italic 2.5rem var(--font-serif);
+    font: italic 400 36px/1.1 var(--font-display);
   }
   .statement-grid dd {
-    color: var(--muted);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    font: 500 12px/1.4 var(--font-ui);
   }
-  .graph-exhibit {
-    background: var(--paper-warm);
+  .section-title {
+    margin-top: var(--space-1);
+    font-size: 24px;
+    line-height: 1.2;
   }
-  .exhibit-header {
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 3rem;
-  }
-  .exhibit-header p {
-    max-width: 30rem;
-    color: var(--muted);
+  .section-note {
+    max-width: var(--measure);
+    margin-bottom: var(--space-3);
+    color: var(--ink-soft);
+    font: 400 14px/1.5 var(--font-ui);
   }
   .graph-frame {
-    padding: clamp(1rem, 4vw, 3rem);
+    padding: clamp(1rem, 3vw, 1.5rem);
   }
-  .timeline-exhibit h2 {
-    margin-top: 1rem;
-    font-size: 4rem;
+  .timeline-frame {
+    margin-top: var(--space-4);
+    padding: var(--space-5);
   }
-  .timeline-dark {
-    margin-top: 3rem;
-    padding: 2rem;
-    border: 1px solid #3b4e44;
-    border-radius: var(--radius);
-    background: #131f1b;
+  .detail-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+  .detail-cta p {
+    margin-top: var(--space-1);
+    color: var(--ink-soft);
+    font: 400 14px/1.5 var(--font-ui);
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
   @media (max-width: 55rem) {
-    :global(.detail-card) {
-      right: 1.5rem;
-      bottom: 2rem;
-    }
     .statement-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 40rem) {
-    .showcase-detail-hero {
-      min-height: 43rem;
-      align-items: flex-start;
-    }
-    .showcase-title .page-heading {
-      font-size: 4rem;
-    }
-    :global(.detail-card) {
-      right: auto;
-      left: 1rem;
-      bottom: 1.5rem;
-      width: calc(100% - 2rem);
-    }
-    .exhibit-header {
-      align-items: flex-start;
-      flex-direction: column;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
     }
   }
 </style>

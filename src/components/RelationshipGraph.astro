@@ -62,38 +62,38 @@
   }
   .edges path {
     fill: none;
-    stroke: var(--graph-line);
+    stroke: var(--line-strong);
     stroke-width: 1.3;
     stroke-dasharray: 5 5;
   }
   .node rect {
-    fill: var(--paper-raised);
+    fill: var(--surface);
     stroke: var(--line);
     stroke-width: 1.4;
   }
   .node text {
     fill: var(--ink);
     text-anchor: middle;
-    font-family: var(--font-sans);
+    font-family: var(--font-ui);
     font-size: 13px;
     font-weight: 680;
   }
   .node .node-type {
-    fill: var(--muted);
+    fill: var(--ink-soft);
     font-size: 7px;
     letter-spacing: 1.4px;
   }
   .node-person rect {
-    stroke: var(--entity-person);
+    stroke: var(--type-sky);
   }
   .node-place rect {
-    stroke: var(--entity-place);
+    stroke: var(--type-rose);
   }
   .node-artifact rect {
-    stroke: var(--entity-artifact);
+    stroke: var(--type-copper);
   }
   .node-culture rect {
-    stroke: var(--entity-culture);
+    stroke: var(--type-moss);
   }
   figcaption {
     display: flex;
@@ -101,11 +101,11 @@
     gap: 1rem;
     padding-top: 0.9rem;
     border-top: 1px solid var(--line);
-    color: var(--muted);
+    color: var(--ink-soft);
     font-size: 0.72rem;
   }
   figcaption span {
-    color: var(--copper-text);
+    color: var(--accent-text);
     font-weight: 800;
     letter-spacing: 0.14em;
   }

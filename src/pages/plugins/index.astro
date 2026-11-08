@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import { moduleIcon } from '../../config/icons';
 import { entrySlug, withBase } from '../../config/site';
-import { ArrowRight } from 'lucide-static';
+import { Info, Search } from 'lucide-static';
 
 const plugins = (await getCollection('plugins')).sort((a, b) =>
   a.data.name.localeCompare(b.data.name),
@@ -16,120 +16,107 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
   title="Plugin registry"
   description="Browse Daena's static, permission-aware catalogue of bundled modules and future community extensions."
 >
-  <header class="registry-hero dark-panel">
-    <div class="shell registry-hero-grid">
-      <div>
-        <span class="eyebrow">Plugin registry</span><h1 class="page-heading">
-          Extensions, catalogued with their boundaries.
-        </h1><p class="lede">
-          Browse the first-party modules shipped with Daena. Every entry exposes identity, version,
-          compatibility, status, license, and requested capabilities—without ratings or store
-          mechanics.
-        </p>
-      </div><div class="registry-mark" aria-hidden="true"><span>REG</span><i></i><i></i></div>
+  <header class="page-hero">
+    <div class="content-shell">
+      <span class="overline">Plugin registry</span>
+      <h1 class="page-heading">Extensions, catalogued with their boundaries.</h1>
+      <p class="lede">
+        Browse the first-party modules shipped with Daena. Every entry exposes identity, version,
+        compatibility, status, license, and requested capabilities—without ratings or store
+        mechanics.
+      </p>
     </div>
   </header>
 
-  <section class="section-tight">
-    <div class="content-shell">
-      <div class="registry-note">
-        <strong>Current catalogue</strong><p>
-          The initial registry contains real bundled modules from the Daena repository. Community
-          submission and review are planned; no fictional installable package is presented here.
-        </p>
-      </div>
-      <div class="filter-bar" data-plugin-filters>
-        <label class="sr-only" for="plugin-search">Search modules</label><input
+  <div class="content-shell page-body">
+    <div class="notice" role="status">
+      <Fragment set:html={Info} />
+      <strong>Current catalogue</strong>
+      <p>
+        The initial registry contains real bundled modules from the Daena repository. Community
+        submission and review are planned; no fictional installable package is presented here.
+      </p>
+    </div>
+
+    <div class="plugin-filters" role="search" data-plugin-filters>
+      <div class="search-field">
+        <label class="sr-only" for="plugin-search">Search modules</label>
+        <span class="search-icon" aria-hidden="true" set:html={Search} />
+        <input
           id="plugin-search"
+          class="input"
           type="search"
           placeholder="Search modules, packages, or capabilities…"
           data-plugin-search
         />
-        <label class="sr-only" for="plugin-category">Category</label><select
-          id="plugin-category"
-          data-plugin-category
-          ><option value="all">All categories</option>{
-            categories.map((category) => <option value={category}>{category}</option>)
-          }</select
-        >
-        <label class="sr-only" for="plugin-status">Status</label><select
-          id="plugin-status"
-          data-plugin-status
-          ><option value="all">All statuses</option><option value="beta">Beta</option><option
-            value="experimental">Experimental</option
-          ></select
-        >
-        <span class="filter-count" aria-live="polite" data-plugin-count
-          >{plugins.length} modules</span
-        >
       </div>
-      <div class="registry-grid" data-plugin-grid>
-        {
-          plugins.map((plugin) => (
-            <article
-              class="registry-card"
-              data-plugin-card
-              data-name={`${plugin.data.name} ${plugin.data.package} ${plugin.data.summary} ${plugin.data.capabilities.join(' ')}`.toLowerCase()}
-              data-categories={plugin.data.categories.join(' ')}
-              data-status={plugin.data.status}
-            >
-              <div class="registry-card-body">
-                <div class="card-meta">
-                  <>
-                    <span class="card-icon" aria-hidden="true" set:html={moduleIcon(plugin.data.package)}></span>
-                    <span class="card-cats">{plugin.data.categories.join(' · ')}</span>
-                    {typeof plugin.data.status === 'string' && <StatusBadge status={plugin.data.status} />}
-                  </>
-                </div>
-                <>
-                  <h2><a href={withBase(`/plugins/${entrySlug(plugin.id)}/`)}>{plugin.data.name}</a></h2>
-                  <p>{plugin.data.summary}</p>
-                </>
-                <dl>
-                  <>
-                    <div>
-                      <>
-                        <dt>Package</dt>
-                        <dd>{plugin.data.package}</dd>
-                      </>
-                    </div>
-                    <div>
-                      <>
-                        <dt>Version</dt>
-                        <dd>{plugin.data.version}</dd>
-                      </>
-                    </div>
-                    <div>
-                      <>
-                        <dt>Distribution</dt>
-                        <dd>{plugin.data.bundled ? 'Bundled' : 'Optional'}</dd>
-                      </>
-                    </div>
-                  </>
-                </dl>
-                <a href={withBase(`/plugins/${entrySlug(plugin.id)}/`)}>
-                  View module <span aria-hidden="true" set:html={ArrowRight}></span>
-                </a>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-      <div class="empty-state" data-plugin-empty>No modules match those filters.</div>
+      <label class="sr-only" for="plugin-category">Category</label>
+      <select id="plugin-category" class="input" data-plugin-category>
+        <option value="all">All categories</option>
+        {categories.map((category) => <option value={category}>{category}</option>)}
+      </select>
+      <label class="sr-only" for="plugin-status">Status</label>
+      <select id="plugin-status" class="input" data-plugin-status>
+        <option value="all">All statuses</option>
+        <option value="beta">Beta</option>
+        <option value="experimental">Experimental</option>
+      </select>
+      <span class="filter-count" aria-live="polite" data-plugin-count>{plugins.length} modules</span
+      >
     </div>
-  </section>
 
-  <section class="submission-section dark-panel">
-    <div class="content-shell submission-grid">
-      <div>
-        <span class="eyebrow">Registry workflow</span><h2>Contribution, review, rebuild.</h2>
-      </div><ol>
-        <li><span>01</span><p>Author submits validated metadata.</p></li><li>
-          <span>02</span><p>Maintainers review identity, source, and compatibility.</p>
-        </li><li><span>03</span><p>The static site rebuilds from merged content.</p></li>
-      </ol>
+    <div class="plugin-grid" data-plugin-grid>
+      {
+        plugins.map((plugin) => (
+          <a
+            class="plugin-card panel panel--interactive"
+            href={withBase(`/plugins/${entrySlug(plugin.id)}/`)}
+            data-plugin-card
+            data-name={`${plugin.data.name} ${plugin.data.package} ${plugin.data.summary} ${plugin.data.capabilities.join(' ')}`.toLowerCase()}
+            data-categories={plugin.data.categories.join(' ')}
+            data-status={plugin.data.status}
+          >
+            <h2>
+              <span
+                class="card-icon"
+                aria-hidden="true"
+                set:html={moduleIcon(plugin.data.package)}
+              />
+              {plugin.data.name}
+            </h2>
+            <p class="card-meta">
+              {plugin.data.author} · {plugin.data.categories.join(', ')}
+            </p>
+            <p class="card-summary">{plugin.data.summary}</p>
+            <div class="card-foot">
+              <code>v{plugin.data.version}</code>
+              <code>{plugin.data.hostApi}</code>
+              {typeof plugin.data.status === 'string' && (
+                <StatusBadge status={plugin.data.status} />
+              )}
+              <span class="card-caps">
+                {plugin.data.capabilities.length}{' '}
+                {plugin.data.capabilities.length === 1 ? 'capability' : 'capabilities'}
+              </span>
+            </div>
+          </a>
+        ))
+      }
     </div>
-  </section>
+    <div class="empty-state" data-plugin-empty>No modules match those filters.</div>
+
+    <section class="workflow panel" aria-labelledby="registry-workflow">
+      <div>
+        <span class="overline">Registry workflow</span>
+        <h2 id="registry-workflow">Contribution, review, rebuild.</h2>
+      </div>
+      <ol>
+        <li><span>01</span><p>Author submits validated metadata.</p></li>
+        <li><span>02</span><p>Maintainers review identity, source, and compatibility.</p></li>
+        <li><span>03</span><p>The static site rebuilds from merged content.</p></li>
+      </ol>
+    </section>
+  </div>
 </BaseLayout>
 
 <script is:inline>
@@ -162,240 +149,168 @@ const categories = [...new Set(plugins.flatMap((plugin) => plugin.data.categorie
 </script>
 
 <style>
-  .registry-hero {
-    padding-block: clamp(5rem, 9vw, 8rem);
-  }
-  .registry-hero-grid {
+  .page-body {
     display: grid;
-    grid-template-columns: 1.25fr 0.75fr;
-    gap: 4rem;
+    gap: var(--space-4);
+    padding-block: var(--space-5) var(--space-9);
+  }
+  .notice p {
+    margin: 0;
+    color: var(--ink-muted);
+  }
+  .plugin-filters {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: var(--space-2);
   }
-  .registry-hero .lede {
-    color: #b8b1a5;
-  }
-  .registry-mark {
+  .search-field {
     position: relative;
-    min-height: 20rem;
-    display: grid;
-    place-items: center;
+    flex: 1 1 18rem;
   }
-  .registry-mark::before,
-  .registry-mark::after {
+  .search-icon {
     position: absolute;
-    width: 17rem;
-    height: 17rem;
-    border: 1px solid #465a4f;
-    border-radius: 50%;
-    content: '';
+    top: 50%;
+    left: var(--space-3);
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+    pointer-events: none;
   }
-  .registry-mark::after {
-    width: 10rem;
-    height: 10rem;
-    border-style: dashed;
-    border-color: #a57d43;
+  .search-icon :global(svg) {
+    width: 16px;
+    height: 16px;
   }
-  .registry-mark span {
-    color: #e4c786;
-    font: 500 2rem var(--font-serif);
-    letter-spacing: 0.22em;
+  .search-field .input {
+    padding-left: 2.25rem;
   }
-  .registry-mark i {
-    position: absolute;
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: #d9a552;
+  .plugin-filters select.input {
+    width: auto;
+    flex: 0 1 11rem;
   }
-  .registry-mark i:first-of-type {
-    top: 2rem;
-    right: 5rem;
+  .filter-count {
+    margin-left: auto;
+    color: var(--ink-soft);
+    font: 500 13px/1 var(--font-ui);
+    white-space: nowrap;
   }
-  .registry-mark i:last-of-type {
-    bottom: 3rem;
-    left: 3rem;
-  }
-  .registry-note {
-    margin-bottom: 2rem;
-    padding: 1rem 1.2rem;
+  .plugin-grid {
     display: grid;
-    grid-template-columns: 10rem 1fr;
-    gap: 2rem;
-    border-left: 2px solid var(--brass);
-    background: var(--paper-warm);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
   }
-  .registry-note strong {
-    font-family: var(--font-serif);
+  .plugin-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4);
+    color: inherit;
+    text-decoration: none;
   }
-  .registry-note p {
-    color: var(--muted);
-    font-size: 0.82rem;
+  .plugin-card[hidden] {
+    display: none;
   }
-  .registry-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
-  .registry-card {
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--paper-raised);
-    overflow: hidden;
-  }
-  .registry-card-body {
-    padding: 1.25rem;
-  }
-  .card-meta {
+  .plugin-card h2 {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: var(--space-2);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.25;
   }
   .card-icon {
-    display: grid;
-    place-items: center;
-    color: var(--copper-text);
+    display: inline-flex;
+    color: var(--accent);
   }
   .card-icon :global(svg) {
-    width: 1.15rem;
-    height: 1.15rem;
-    stroke-width: 1.8;
+    width: 16px;
+    height: 16px;
   }
-  .card-cats {
-    margin-right: auto;
+  .card-meta {
+    margin-top: 2px;
+    color: var(--ink-soft);
+    font: 500 12px/1.4 var(--font-ui);
   }
-  .card-meta > span {
-    color: var(--copper-text);
-    font-size: 0.56rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+  .card-summary {
+    margin-top: var(--space-2);
+    color: var(--ink-soft);
+    font: 400 14px/1.5 var(--font-ui);
   }
-  .registry-card h2 {
-    margin-top: 1rem;
-    font-size: 1.8rem;
-  }
-  .registry-card h2 a {
-    color: inherit;
-    font-size: inherit;
-    text-decoration: none;
-  }
-  .registry-card h2 a:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-  }
-  .registry-card p {
-    min-height: 5rem;
-    margin-top: 0.5rem;
-    color: var(--muted);
-    font-size: 0.8rem;
-  }
-  .registry-card dl {
-    margin: 1rem 0;
-    border-top: 1px solid var(--line-soft);
-  }
-  .registry-card dl div {
-    padding: 0.45rem 0;
+  .card-foot {
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    border-bottom: 1px solid var(--line-soft);
-    font-size: 0.66rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-3);
   }
-  .registry-card dt {
-    color: var(--muted);
+  .card-foot code {
+    flex: none;
+    padding: 1px 6px;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-xs);
+    background: var(--surface-muted);
+    color: var(--ink-muted);
+    font: 12px/1.5 var(--font-mono);
   }
-  .registry-card dd {
-    color: var(--ink);
+  .card-caps {
+    margin-left: auto;
+    color: var(--ink-soft);
+    font: 500 12px/1 var(--font-ui);
   }
-  .registry-card a {
-    display: flex;
-    justify-content: space-between;
-    color: var(--copper-text);
-    font-size: 0.74rem;
-    font-weight: 750;
-    text-decoration: none;
+  .empty-state {
+    padding: var(--space-6);
   }
-  .submission-section {
-    padding-block: clamp(5rem, 8vw, 8rem);
-  }
-  .submission-grid {
+  .workflow {
     display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 5rem;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+    padding: var(--space-5);
   }
-  .submission-grid h2 {
-    margin-top: 1rem;
-    font-size: 3.8rem;
-    line-height: 1;
+  .workflow h2 {
+    margin-top: var(--space-2);
+    font-size: 24px;
+    line-height: 1.2;
   }
-  .submission-grid ol {
+  .workflow ol {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .submission-grid li {
-    padding: 1rem 0;
-    display: grid;
-    grid-template-columns: 3rem 1fr;
-    border-bottom: 1px solid #3b4e44;
+  .workflow li {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line-soft);
   }
-  .submission-grid li span {
-    color: #d5a55f;
+  .workflow li span {
+    color: var(--accent-text);
+    font: 700 12px/1 var(--font-ui);
   }
-  .submission-grid li p {
-    color: #d8d1c3;
+  .workflow li p {
+    margin-top: var(--space-2);
+    color: var(--ink-soft);
+    font: 400 14px/1.5 var(--font-ui);
   }
   @media (max-width: 60rem) {
-    .registry-grid {
-      grid-template-columns: 1fr 1fr;
+    .plugin-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    .registry-hero-grid,
-    .submission-grid {
+    .workflow {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .registry-mark {
-      min-height: 14rem;
-    }
-  }
-  @media (max-width: 48rem) {
-    .registry-grid {
-      gap: 0.85rem;
-    }
-    .registry-card-body {
-      padding: 1.1rem;
     }
   }
   @media (max-width: 38rem) {
-    .registry-grid {
-      grid-template-columns: 1fr;
-      gap: 1rem;
+    .plugin-grid,
+    .workflow ol {
+      grid-template-columns: minmax(0, 1fr);
     }
-    .registry-card p {
-      min-height: auto;
-    }
-    .registry-note {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-    }
-    .submission-grid h2 {
-      font-size: clamp(2.7rem, 13vw, 3.8rem);
-    }
-    .filter-bar {
-      gap: 0.5rem;
-    }
-    .filter-bar input,
-    .filter-bar select {
+    .plugin-filters select.input {
       flex: 1 1 100%;
     }
-  }
-  @media (max-width: 30rem) {
-    .registry-card h2 {
-      font-size: 1.6rem;
-    }
-  }
-  @media (max-width: 22rem) {
-    .registry-card-body {
-      padding: 1rem;
+    .filter-count {
+      width: 100%;
+      margin-left: 0;
     }
   }
 </style>

@@ -36,7 +36,7 @@ const events = [
     right: 0;
     left: 0;
     height: 1px;
-    background: var(--timeline-line);
+    background: var(--line-strong);
     content: '';
   }
   li {
@@ -46,8 +46,8 @@ const events = [
     justify-items: start;
   }
   li span {
-    color: var(--copper-text);
-    font: italic 1.6rem/1 var(--font-serif);
+    color: var(--accent-text);
+    font: italic 1.6rem/1 var(--font-display);
   }
   li i {
     position: relative;
@@ -55,16 +55,16 @@ const events = [
     width: 0.72rem;
     height: 0.72rem;
     margin: 1.35rem 0 1.25rem;
-    border: 2px solid var(--paper);
+    border: 2px solid var(--canvas);
     border-radius: 50%;
-    outline: 1px solid var(--copper);
-    background: var(--brass);
+    outline: 1px solid var(--accent);
+    background: var(--accent);
   }
   li strong {
     max-width: 12rem;
     padding-right: 1.25rem;
     color: var(--ink);
-    font: 570 1rem/1.35 var(--font-serif);
+    font: 570 1rem/1.35 var(--font-display);
   }
   @media (max-width: 42rem) {
     ol {
