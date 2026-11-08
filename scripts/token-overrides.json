@@ -1,27 +1,4 @@
 {
   "note": "Website colour adjustments applied before the Daena app catalog adopts them. Remove an override once the catalog value matches.",
-  "overrides": [
-    {
-      "id": "accent-text",
-      "light": "#8f5e31",
-      "dark": "#d7a25c",
-      "reason": "Proposed new token for overlines, text links, and the focus ring on paper surfaces."
-    },
-    {
-      "id": "ink-faint",
-      "light": "#8c897f",
-      "reason": "Proposed light value replaces #aaa79d (2.39:1) so non-text marks clear the 3:1 floor."
-    },
-    {
-      "id": "ink-muted",
-      "dark": "#d8d1c3",
-      "reason": "Proposed dark value swapped with ink-soft so the ramp ink > ink-muted > ink-soft > ink-faint holds in both themes."
-    },
-    {
-      "id": "ink-soft",
-      "reason": "Light value darkened from #77766d (4.22:1 on canvas) to pass 4.5:1 on canvas, surface-muted and surface-warm; dark value swapped with ink-muted so the ramp ink > ink-muted > ink-soft > ink-faint holds in both themes.",
-      "light": "#6c6b62",
-      "dark": "#b8b1a5"
-    }
-  ]
+  "overrides": []
 }
