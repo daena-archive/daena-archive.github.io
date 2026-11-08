@@ -2,9 +2,9 @@
 import config from 'virtual:starlight/user-config';
 import LanguageSelect from '@astrojs/starlight/components/LanguageSelect.astro';
 import Search from '@astrojs/starlight/components/Search.astro';
-import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
 import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
 import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro';
+import Wordmark from './Wordmark.astro';
 import { withBase } from '../config/site';
 
 const shouldRenderSearch =
@@ -13,7 +13,11 @@ const shouldRenderSearch =
 
 <div class="header">
   <div class="title-wrapper sl-flex">
-    <SiteTitle /><a class="back-link" href={withBase('/')}>Website</a>
+    <a class="brand" href={withBase('/docs/')}>
+      <Wordmark surface="rail" /><span aria-hidden="true">DAENA</span>
+      <span class="sr-only">Daena Archive documentation</span>
+    </a>
+    <a class="back-link" href={withBase('/')}>Website</a>
   </div>
   <div class="sl-flex print:hidden">{shouldRenderSearch && <Search />}</div>
   <div class="sl-hidden md:sl-flex print:hidden right-group">
@@ -51,24 +55,39 @@ const shouldRenderSearch =
       margin: -0.25rem;
       min-width: 0;
       align-items: center;
+      gap: var(--space-4);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      flex: none;
+      gap: 10px;
+      color: var(--rail-text);
+      font: 600 15px/1 var(--font-display);
+      letter-spacing: 0.08em;
+      text-decoration: none;
     }
     .back-link {
-      margin-inline-start: 0.75rem;
-      padding-inline-start: 0.75rem;
-      border-inline-start: 1px solid var(--sl-color-gray-5);
-      color: var(--sl-color-gray-2);
-      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--control-height);
+      padding: 0 12px;
+      border-radius: var(--radius-md);
+      color: var(--rail-text-soft);
+      font: 600 13px/1 var(--font-ui);
       text-decoration: none;
+      transition:
+        background-color 160ms ease,
+        color 160ms ease;
+    }
+    .back-link:hover {
+      background: var(--rail-surface);
+      color: var(--rail-text);
     }
     .right-group,
     .social-icons {
-      gap: 1rem;
+      gap: var(--space-2);
       align-items: center;
-    }
-    .social-icons::after {
-      content: '';
-      height: 2rem;
-      border-inline-end: 1px solid var(--sl-color-gray-5);
     }
     @media (min-width: 50rem) {
       :global(:root[data-has-sidebar]) {

@@ -2,7 +2,7 @@
 import Wordmark from './Wordmark.astro';
 import ThemeSelector from './ThemeSelector.astro';
 import { navItems, siteConfig, withBase } from '../config/site';
-import { Menu } from 'lucide-static';
+import { Download, Menu } from 'lucide-static';
 
 interface Props {
   currentPath: string;
@@ -19,270 +19,154 @@ const isActive = (href: string) => {
 };
 ---
 
-<header class="site-header">
-  <div class="header-inner shell">
-    <a class="brand" href={withBase('/')} aria-label="Daena Archive home"><Wordmark /></a>
-    <nav class="desktop-nav" aria-label="Primary navigation">
-      {
-        navItems.map((item) => (
-          <a href={withBase(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
-            {item.label}
-          </a>
-        ))
-      }
-    </nav>
-    <div class="header-actions">
-      <a class="button button-primary compact" href={withBase('/download/')}>Download</a>
-      <a
-        class="github-link"
-        href={siteConfig.repository}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="GitHub"
+<header class="topbar on-rail site-header">
+  <a class="topbar__brand" href={withBase('/')} aria-label="Daena Archive home">
+    <Wordmark surface="rail" />DAENA
+  </a>
+  <nav class="topbar__nav" aria-label="Primary navigation">
+    {
+      navItems.map((item) => (
+        <a href={withBase(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+  <div class="topbar__actions">
+    <a
+      class="btn btn--ghost btn--icon topbar__github"
+      href={siteConfig.repository}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="GitHub"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path>
-        </svg>
-      </a>
-      <ThemeSelector />
-      <details class="mobile-menu">
-        <summary aria-label="Open navigation menu"><span class="menu-icon" set:html={Menu}></span></summary>
-        <nav aria-label="Mobile navigation">
-          {
-            navItems.map((item) => (
-              <a href={withBase(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
-                {item.label}
-              </a>
-            ))
-          }
-          <a href={withBase('/faq/')} aria-current={isActive('/faq/') ? 'page' : undefined}>FAQ</a>
-          <a href={siteConfig.repository} target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href={withBase('/download/')}>Download Daena</a>
-        </nav>
-      </details>
-    </div>
+        <path
+          d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+        ></path>
+      </svg>
+    </a>
+    <ThemeSelector />
+    <a class="btn btn--brass topbar__download" href={withBase('/download/')}>
+      <span class="icon" aria-hidden="true" set:html={Download} />Download
+    </a>
+    <details class="topbar__menu">
+      <summary class="btn btn--ghost btn--icon" aria-label="Open navigation menu">
+        <span class="icon" aria-hidden="true" set:html={Menu} />
+      </summary>
+      <nav class="topbar__panel" aria-label="Mobile navigation">
+        {
+          navItems.map((item) => (
+            <a
+              class="rail__item"
+              href={withBase(item.href)}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+        <a
+          class="rail__item"
+          href={withBase('/faq/')}
+          aria-current={isActive('/faq/') ? 'page' : undefined}>FAQ</a
+        >
+        <a class="rail__item" href={siteConfig.repository} target="_blank" rel="noopener noreferrer"
+          >GitHub</a
+        >
+        <a class="rail__item" href={withBase('/download/')}>Download Daena</a>
+      </nav>
+    </details>
   </div>
 </header>
 
 <style>
   .site-header {
-    --wordmark-ink: #2b2f2d;
-    --wordmark-accent: #a07b33;
-    --theme-control-background: rgba(255, 255, 255, 0.62);
-    --theme-control-background-hover: #fffefa;
-    --theme-control-border: #d6c7a7;
-    --theme-control-border-hover: #c2b190;
-    --theme-control-color: #5a5a56;
-    --theme-menu-background: #fffefa;
-    --theme-hover-background: #f6f1e6;
-    --theme-hover-color: #25251f;
-    --theme-active-background: #cead75;
-    --theme-active-color: #2f2619;
     position: sticky;
     z-index: 40;
     top: 0;
-    height: var(--header-height);
-    border-top: 1px solid #0b0b0b;
-    border-bottom: 1px solid #e2d9c6;
-    background: rgba(246, 241, 230, 0.94);
-    backdrop-filter: blur(14px);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+    height: 56px;
+    /* Align the bar's content with the page shell on wide screens. */
+    padding-inline: max(var(--space-5), calc((100% - var(--content-width)) / 2));
   }
-  :global([data-theme='dark']) .site-header {
-    --wordmark-ink: #f2eee4;
-    --wordmark-accent: #e4c786;
-    --theme-control-background: rgba(255, 255, 255, 0.045);
-    --theme-control-background-hover: #2d4437;
-    --theme-control-border: #43584c;
-    --theme-control-border-hover: #5a7467;
-    --theme-control-color: #f2eee4;
-    --theme-menu-background: #203229;
-    --theme-hover-background: #2d4437;
-    --theme-hover-color: #fffdf7;
-    --theme-active-background: #e4c786;
-    --theme-active-color: #2f2619;
-    border-top-color: #0b0b0b;
-    border-bottom-color: #354a3f;
-    background: color-mix(in srgb, #17241e 96%, transparent);
-    box-shadow: none;
+  .site-header :global(svg) {
+    width: 16px;
+    height: 16px;
+    flex: none;
   }
-  .header-inner {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
-  .brand {
-    flex: 0 0 auto;
-    text-decoration: none;
-  }
-  .desktop-nav {
-    margin-inline: auto;
-    display: flex;
-    align-items: center;
-    gap: clamp(1rem, 2vw, 2rem);
-  }
-  .desktop-nav a {
-    position: relative;
+  .icon {
     display: inline-flex;
-    align-items: center;
-    gap: 0.25em;
-    color: #2e2d2b;
-    font-size: 0.84rem;
-    font-weight: 550;
-    letter-spacing: 0.01em;
-    text-decoration: none;
   }
-  :global([data-theme='dark']) .desktop-nav a {
-    color: #d8d1c3;
+  .topbar__brand {
+    flex: none;
   }
-  .github-link {
-    width: 2.4rem;
-    height: 2.4rem;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--theme-control-border);
-    border-radius: 999px;
-    color: var(--theme-control-color);
-    background: var(--theme-control-background);
-    text-decoration: none;
+  .topbar__nav {
+    margin-left: var(--space-2);
   }
-  .github-link svg {
-    width: 1.15rem;
-    height: 1.15rem;
-  }
-  :global([data-theme='dark']) .github-link {
-    color: #d8d1c3;
-  }
-  .desktop-nav a::after {
-    position: absolute;
-    right: 0;
-    bottom: -0.65rem;
-    left: 0;
-    height: 1px;
-    background: #b8934a;
-    content: '';
-    transform: scaleX(0);
-    transition: transform 180ms ease;
-  }
-  :global([data-theme='dark']) .desktop-nav a::after {
-    background: #e4c786;
-  }
-  .desktop-nav a:hover::after,
-  .desktop-nav a[aria-current='page']::after {
-    transform: scaleX(1);
-  }
-  .desktop-nav a:hover,
-  .desktop-nav a[aria-current='page'] {
-    color: #1a1a18;
-  }
-  :global([data-theme='dark']) .desktop-nav a:hover,
-  :global([data-theme='dark']) .desktop-nav a[aria-current='page'] {
-    color: #fffdf7;
-  }
-  .github-link:hover {
-    border-color: var(--theme-control-border-hover);
-    background: var(--theme-control-background-hover);
-    color: var(--theme-hover-color);
-  }
-  :global([data-theme='dark']) .github-link:hover {
-    color: #fffdf7;
-  }
-  .site-header .button-primary {
-    background: #c9a46a;
-    color: #2f2619;
-    border: 1px solid #b8935a;
-    border-radius: 0.5rem;
-    box-shadow: none;
-    font-weight: 700;
-  }
-  :global([data-theme='dark']) .site-header .button-primary {
-    background: #e4c786;
-    border-color: transparent;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
-  }
-  .site-header .button-primary:hover {
-    background: #b8935a;
-    color: #1a140d;
-  }
-  :global([data-theme='dark']) .site-header .button-primary:hover {
-    background: #efd59e;
-  }
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-  }
-  .mobile-menu {
-    display: none;
+  .topbar__menu {
     position: relative;
-  }
-  .mobile-menu > summary {
-    width: 2.4rem;
-    height: 2.4rem;
-    display: grid;
-    place-content: center;
-    border: 1px solid var(--theme-control-border);
-    border-radius: 999px;
-    cursor: pointer;
-    list-style: none;
-    color: var(--theme-control-color);
-    background: var(--theme-control-background);
-  }
-  .mobile-menu > summary::-webkit-details-marker {
     display: none;
   }
-  .mobile-menu > summary .menu-icon :global(svg) {
-    width: 1.1rem;
-    height: 1.1rem;
+  .topbar__menu > summary {
+    list-style: none;
   }
-  .mobile-menu nav {
+  .topbar__menu > summary::-webkit-details-marker {
+    display: none;
+  }
+  .topbar__panel {
     position: absolute;
-    top: calc(100% + 0.55rem);
+    z-index: 50;
+    top: calc(100% + 8px);
     right: 0;
-    width: min(18rem, calc(100vw - 2rem));
-    padding: 0.55rem;
     display: grid;
-    border: 1px solid var(--theme-control-border);
-    border-radius: 0.9rem;
-    background: var(--theme-menu-background);
-    box-shadow: var(--shadow-medium);
+    width: min(18rem, calc(100vw - 2rem));
+    padding: 6px;
+    border: 1px solid var(--rail-border);
+    border-radius: var(--radius-lg);
+    background: var(--rail-popover);
+    box-shadow: var(--shadow-md);
   }
-  .mobile-menu nav a {
-    padding: 0.8rem 0.9rem;
-    border-radius: 0.55rem;
-    color: #2f2619;
-    font-weight: 650;
-    text-decoration: none;
+  .topbar__panel .rail__item:last-child {
+    margin-bottom: 0;
   }
-  :global([data-theme='dark']) .mobile-menu nav a {
-    color: #f2eee4;
-  }
-  .mobile-menu nav a:hover {
-    background: var(--theme-hover-background);
-  }
-  .mobile-menu nav a[aria-current='page'] {
-    background: var(--theme-hover-background);
-    color: #a07b33;
-  }
-  :global([data-theme='dark']) .mobile-menu nav a[aria-current='page'] {
-    color: #efd59e;
-  }
-  @media (max-width: 68rem) {
-    .desktop-nav,
-    .github-link {
+  @media (max-width: 45rem) {
+    .site-header {
+      gap: var(--space-3);
+      padding-inline: var(--space-4);
+    }
+    .topbar__nav,
+    .topbar__github {
       display: none;
     }
-    .header-actions {
-      margin-left: auto;
-    }
-    .mobile-menu {
+    .topbar__menu {
       display: block;
     }
   }
-  @media (max-width: 35rem) {
-    .header-actions > .button {
+  @media (max-width: 25rem) {
+    .topbar__download {
       display: none;
     }
   }
 </style>
+
+<script>
+  // Close the header's native menus on outside click or Escape.
+  const menus = () => document.querySelectorAll<HTMLDetailsElement>('.site-header details[open]');
+  document.addEventListener('click', (event) => {
+    menus().forEach((menu) => {
+      if (!menu.contains(event.target as Node)) menu.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    menus().forEach((menu) => {
+      menu.removeAttribute('open');
+      menu.querySelector('summary')?.focus();
+    });
+  });
+</script>

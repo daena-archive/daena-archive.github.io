@@ -1,97 +1,85 @@
 ---
-import { Sun, Moon } from 'lucide-static';
-const iconStroke = 'currentColor';
+import { Check, Monitor, Moon, Sun, SunMoon } from 'lucide-static';
+
+// Behaviour lives in BaseLayout's script: it reads [data-theme-choice],
+// toggles aria-pressed, fills [data-theme-label] and closes the <details>.
+const choices = [
+  { value: 'light', label: 'Light', icon: Sun },
+  { value: 'dark', label: 'Dark', icon: Moon },
+  { value: 'system', label: 'System', icon: Monitor },
+] as const;
 ---
 
-<button
-  type="button"
-  class="theme-toggle"
-  data-theme-toggle
-  aria-label="Toggle color theme"
-  title="Toggle color theme"
->
-  <span class="icon-sun" aria-hidden="true" set:html={Sun}></span>
-  <span class="icon-moon" aria-hidden="true" set:html={Moon}></span>
-</button>
+<details class="theme-selector">
+  <summary
+    class="btn btn--ghost btn--icon"
+    aria-label="Choose color theme"
+    title="Choose color theme"
+  >
+    <span class="icon" aria-hidden="true" set:html={SunMoon} />
+    <span data-theme-label hidden>System</span>
+  </summary>
+  <div class="theme-menu" role="group" aria-label="Color theme">
+    {
+      choices.map((choice) => (
+        <button
+          type="button"
+          class="rail__item"
+          data-theme-choice={choice.value}
+          aria-pressed={choice.value === 'system' ? 'true' : 'false'}
+        >
+          <span class="icon" aria-hidden="true" set:html={choice.icon} />
+          {choice.label}
+          <span class="check" aria-hidden="true" set:html={Check} />
+        </button>
+      ))
+    }
+  </div>
+</details>
 
 <style>
-  .theme-toggle {
+  .theme-selector {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    padding: 0;
-    border: 1px solid var(--theme-control-border, var(--line));
-    border-radius: 999px;
-    color: var(--theme-control-color, var(--ink-soft));
-    background: var(
-      --theme-control-background,
-      color-mix(in srgb, var(--paper-raised) 86%, transparent)
-    );
-    cursor: pointer;
   }
-  .theme-toggle:hover,
-  .theme-toggle:focus-visible {
-    border-color: var(--theme-control-border-hover, var(--theme-control-border, var(--line)));
-    color: var(--theme-hover-color, var(--ink));
-    background: var(--theme-control-background-hover, var(--theme-control-background));
+  .theme-selector > summary {
+    list-style: none;
   }
-  .theme-toggle svg,
-  .theme-toggle :global(svg) {
-    width: 1.05rem;
-    height: 1.05rem;
-  }
-  .icon-sun,
-  .icon-moon {
+  .theme-selector > summary::-webkit-details-marker {
     display: none;
   }
-</style>
-
-<style is:global>
-  :root[data-theme='light'] .theme-toggle .icon-sun,
-  :root[data-theme='dark'] .theme-toggle .icon-moon {
-    display: block;
+  .icon,
+  .check {
+    display: inline-flex;
+  }
+  .theme-selector :global(svg) {
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+  .theme-menu {
+    position: absolute;
+    z-index: 50;
+    top: calc(100% + 8px);
+    right: 0;
+    display: grid;
+    min-width: 10rem;
+    padding: 6px;
+    border: 1px solid var(--rail-border);
+    border-radius: var(--radius-lg);
+    background: var(--rail-popover);
+    box-shadow: var(--shadow-md);
+  }
+  .theme-menu .rail__item:last-child {
+    margin-bottom: 0;
+  }
+  .theme-menu .rail__item[aria-pressed='true'] {
+    color: var(--rail-text);
+  }
+  .check {
+    margin-left: auto;
+    visibility: hidden;
+  }
+  .rail__item[aria-pressed='true'] .check {
+    visibility: visible;
   }
 </style>
-
-<script is:inline>
-  (() => {
-    const root = document.documentElement;
-    const button = document.querySelector('[data-theme-toggle]');
-    if (!button || button.dataset.bound) return;
-    button.dataset.bound = 'true';
-
-    const sync = () => {
-      const theme = root.dataset.theme === 'dark' ? 'dark' : 'light';
-      button.dataset.state = theme;
-      button.setAttribute(
-        'aria-label',
-        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
-      );
-    };
-
-    const apply = (next) => {
-      root.dataset.theme = next;
-      root.dataset.themePreference = next;
-      localStorage.setItem('daena-theme', next);
-      document
-        .querySelector('meta[name="theme-color"]')
-        ?.setAttribute('content', next === 'dark' ? '#0e1714' : '#f7f6f2');
-      sync();
-    };
-
-    sync();
-
-    button.addEventListener('click', () => {
-      const current = root.dataset.theme === 'dark' ? 'dark' : 'light';
-      apply(current === 'dark' ? 'light' : 'dark');
-    });
-
-    new MutationObserver(sync).observe(root, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
-  })();
-</script>

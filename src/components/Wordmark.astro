@@ -2,72 +2,36 @@
 import { withBase } from '../config/site';
 
 interface Props {
-  compact?: boolean;
+  /** 'rail' sits on the forest chrome (on-dark mark); 'paper' sits on a light or dark paper surface (on-light mark). */
+  surface?: 'rail' | 'paper';
+  /** Rendered size in CSS pixels. */
+  size?: number;
 }
 
-const { compact = false } = Astro.props;
+const { surface = 'rail', size = 28 } = Astro.props;
+const name = surface === 'rail' ? 'mark-on-dark' : 'mark-on-light';
 ---
 
-<span class:list={['wordmark', { compact }]}>
-  <img class="wordmark-icon wordmark-icon-light" src={withBase('/branding/daena-icon.png')} alt="" width="500" height="500" />
-  <img class="wordmark-icon wordmark-icon-dark" src={withBase('/branding/daena-icon-dark.png')} alt="" width="500" height="500" />
-  <span class="wordmark-copy">
-    <strong>DAENA</strong>
-    <small>ARCHIVE</small>
-  </span>
-</span>
+<picture class="wordmark">
+  <source
+    type="image/webp"
+    srcset={`${withBase(`/branding/${name}-64.webp`)} 1x, ${withBase(`/branding/${name}-128.webp`)} 2x`}
+  />
+  <img
+    src={withBase(`/branding/${name}-64.png`)}
+    alt=""
+    width={size}
+    height={size}
+    decoding="async"
+  />
+</picture>
 
 <style>
   .wordmark {
     display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
-    color: var(--wordmark-ink, var(--ink));
+    flex: none;
   }
   img {
-    width: 2.25rem;
-    height: 2.25rem;
-    object-fit: contain;
-  }
-  .wordmark-icon-dark {
-    display: none;
-  }
-  :global([data-theme='light']) .wordmark-icon-light {
-    display: none;
-  }
-  :global([data-theme='light']) .wordmark-icon-dark {
     display: block;
-  }
-  :global([data-theme='dark']) .wordmark-icon-dark {
-    display: none;
-  }
-  :global([data-theme='dark']) .wordmark-icon-light {
-    display: block;
-  }
-  .wordmark-copy {
-    display: grid;
-    line-height: 1;
-  }
-  strong {
-    font-family: var(--font-serif);
-    font-size: 1.05rem;
-    font-weight: 560;
-    letter-spacing: 0.25em;
-  }
-  small {
-    margin-top: 0.28rem;
-    color: var(--wordmark-accent, var(--copper-text));
-    font-size: 0.53rem;
-    font-weight: 750;
-    letter-spacing: 0.5em;
-  }
-  .compact img {
-    width: 1.9rem;
-    height: 1.9rem;
-  }
-  @media (max-width: 30rem) {
-    .wordmark-copy {
-      display: none;
-    }
   }
 </style>
