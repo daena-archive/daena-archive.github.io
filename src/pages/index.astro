@@ -541,7 +541,6 @@ const keeps = [
   @media (max-width: 46rem) {
     .hero {
       min-height: auto;
-      padding-bottom: 0;
     }
     .hero-art {
       height: 26rem;
@@ -577,7 +576,7 @@ const keeps = [
     }
     .hero-copy {
       width: 100%;
-      padding-top: 4rem;
+      padding: var(--space-6) 0 0;
     }
     .hero-copy .display-heading {
       font-size: clamp(3.5rem, 16vw, 5.6rem);
@@ -592,7 +591,8 @@ const keeps = [
       display: none;
     }
     .hero-facts {
-      width: 100%;
+      width: auto;
+      margin-inline: var(--space-2);
       grid-template-columns: 1fr 1fr;
       padding-block: 0.8rem;
     }
@@ -604,6 +604,10 @@ const keeps = [
     }
   }
   @media (max-width: 40rem) {
+    .hero {
+      min-height: auto;
+      padding-bottom: var(--space-8);
+    }
     .plugins__grid {
       grid-template-columns: minmax(0, 1fr);
     }

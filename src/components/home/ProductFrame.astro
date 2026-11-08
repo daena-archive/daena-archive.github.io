@@ -332,6 +332,10 @@ const { name, groupLabel, projectName, items } = Astro.props;
       height: auto;
       flex-direction: column;
     }
+    /* The rail becomes the top row here; the tab strip would compete with it. */
+    .archive-figure .app-toolbar {
+      display: none;
+    }
     .frame__body > .rail {
       width: auto;
       flex-direction: row;
