@@ -589,18 +589,16 @@ const keeps = [
     .hero-copy .display-heading {
       font-size: clamp(3.5rem, 16vw, 5.6rem);
     }
+    /* The quote card is decoration; on phones it only pushes the content down. */
     :global(.hero-archive-card) {
-      position: relative;
-      inset: auto;
-      width: 15rem;
-      margin: 2rem 0 3rem;
+      display: none;
     }
     .hero-map-pins {
       display: none;
     }
     .hero-facts {
       width: var(--shell);
-      margin-inline: auto;
+      margin: var(--space-7) auto 0;
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       background: color-mix(in srgb, var(--surface) 92%, transparent);
