@@ -1,0 +1,589 @@
+---
+import { Hexagon, Search } from 'lucide-static';
+import CollectionPane from './CollectionPane.astro';
+import WorkspaceHeading from './WorkspaceHeading.astro';
+import { entityTypes } from './entityTypes';
+
+// Lore's three views over the same records, after the real workspace:
+// Library (master-detail editor), Wiki (knowledge base with a right rail), and
+// Graph (a small connected neighbourhood, with the real graph's type legend and
+// toolbar). The demo keeps the entry text short and drops the real controls
+// that only matter while editing.
+const entries = [
+  {
+    id: 'mira',
+    type: 'Person',
+    name: 'Mira Vale',
+    paragraphs: [
+      'Cartographer of the <span class="ref">Tidewatch</span> and keeper of the western soundings. Raised among the <span class="ref">Coastfolk</span> of <span class="ref">Eldermere</span>, she charts the tides for <span class="ref">House Vale</span>.',
+      'Her tables are still read aloud on the eastern quay, and no captain sails the western soundings without them.',
+    ],
+    props: [
+      ['Occupation', 'Cartographer'],
+      ['Aliases', 'Add aliases', true],
+      ['House', 'House Vale'],
+      ['Appears in', 'The Sounding Bell'],
+    ],
+  },
+  {
+    id: 'eldermere',
+    type: 'Place',
+    name: 'Eldermere',
+    paragraphs: [
+      'A harbour city built around the <span class="ref">Tidewatch</span>, where the western soundings meet the Lantern Marsh. Its quays are older than the houses that rule them.',
+      'Every captain who works the coast keeps a table copied from the <span class="ref">Tidewatch</span> archives.',
+    ],
+    props: [
+      ['Region', 'Western soundings'],
+      ['Type', 'Harbour city'],
+      ['Ruler', 'House Vale'],
+      ['Language', 'Coastfolk'],
+    ],
+  },
+  {
+    id: 'coastfolk',
+    type: 'Culture',
+    name: 'Coastfolk',
+    paragraphs: [
+      'The tide-readers of the western soundings. Coastfolk families measure the year by the water and keep their histories in sounding tables rather than tombs.',
+      'Their language, also called <span class="ref">Coastfolk</span>, is still taught on the eastern quay.',
+    ],
+    props: [
+      ['Language', 'Coastfolk'],
+      ['Centre', 'Tidewatch'],
+      ['Values', 'Tide-reading, memory'],
+      ['Related', 'House Vale'],
+    ],
+  },
+  {
+    id: 'crown',
+    type: 'Artifact',
+    name: 'Crown of Salt',
+    paragraphs: [
+      'A circlet of salt-cured silver, said to have been raised from the soundings before the founding of <span class="ref">Eldermere</span>.',
+      'It changed hands in 834 and has stayed with <span class="ref">House Vale</span> since. The marsh keeps its own account of the exchange.',
+    ],
+    props: [
+      ['Holder', 'House Vale'],
+      ['Origin', 'Before 812'],
+      ['Status', 'Missing'],
+      ['Era', 'Age of Settlement'],
+    ],
+  },
+  {
+    id: 'tidewatch',
+    type: 'Place',
+    name: 'Tidewatch',
+    paragraphs: [
+      'The old watch on <span class="ref">Eldermere</span>’s eastern quay. Its lower floors hold the sounding tables; the lamp above them stays lit for the western approach.',
+      'The tables are copied by hand and carried by every captain who works the coast.',
+    ],
+    props: [
+      ['Region', 'Eastern quay'],
+      ['Type', 'Watch and archive'],
+      ['Keeper', 'House Vale'],
+      ['Records', 'Sounding tables'],
+    ],
+  },
+  {
+    id: 'lantern',
+    type: 'Place',
+    name: 'Lantern Marsh',
+    paragraphs: [
+      'Freshwater marsh west of the harbour, crossed by lantern poles and raised walkways. Its villages speak <span class="ref">Coastfolk</span> with a marsh accent the quay rarely writes down.',
+      'The accord that ended the War of Tides was signed here in 861.',
+    ],
+    props: [
+      ['Region', 'Western soundings'],
+      ['Type', 'Marsh'],
+      ['Accord', '861'],
+      ['Language', 'Marsh Cant'],
+    ],
+  },
+];
+
+// The graph's legend lists the entity types present, sorted by name, as the real
+// graph does (packages/modules/lore/src/index.ts). Colours come from entityTypes.
+const typeNames = {
+  artifact: 'Artifact',
+  culture: 'Culture',
+  event: 'Event',
+  house: 'House',
+  person: 'Person',
+  place: 'Place',
+} as const;
+const legend = Object.keys(typeNames) as (keyof typeof typeNames)[];
+const nodes = [
+  { id: 'mira', name: 'Mira Vale', type: 'person', x: 305, y: 138 },
+  { id: 'vale', name: 'House Vale', type: 'house', x: 75, y: 38 },
+  { id: 'eldermere', name: 'Eldermere', type: 'place', x: 535, y: 38 },
+  { id: 'coastfolk', name: 'Coastfolk', type: 'culture', x: 545, y: 218 },
+  { id: 'crown', name: 'Crown of Salt', type: 'artifact', x: 75, y: 218 },
+  { id: 'war', name: 'War of Tides', type: 'event', x: 305, y: 278 },
+] as const;
+const node = (id: string) => nodes.find((candidate) => candidate.id === id)!;
+const edges = [
+  ['mira', 'vale'],
+  ['mira', 'eldermere'],
+  ['mira', 'coastfolk'],
+  ['mira', 'crown'],
+  ['mira', 'war'],
+  ['vale', 'crown'],
+  ['eldermere', 'coastfolk'],
+].map(([from, to]) => [node(from), node(to)] as const);
+---
+
+<section class="app-screen">
+  <WorkspaceHeading
+    kicker="World bible"
+    title="Lore library"
+    nav={['Library', 'Wiki', 'Graph']}
+    group="lore-view"
+    create="New"
+  />
+
+  <div class="app-stage">
+    <div class="app-page is-open" data-panel="lore-view:library">
+      <div class="app-grid app-grid--entry">
+        <CollectionPane
+          kicker="Lore library"
+          count={6}
+          label="entries"
+          search="Search entries"
+          group="lore-entry"
+          rows={entries.map((entry) => ({
+            type:
+              entry.id === 'mira'
+                ? 'person'
+                : entry.id === 'eldermere' || entry.id === 'tidewatch' || entry.id === 'lantern'
+                  ? 'place'
+                  : entry.id === 'coastfolk'
+                    ? 'culture'
+                    : 'artifact',
+            name: entry.name,
+            subtitle: entry.type,
+            value: entry.id,
+          }))}
+        />
+        <div class="app-entrywrap">
+          {
+            entries.map((entry, index) => (
+              <div
+                class:list={['app-entry', { 'is-open': index === 0 }]}
+                data-panel={`lore-entry:${entry.id}`}
+              >
+                <article class="app-pane app-content">
+                  <div class="app-entry-head">
+                    <div>
+                      <span class="overline">{entry.type}</span>
+                      <h2>{entry.name}</h2>
+                    </div>
+                    <div class="app-nav">
+                      <span class="is-active">Article</span>
+                      <span>Edit</span>
+                    </div>
+                  </div>
+                  <div class="app-article">
+                    {entry.paragraphs.map((paragraph) => (
+                      <p set:html={paragraph} />
+                    ))}
+                  </div>
+                </article>
+                <aside class="app-pane app-inspector">
+                  <div class="app-inspector__head">
+                    <span class="overline">Inspector</span>
+                    <strong>{entry.type}</strong>
+                    <p>{entry.name}</p>
+                  </div>
+                  <div class="app-props">
+                    {entry.props.map(([label, value, empty]) => (
+                      <div class="app-prop">
+                        <span>{label}</span>
+                        <div class:list={['app-input', { 'is-empty': empty }]}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </aside>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="app-page" data-panel="lore-view:wiki">
+      <div class="wiki">
+        <aside class="wiki__side">
+          <div class="wiki__search">
+            <Fragment set:html={Search} />
+            <span>Search pages</span>
+          </div>
+          <div class="wiki__group">People</div>
+          <span class="wiki__page is-active">Mira Vale</span>
+          <span class="wiki__page">Elian Rook</span>
+          <span class="wiki__page">Neris Vale</span>
+          <div class="wiki__group">Places</div>
+          <span class="wiki__page">Eldermere</span>
+          <span class="wiki__page">Lantern Marsh</span>
+          <div class="wiki__group">Artifacts</div>
+          <span class="wiki__page">Crown of Salt</span>
+          <div class="wiki__group">Cultures</div>
+          <span class="wiki__page">Coastfolk</span>
+        </aside>
+
+        <article class="wiki__article">
+          <div class="wiki__crumb">
+            <span>Knowledge base</span><span>/</span><span>Person</span><span>/</span>
+            <strong>Mira Vale</strong>
+          </div>
+          <header class="wiki__head">
+            <span class="overline">Person</span>
+            <h2>Mira Vale</h2>
+            <p>Cartographer of the Tidewatch and keeper of the western soundings.</p>
+          </header>
+          <h3>Tide tables</h3>
+          <p>
+            Mira's tables record the western soundings year by year. Copies travel with every
+            captain out of Eldermere, and the originals stay in the
+            <span class="ref">Tidewatch</span>.
+          </p>
+          <h3>House Vale</h3>
+          <p>
+            She charts for <span class="ref">House Vale</span> and is named in the house rolls as its
+            cartographer. The appointment is older than the current head.
+          </p>
+          <div class="wiki__links">
+            <span class="app-chip">House Vale</span>
+            <span class="app-chip">Eldermere</span>
+            <span class="app-chip">Coastfolk</span>
+            <span class="app-chip">The Sounding Bell</span>
+          </div>
+        </article>
+
+        <aside class="wiki__rail">
+          <section class="wiki__card">
+            <span class="overline">Entry</span>
+            <div class="app-propgrid">
+              <div><span>Type</span><strong>Person</strong></div>
+              <div><span>House</span><strong>House Vale</strong></div>
+              <div><span>Occupation</span><strong>Cartographer</strong></div>
+            </div>
+          </section>
+          <section class="wiki__card">
+            <span class="overline">On this page</span>
+            <div class="app-propgrid">
+              <div><strong>Tide tables</strong></div>
+              <div><strong>House Vale</strong></div>
+            </div>
+          </section>
+          <section class="wiki__card">
+            <span class="overline">Connections</span>
+            <div class="app-propgrid">
+              <div><span>Member of</span><strong>House Vale</strong></div>
+              <div><span>Charted</span><strong>Eldermere</strong></div>
+              <div><span>Searched for</span><strong>Crown of Salt</strong></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+
+    <div class="app-page" data-panel="lore-view:graph">
+      <header class="app-topbar">
+        <div class="app-topbar__brand">
+          <span class="app-topbar__mark" set:html={Hexagon} />
+          <div class="app-topbar__copy">
+            <strong>World graph</strong>
+            <small>{nodes.length} entities · {edges.length} links</small>
+          </div>
+        </div>
+      </header>
+
+      <div class="app-card graph__card">
+        <div class="graph__toolbar">
+          <div class="graph__legend">
+            {
+              legend.map((type) => (
+                <span class="graph__legend-item" data-toggle-type={type}>
+                  <i
+                    style={`color: var(--type-${entityTypes[type].preset}); background: var(--type-${entityTypes[type].preset}-bg);`}
+                  />
+                  {typeNames[type]}
+                </span>
+              ))
+            }
+          </div>
+          <div class="graph__actions">
+            <span>−</span><span>+</span><span>Fit graph</span><span>Rearrange</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 760 340" role="presentation" focusable="false">
+          {
+            edges.map(([from, to]) => (
+              <path
+                class="graph__edge"
+                data-types={`${from.type} ${to.type}`}
+                d={`M${from.x + 75} ${from.y + 32}L${to.x + 75} ${to.y + 32}`}
+              />
+            ))
+          }
+          {
+            nodes.map((node) => (
+              <g
+                class="graph__node"
+                data-types={node.type}
+                style={`--node-color: var(--type-${entityTypes[node.type].preset});`}
+                transform={`translate(${node.x} ${node.y})`}
+              >
+                <rect width="150" height="64" rx="9" />
+                <text x="75" y="27">
+                  {node.name}
+                </text>
+                <text class="graph__type" x="75" y="45">
+                  {typeNames[node.type].toUpperCase()}
+                </text>
+              </g>
+            ))
+          }
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .wiki {
+    display: grid;
+    min-height: 0;
+    flex: 1;
+    grid-template-columns: 186px minmax(0, 1fr) 210px;
+    gap: var(--app-gap);
+    padding: 0 var(--app-pad) var(--app-pad);
+  }
+  .wiki__side,
+  .wiki__article,
+  .wiki__rail {
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+  .wiki__side {
+    padding: var(--space-3);
+  }
+  .wiki__search {
+    display: flex;
+    height: 30px;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: var(--space-2);
+    padding: 0 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--ink-faint);
+    font: 400 12px/1 var(--font-ui);
+  }
+  .wiki__search :global(svg) {
+    width: 12px;
+    height: 12px;
+    flex: none;
+  }
+  .wiki__group {
+    margin: var(--space-3) 4px var(--space-1);
+    color: var(--ink-muted);
+    font: 700 10px/1.2 var(--font-ui);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .wiki__page {
+    display: block;
+    padding: 5px 8px;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    color: var(--ink-soft);
+    font: 500 12px/1.3 var(--font-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .wiki__page.is-active {
+    background: var(--surface-warm);
+    color: var(--ink);
+  }
+  .wiki__article {
+    padding: var(--space-4) var(--space-5);
+  }
+  .wiki__crumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink-muted);
+    font: 500 11px/1.3 var(--font-ui);
+  }
+  .wiki__crumb strong {
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .wiki__head {
+    margin-top: var(--space-4);
+  }
+  .wiki__head h2 {
+    margin: 4px 0 var(--space-2);
+    color: var(--ink);
+    font: 500 30px/1.1 var(--font-display);
+  }
+  .wiki__head p,
+  .wiki__article > p {
+    margin: 0 0 var(--space-3);
+    color: var(--ink);
+    font: 400 14px/1.65 var(--font-ui);
+  }
+  .wiki__article h3 {
+    margin: var(--space-4) 0 var(--space-2);
+    color: var(--ink);
+    font: 600 16px/1.25 var(--font-display);
+  }
+  .wiki__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: var(--space-4);
+  }
+  .wiki__article :global(.ref) {
+    border-bottom: 1px solid var(--accent);
+    color: var(--accent-dark);
+  }
+  .wiki__rail {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    background: var(--surface-muted);
+  }
+  .wiki__card {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+
+  .graph__card {
+    display: flex;
+    flex-direction: column;
+  }
+  .graph__toolbar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .graph__legend,
+  .graph__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .graph__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--ink-muted);
+    font: 600 11px/1.2 var(--font-ui);
+  }
+  .graph__legend-item[data-toggle-type] {
+    cursor: pointer;
+  }
+  .graph__legend-item.is-hidden {
+    border-style: dashed;
+    opacity: 0.45;
+  }
+  .graph__legend-item i {
+    width: 8px;
+    height: 8px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+  }
+  .graph__legend-item.is-hidden i {
+    background: transparent !important;
+  }
+  .graph__actions {
+    margin-left: auto;
+  }
+  .graph__actions span {
+    padding: 5px 9px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink-muted);
+    font: 600 11px/1.2 var(--font-ui);
+    white-space: nowrap;
+  }
+  .graph__card svg {
+    min-height: 0;
+    flex: 1;
+    width: 100%;
+    height: auto;
+    padding: var(--space-3) var(--space-4);
+  }
+  .graph__node.is-cut,
+  .graph__edge.is-cut {
+    display: none;
+  }
+  .graph__edge {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1.2;
+    stroke-dasharray: 5 5;
+  }
+  .graph__node rect {
+    fill: var(--surface);
+    stroke: var(--node-color);
+    stroke-width: 1.4;
+  }
+  .graph__node text {
+    fill: var(--ink);
+    text-anchor: middle;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 680;
+  }
+  .graph__node .graph__type {
+    fill: var(--ink-soft);
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+  }
+
+  @media (max-width: 70rem) {
+    .wiki {
+      grid-template-columns: 170px minmax(0, 1fr);
+    }
+    .wiki__rail {
+      display: none;
+    }
+  }
+  @media (max-width: 52rem) {
+    .wiki {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .wiki__side {
+      display: none;
+    }
+    .wiki__article {
+      padding: var(--space-4);
+    }
+    .graph__legend {
+      display: none;
+    }
+  }
+</style>

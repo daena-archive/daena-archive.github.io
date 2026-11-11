@@ -10,9 +10,9 @@ const span = 90;
 const at = (year: number) => ((year - from) / span) * 100;
 const ticks = [800, 820, 840, 860, 880];
 const events = [
-  { name: 'Founding of Eldermere', year: 812, row: 0, type: 'amber' },
-  { name: 'The Crown of Salt changes hands', year: 834, row: 1, type: 'amber' },
-  { name: 'The Lantern Marsh Accord', year: 861, row: 2, type: 'amber' },
+  { key: 'founding', name: 'Founding of Eldermere', year: 812, row: 0, type: 'amber' },
+  { key: 'crown', name: 'The Crown of Salt changes hands', year: 834, row: 1, type: 'amber' },
+  { key: 'accord', name: 'The Lantern Marsh Accord', year: 861, row: 2, type: 'amber' },
 ] as const;
 ---
 
@@ -37,6 +37,8 @@ const events = [
         events.map((event) => (
           <span
             class="box"
+            data-set={`tl-item:${event.key}`}
+            data-tab-title={event.name}
             style={`left: ${at(event.year)}%; top: ${8 + event.row * 38}px; --item-fg: var(--type-${event.type}); --item-bg: var(--type-${event.type}-bg);`}
           >
             {event.name}
@@ -44,7 +46,9 @@ const events = [
         ))
       }
       <span
-        class="range is-selected"
+        class="range is-active"
+        data-set="tl-item:war"
+        data-tab-title="War of Tides"
         style={`left: ${at(843)}%; width: ${at(861) - at(843)}%; top: 8px; --item-fg: var(--type-amber); --item-bg: var(--type-amber-bg);`}
         >War of Tides</span
       >
@@ -54,11 +58,17 @@ const events = [
     <span class="vis__label">Lifelines (2)</span>
     <span class="vis__plot">
       {ticks.map((year) => <i class="grid" style={`left: ${at(year)}%`} />)}
-      <span class="life" style={`left: ${at(819)}%; width: ${at(880) - at(819)}%; top: 8px;`}
-        >Mira Vale</span
+      <span
+        class="life"
+        data-set="tl-item:mira"
+        data-tab-title="Mira Vale"
+        style={`left: ${at(819)}%; width: ${at(880) - at(819)}%; top: 8px;`}>Mira Vale</span
       >
-      <span class="life" style={`left: ${at(823)}%; width: ${at(878) - at(823)}%; top: 46px;`}
-        >Elian Rook</span
+      <span
+        class="life"
+        data-set="tl-item:elian"
+        data-tab-title="Elian Rook"
+        style={`left: ${at(823)}%; width: ${at(878) - at(823)}%; top: 46px;`}>Elian Rook</span
       >
     </span>
   </div>
@@ -136,14 +146,26 @@ const events = [
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .box[data-set],
+  .range[data-set],
+  .life[data-set] {
+    cursor: pointer;
+  }
+  .box[data-set]:hover,
+  .range[data-set]:hover,
+  .life[data-set]:hover {
+    filter: brightness(0.97);
+  }
   .range {
     padding: 0 6px;
   }
   .box {
     transform: translateX(-50%);
   }
-  .range.is-selected {
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 28%, transparent);
+  .box.is-active,
+  .range.is-active,
+  .life.is-active {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent);
   }
   /* Lifelines: pill shape with a circle at each end (.timeline-lifeline). */
   .life {

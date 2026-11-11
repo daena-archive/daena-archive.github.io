@@ -10,9 +10,12 @@ interface Props {
   nav?: string[];
   active?: number;
   create?: string;
+  /** Optional demo group. Adds data-set values so the switcher can be clicked. */
+  group?: string;
 }
 
-const { kicker, title, nav = [], active = 0, create } = Astro.props;
+const { kicker, title, nav = [], active = 0, create, group } = Astro.props;
+const navValue = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 ---
 
 <header class="app-heading">
@@ -24,7 +27,12 @@ const { kicker, title, nav = [], active = 0, create } = Astro.props;
     nav.length > 0 && (
       <div class="app-nav">
         {nav.map((label, index) => (
-          <span class:list={[{ 'is-active': index === active }]}>{label}</span>
+          <span
+            class:list={[{ 'is-active': index === active }]}
+            data-set={group ? `${group}:${navValue(label)}` : undefined}
+          >
+            {label}
+          </span>
         ))}
       </div>
     )

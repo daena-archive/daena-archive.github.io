@@ -1,0 +1,196 @@
+---
+import { Bold, ChevronDown, Italic, Link, List } from 'lucide-static';
+import CollectionPane from './CollectionPane.astro';
+import WorkspaceHeading from './WorkspaceHeading.astro';
+
+// Writing Studio's manuscripts: a normal entity with a document, opened in the
+// editor with a manuscript inspector.
+const manuscripts = [
+  {
+    id: 'bell',
+    name: 'The Sounding Bell',
+    status: 'drafting',
+    genre: 'Coastal fantasy',
+    paragraphs: [
+      'At first light, <span class="ref">Mira Vale</span> found the tide three marks higher than the tables allowed. Beyond the glass, <span class="ref">Eldermere</span>’s eastern quay was already awake.',
+      'Ropes creaked against wet timber, lanterns went dark one by one, and every gull had turned inland.',
+    ],
+  },
+  {
+    id: 'salt',
+    name: 'The Salt Ledger',
+    status: 'drafting',
+    genre: 'Mystery',
+    paragraphs: [
+      'The ledger arrived with the tide and no ship. It was bound in sailcloth, still wet, and every page after the fortieth had been cut out with a fish knife.',
+      '<span class="ref">House Vale</span> wanted it burned. <span class="ref">Mira Vale</span> wanted to know which hand had kept it.',
+    ],
+  },
+  {
+    id: 'letters',
+    name: 'Lantern Marsh Letters',
+    status: 'revised',
+    genre: 'Epistolary',
+    paragraphs: [
+      'The first letter from Lantern Marsh is dated 859 and carries no signature. It describes the accord three years before anyone signed it.',
+      'By the sixth letter, the writer has begun addressing <span class="ref">Mira Vale</span> by name.',
+    ],
+  },
+];
+---
+
+<section class="app-screen">
+  <WorkspaceHeading kicker="Drafting desk" title="Writing Studio" create="New" />
+
+  <div class="app-stage">
+    <div class="app-page is-open">
+      <div class="app-grid app-grid--entry">
+        <CollectionPane
+          kicker="Manuscripts"
+          count={3}
+          label="manuscripts"
+          search="Search manuscripts"
+          group="writing-entry"
+          rows={manuscripts.map((manuscript) => ({
+            type: 'manuscript',
+            name: manuscript.name,
+            subtitle: 'Manuscript',
+            value: manuscript.id,
+          }))}
+        />
+        <div class="app-entrywrap">
+          {
+            manuscripts.map((manuscript, index) => (
+              <div
+                class:list={['app-entry', { 'is-open': index === 0 }]}
+                data-panel={`writing-entry:${manuscript.id}`}
+              >
+                <article class="app-pane write">
+                  <div class="write__head">
+                    <h2>{manuscript.name}</h2>
+                    <div class="app-nav">
+                      <span>Article</span>
+                      <span class="is-active">Edit</span>
+                    </div>
+                  </div>
+                  <div class="write__toolbar">
+                    <span class="write__style">
+                      Normal text
+                      <span set:html={ChevronDown} />
+                    </span>
+                    <span class="write__tool" set:html={Bold} />
+                    <span class="write__tool" set:html={Italic} />
+                    <span class="write__tool" set:html={Link} />
+                    <span class="write__tool" set:html={List} />
+                  </div>
+                  <div class="write__body">
+                    {manuscript.paragraphs.map((paragraph) => (
+                      <p set:html={paragraph} />
+                    ))}
+                  </div>
+                </article>
+                <aside class="app-pane app-inspector">
+                  <div class="app-inspector__head">
+                    <span class="overline">Inspector</span>
+                    <strong>Manuscript</strong>
+                    <p>{manuscript.name}</p>
+                  </div>
+                  <div class="app-props">
+                    <div class="app-prop">
+                      <span>Status</span>
+                      <div class="app-input">
+                        {manuscript.status}
+                        <span set:html={ChevronDown} />
+                      </div>
+                    </div>
+                    <div class="app-prop">
+                      <span>Genre</span>
+                      <div class="app-input">{manuscript.genre}</div>
+                    </div>
+                    <div class="app-prop">
+                      <span>References</span>
+                      <div class="app-input">2 entities</div>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .write__head {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-5) var(--space-5) var(--space-3);
+  }
+  .write__head h2 {
+    margin: 0;
+    color: var(--ink);
+    font: 500 28px/1.15 var(--font-display);
+  }
+  .write__toolbar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-5);
+    background: var(--surface-muted);
+  }
+  .write__style {
+    display: inline-flex;
+    height: 30px;
+    align-items: center;
+    gap: 8px;
+    margin-right: var(--space-2);
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    font: 500 13px/1 var(--font-ui);
+  }
+  .write__style :global(svg) {
+    width: 12px;
+    height: 12px;
+  }
+  .write__tool {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    color: var(--ink-soft);
+  }
+  .write__tool :global(svg) {
+    width: 15px;
+    height: 15px;
+  }
+  .write__body {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+    padding: var(--space-5);
+    color: var(--ink);
+    font: 400 15px/1.8 var(--font-ui);
+  }
+  .write__body p {
+    margin: 0 0 1em;
+  }
+  .write__body :global(.ref) {
+    border-bottom: 1px solid var(--accent);
+    color: var(--accent-dark);
+  }
+  @media (max-width: 52rem) {
+    .write__toolbar {
+      overflow: hidden;
+    }
+  }
+</style>

@@ -96,7 +96,7 @@ Desktop layouts use asymmetric grids and controlled overlap. Tablet layouts redu
 
 The implementation provides semantic landmarks, one page-level heading, a skip link, visible focus treatment, keyboard-operable native menus/details controls, accessible theme labels, live filter result counts, text labels alongside status colors, and reduced-motion behavior.
 
-Illustrative UI fragments are not exposed as fake controls. For example, the AI proposal study presents its two possible actions as a labeled visual group rather than focusable buttons that do nothing. Dark editorial panels also use explicit warm-muted text colors in both themes; they do not inherit light-canvas muted tokens that would lose contrast against forest surfaces.
+Illustrative UI fragments are not exposed as fake controls. For example, the AI proposal study presents its two possible actions as a labeled visual group rather than focusable buttons that do nothing. The home-page app window is an illustration with one real control surface: the rail's radio group switches workspaces and supports arrow keys. The tab strip points at those same native radios, so it works without JavaScript. The in-window view switchers, entity preview links, and map layer eyes are pointer-only enhancements inside that `aria-hidden` illustration, so they add no focus stops and keyboard users never reach a dead control. Dark editorial panels also use explicit warm-muted text colors in both themes; they do not inherit light-canvas muted tokens that lose contrast against forest surfaces.
 
 FAQ accordions use native `details`/`summary`, so their content remains in generated HTML and usable without JavaScript. Plugin and roadmap filtering is progressive enhancement: every item is visible and indexable before the small filter script runs. Filtered roadmap lanes use the native `hidden` attribute with a scoped CSS rule that cannot be overridden by the lane grid layout.
 
@@ -104,7 +104,7 @@ The hero map has descriptive alternative text. Repeated decorative map treatment
 
 ## Performance
 
-The public site ships static HTML and shared CSS. JavaScript is limited to theme persistence, the mobile/native disclosure controls, plugin filtering, roadmap filtering, and Starlight's documentation search/navigation behavior.
+The public site ships static HTML and shared CSS. JavaScript is limited to theme persistence, the mobile/native disclosure controls, plugin filtering, roadmap filtering, the home-page app-window demo interactions, and Starlight's documentation search/navigation behavior.
 
 The hero has explicit dimensions and high fetch priority. Below-fold artwork is lazy loaded. WebP delivery reduces the 2.6 MB canonical hero PNG to a much smaller production transfer while retaining the original fallback. No animation library, WebGL, video, hosted font, analytics, or client-rendered page framework is included.
 

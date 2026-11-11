@@ -11,6 +11,7 @@ interface Row {
   type: EntityType;
   name: string;
   subtitle: string;
+  value?: string;
 }
 interface Props {
   kicker: string;
@@ -19,9 +20,11 @@ interface Props {
   search: string;
   rows: Row[];
   selected?: number;
+  /** Optional demo group. Rows become selectable when this is set. */
+  group?: string;
 }
 
-const { kicker, count, label, search, rows, selected = 0 } = Astro.props;
+const { kicker, count, label, search, rows, selected = 0, group } = Astro.props;
 ---
 
 <aside class="app-pane app-collection">
@@ -35,7 +38,11 @@ const { kicker, count, label, search, rows, selected = 0 } = Astro.props;
   <div class="app-list">
     {
       rows.map((row, index) => (
-        <div class:list={['app-row', { 'is-selected': index === selected }]}>
+        <div
+          class:list={['app-row', { 'is-active': index === selected }]}
+          data-set={group ? `${group}:${row.value ?? index}` : undefined}
+          data-tab-title={group ? row.name : undefined}
+        >
           <EntityGlyph type={row.type} size={36} />
           <span class="app-row__copy">
             <strong>{row.name}</strong>

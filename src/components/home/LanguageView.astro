@@ -1,0 +1,516 @@
+---
+import CollectionPane from './CollectionPane.astro';
+import WorkspaceHeading from './WorkspaceHeading.astro';
+
+// The language workshop: a language collection beside the pane set from the
+// real module. Coastfolk carries a little of every layer; Marsh Cant shows the
+// empty states a young language can honestly have.
+const tabs = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'lexicon', label: 'Lexicon' },
+  { id: 'sounds', label: 'Sounds' },
+  { id: 'writing', label: 'Writing' },
+  { id: 'grammar', label: 'Grammar' },
+  { id: 'morphology', label: 'Morphology' },
+  { id: 'samples', label: 'Samples' },
+];
+
+// Each language opens on its Lexicon pane.
+const defaultTab = 'lexicon';
+
+const languages = [
+  {
+    id: 'coastfolk',
+    name: 'Coastfolk',
+    native: 'Vaelis',
+    status: 'Living',
+    family: 'Coastal tongues',
+    writingSystem: 'Tide glyphs',
+    notes:
+      'The trade language of the western soundings. Speakers measure distance in soundings and time in tides, and the vocabulary follows.',
+    words: [
+      ['vaerith', 'noun', 'sea'],
+      ['vaer', 'noun', 'water'],
+      ['sael', 'verb', 'to sound, to measure depth'],
+      ['harren', 'adjective', 'deep'],
+    ],
+    sounds: {
+      consonants: ['v', 's', 'l', 'r', 'th', 'k', 'm', 'n'],
+      vowels: ['a', 'e', 'i', 'o', 'u', 'ae'],
+      note: 'Stress falls on the first syllable. Final consonants are soft, and a word never ends in a stop.',
+    },
+    script: {
+      note: 'An abugida written left to right. Each glyph carries a default vowel; a diacritic changes it.',
+      rows: [
+        ['v', '⋁', 'vaer'],
+        ['s', '⌇', 'sael'],
+        ['r', '╱', 'harren'],
+      ],
+    },
+    grammar: {
+      props: [
+        ['Word order', 'Verb–subject–object'],
+        ['Alignment', 'Nominative–accusative'],
+        ['Articles', 'Suffixed'],
+      ],
+      example: 'Sael-vaer Mira.',
+      translation: 'Mira sounds the water.',
+    },
+    forms: [
+      ['-ith', 'plural', 'vaerith'],
+      ['-en', 'past', 'saelen'],
+      ['-ka', 'locative', 'vaerka'],
+    ],
+    samples: [
+      ['Vaerith sael.', 'The sea sounds.'],
+      ['Harren vaer, harren table.', 'Deep water, deep table.'],
+      ['Mira sael-ka Eldermere.', 'Mira measures at Eldermere.'],
+    ],
+    empty: [] as string[],
+  },
+  {
+    id: 'marsh',
+    name: 'Marsh Cant',
+    native: 'Mirek',
+    status: 'Endangered',
+    family: 'Inland dialects',
+    writingSystem: 'None — oral',
+    notes:
+      'Spoken in the lantern villages and rarely written. Most records of it are Coastfolk transcriptions, which disagree on the vowels.',
+    words: [
+      ['mirek', 'noun', 'marsh'],
+      ['koth', 'noun', 'lantern'],
+      ['sal', 'verb', 'to sink'],
+    ],
+    sounds: {
+      consonants: [],
+      vowels: [],
+      note: '',
+    },
+    script: {
+      note: '',
+      rows: [],
+    },
+    grammar: {
+      props: [],
+      example: '',
+      translation: '',
+    },
+    forms: [],
+    samples: [],
+    empty: ['sounds', 'writing', 'grammar', 'morphology', 'samples'],
+  },
+];
+---
+
+<section class="app-screen">
+  <WorkspaceHeading kicker="Language workshop" title="Languages" create="New" />
+
+  <div class="app-stage">
+    <div class="app-page is-open">
+      <div class="app-grid app-grid--entry">
+        <CollectionPane
+          kicker="Languages"
+          count={2}
+          label="languages"
+          search="Search languages"
+          group="language-entry"
+          rows={languages.map((language) => ({
+            type: 'language',
+            name: language.name,
+            subtitle: 'Language',
+            value: language.id,
+          }))}
+        />
+        <div class="app-entrywrap">
+          {
+            languages.map((language, languageIndex) => (
+              <div
+                class:list={['app-entry app-entry--two', { 'is-open': languageIndex === 0 }]}
+                data-panel={`language-entry:${language.id}`}
+              >
+                <article class="app-pane lang">
+                  <div class="lang__tabs">
+                    {tabs.map((tab) => (
+                      <span
+                        class:list={['lang__tab', { 'is-active': tab.id === defaultTab }]}
+                        data-set={`lang-${language.id}:${tab.id}`}
+                      >
+                        {tab.label}
+                      </span>
+                    ))}
+                  </div>
+
+                  {tabs.map((tab) => (
+                    <div
+                      class:list={['lang__pane', { 'is-open': tab.id === defaultTab }]}
+                      data-panel={`lang-${language.id}:${tab.id}`}
+                    >
+                      {language.empty.includes(tab.id) ? (
+                        <div class="app-empty">
+                          <strong>No {tab.label.toLowerCase()} recorded yet.</strong>
+                          <p>
+                            A language does not need every layer. Add {tab.label.toLowerCase()} when
+                            this language asks for it.
+                          </p>
+                        </div>
+                      ) : tab.id === 'overview' ? (
+                        <>
+                          <div class="lang__bar">
+                            <h2>Overview</h2>
+                            <span class="app-primary">Edit identity</span>
+                          </div>
+                          <div class="lang__props">
+                            <div>
+                              <span>Native name</span>
+                              <strong>{language.native}</strong>
+                            </div>
+                            <div>
+                              <span>Status</span>
+                              <strong>{language.status}</strong>
+                            </div>
+                            <div>
+                              <span>Family</span>
+                              <strong>{language.family}</strong>
+                            </div>
+                            <div>
+                              <span>Writing system</span>
+                              <strong>{language.writingSystem}</strong>
+                            </div>
+                          </div>
+                          <p class="lang__note">{language.notes}</p>
+                        </>
+                      ) : tab.id === 'lexicon' ? (
+                        <>
+                          <div class="lang__bar">
+                            <h2>Lexicon</h2>
+                            <span class="app-primary">Add word</span>
+                          </div>
+                          <ul class="lang__list">
+                            {language.words.map(([lemma, pos, meaning]) => (
+                              <li>
+                                <strong>{lemma}</strong>
+                                <small>{pos}</small>
+                                <span>{meaning}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : tab.id === 'sounds' ? (
+                        <>
+                          <div class="lang__bar">
+                            <h2>Sounds</h2>
+                            <span class="app-primary">Add sound</span>
+                          </div>
+                          <div class="lang__inventory">
+                            <div>
+                              <span class="overline">Consonants</span>
+                              <div class="app-chips">
+                                {language.sounds.consonants.map((sound) => (
+                                  <span class="app-chip">{sound}</span>
+                                ))}
+                              </div>
+                            </div>
+                            <div>
+                              <span class="overline">Vowels</span>
+                              <div class="app-chips">
+                                {language.sounds.vowels.map((sound) => (
+                                  <span class="app-chip">{sound}</span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <p class="lang__note">{language.sounds.note}</p>
+                        </>
+                      ) : tab.id === 'writing' ? (
+                        <>
+                          <div class="lang__bar">
+                            <h2>Writing</h2>
+                            <span class="app-primary">Add system</span>
+                          </div>
+                          <p class="lang__note">{language.script.note}</p>
+                          <table class="lang__table">
+                            <thead>
+                              <tr>
+                                <th>Sound</th>
+                                <th>Glyph</th>
+                                <th>Example</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {language.script.rows.map(([sound, glyph, example]) => (
+                                <tr>
+                                  <td>{sound}</td>
+                                  <td>{glyph}</td>
+                                  <td>{example}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </>
+                      ) : tab.id === 'grammar' ? (
+                        <>
+                          <div class="lang__bar">
+                            <h2>Grammar</h2>
+                            <span class="app-primary">Add note</span>
+                          </div>
+                          <div class="lang__props">
+                            {language.grammar.props.map(([label, value]) => (
+                              <div>
+                                <span>{label}</span>
+                                <strong>{value}</strong>
+                              </div>
+                            ))}
+                          </div>
+                          <div class="lang__example">
+                            <strong>{language.grammar.example}</strong>
+                            <small>{language.grammar.translation}</small>
+                          </div>
+                        </>
+                      ) : tab.id === 'morphology' ? (
+                        <>
+                          <div class="lang__bar">
+                            <h2>Morphology</h2>
+                            <span class="app-primary">Add paradigm</span>
+                          </div>
+                          <table class="lang__table">
+                            <thead>
+                              <tr>
+                                <th>Affix</th>
+                                <th>Meaning</th>
+                                <th>Form</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {language.forms.map(([affix, meaning, form]) => (
+                                <tr>
+                                  <td>{affix}</td>
+                                  <td>{meaning}</td>
+                                  <td>{form}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </>
+                      ) : (
+                        <>
+                          <div class="lang__bar">
+                            <h2>Samples</h2>
+                            <span class="app-primary">Add sample</span>
+                          </div>
+                          <ul class="lang__samples">
+                            {language.samples.map(([sample, translation]) => (
+                              <li>
+                                <strong>{sample}</strong>
+                                <span>{translation}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </article>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lang {
+    padding: 0 var(--space-5);
+  }
+  .lang__tabs {
+    display: flex;
+    flex: none;
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
+    overflow-x: auto;
+    border-bottom: 1px solid var(--line);
+    scrollbar-width: thin;
+  }
+  .lang__tab {
+    flex: none;
+    padding: var(--space-4) 10px var(--space-3);
+    border-bottom: 2px solid transparent;
+    color: var(--ink-soft);
+    font: 600 13px/1 var(--font-ui);
+    white-space: nowrap;
+  }
+  .lang__tab[data-set] {
+    cursor: pointer;
+  }
+  .lang__tab[data-set]:not(.is-active):hover {
+    color: var(--ink);
+  }
+  .lang__tab.is-active {
+    border-bottom-color: var(--accent);
+    color: var(--ink);
+  }
+  .lang__pane {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .lang__bar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .lang__bar h2 {
+    margin: 0;
+    color: var(--ink);
+    font: 500 24px/1.2 var(--font-display);
+  }
+  .lang__props {
+    display: grid;
+    flex: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3) var(--space-5);
+    margin-bottom: var(--space-4);
+  }
+  .lang__props div {
+    display: grid;
+    gap: 3px;
+  }
+  .lang__props span {
+    color: var(--ink-muted);
+    font: 600 11px/1.2 var(--font-ui);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .lang__props strong {
+    color: var(--ink);
+    font: 500 13px/1.35 var(--font-ui);
+  }
+  .lang__note {
+    margin: 0;
+    color: var(--ink);
+    font: 400 14px/1.65 var(--font-ui);
+  }
+  .lang__list {
+    min-height: 0;
+    margin: 0;
+    padding: 0 0 var(--space-4);
+    overflow: hidden;
+    list-style: none;
+  }
+  .lang__list li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 90px minmax(0, 2fr);
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 46px;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .lang__list li + li {
+    margin-top: var(--space-2);
+  }
+  .lang__list strong {
+    color: var(--ink);
+    font: 700 14px/1.2 var(--font-ui);
+  }
+  .lang__list small {
+    color: var(--ink-soft);
+    font: 500 12px/1.2 var(--font-ui);
+  }
+  .lang__list span {
+    overflow: hidden;
+    color: var(--ink-muted);
+    font: 400 14px/1.2 var(--font-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lang__inventory {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+  .lang__inventory > div {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+  }
+  .lang__table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--ink);
+    font: 400 13px/1.4 var(--font-ui);
+  }
+  .lang__table th {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-muted);
+    font: 600 11px/1.2 var(--font-ui);
+    text-align: left;
+    text-transform: uppercase;
+  }
+  .lang__table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .lang__example {
+    display: grid;
+    gap: 3px;
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
+  }
+  .lang__example strong {
+    color: var(--ink);
+    font: 500 16px/1.3 var(--font-display);
+  }
+  .lang__example small {
+    color: var(--ink-soft);
+    font: 400 12px/1.3 var(--font-ui);
+  }
+  .lang__samples {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .lang__samples li {
+    display: grid;
+    gap: 2px;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .lang__samples strong {
+    color: var(--ink);
+    font: 500 15px/1.35 var(--font-display);
+  }
+  .lang__samples span {
+    color: var(--ink-soft);
+    font: 400 13px/1.35 var(--font-ui);
+  }
+  @media (max-width: 52rem) {
+    .lang {
+      padding: 0 var(--space-4);
+    }
+    .lang__list li {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    }
+    .lang__list li > :nth-child(2) {
+      display: none;
+    }
+    .lang__props,
+    .lang__inventory {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

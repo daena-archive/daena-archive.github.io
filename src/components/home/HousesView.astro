@@ -1,0 +1,206 @@
+---
+import { Castle } from 'lucide-static';
+import CollectionPane from './CollectionPane.astro';
+import EntityGlyph from './EntityGlyph.astro';
+import TreeCanvas from './TreeCanvas.astro';
+import WorkspaceHeading from './WorkspaceHeading.astro';
+
+// Houses is a master-detail collection over House records; Tree is the same
+// people arranged by kinship. The tree keeps its person dock, reduced to the
+// few facts the website can show honestly.
+const houses = [
+  {
+    id: 'vale',
+    name: 'House Vale',
+    paragraphs: [
+      'An old harbour house seated at Vale Keep. House Vale keeps the western soundings and the <span class="ref">Tidewatch</span> tables that go with them.',
+      'Its members are recorded as <span class="ref">Person</span> entries in Lore. Parentage, partnership, and membership are ordinary relationships.',
+    ],
+    props: [
+      ['Summary', 'Old harbour house'],
+      ['Founded', 'Before 812'],
+      ['Allies', 'House Rook'],
+      ['Rivals', 'Search and select entities…', true],
+    ],
+  },
+  {
+    id: 'rook',
+    name: 'House Rook',
+    paragraphs: [
+      'A captain’s house on Gull Rock, bound to <span class="ref">House Vale</span> by marriage and by the War of Tides.',
+      'House Rook keeps no court and few records. Its history travels in ships’ logs and in the <span class="ref">Coastfolk</span> soundings.',
+    ],
+    props: [
+      ['Summary', 'Captain’s house on Gull Rock'],
+      ['Founded', '825'],
+      ['Allies', 'House Vale'],
+      ['Rivals', 'Search and select entities…', true],
+    ],
+  },
+];
+
+const people = [
+  {
+    id: 'mira',
+    name: 'Mira Vale',
+    line: 'Head · House Vale · Cartographer',
+    tags: ['Person', 'Root'],
+  },
+  {
+    id: 'elian',
+    name: 'Elian Rook',
+    line: 'Captain · House Rook · Partner of Mira',
+    tags: ['Person', 'Relationship'],
+  },
+  {
+    id: 'neris',
+    name: 'Neris Vale',
+    line: 'Heir · House Vale',
+    tags: ['Person', 'Member'],
+  },
+];
+---
+
+<section class="app-screen">
+  <WorkspaceHeading
+    kicker="Kinship"
+    title="Houses"
+    nav={['Houses', 'Tree']}
+    active={1}
+    group="houses-view"
+    create="New"
+  />
+
+  <div class="app-stage">
+    <div class="app-page" data-panel="houses-view:houses">
+      <div class="app-grid app-grid--entry">
+        <CollectionPane
+          kicker="Houses"
+          count={2}
+          label="houses"
+          search="Search houses"
+          group="houses-entry"
+          rows={houses.map((house) => ({
+            type: 'house',
+            name: house.name,
+            subtitle: 'House',
+            value: house.id,
+          }))}
+        />
+        <div class="app-entrywrap">
+          {
+            houses.map((house, index) => (
+              <div
+                class:list={['app-entry', { 'is-open': index === 0 }]}
+                data-panel={`houses-entry:${house.id}`}
+              >
+                <article class="app-pane app-content">
+                  <div class="app-entry-head">
+                    <div>
+                      <span class="overline">House</span>
+                      <h2>{house.name}</h2>
+                    </div>
+                    <div class="app-nav">
+                      <span class="is-active">Article</span>
+                      <span>Edit</span>
+                    </div>
+                  </div>
+                  <div class="app-article">
+                    {house.paragraphs.map((paragraph) => (
+                      <p set:html={paragraph} />
+                    ))}
+                  </div>
+                </article>
+                <aside class="app-pane app-inspector">
+                  <div class="app-inspector__head">
+                    <span class="overline">Inspector</span>
+                    <strong>House</strong>
+                    <p>{house.name}</p>
+                  </div>
+                  <div class="app-props">
+                    {house.props.map(([label, value, empty]) => (
+                      <div class="app-prop">
+                        <span>{label}</span>
+                        <div class:list={['app-input', { 'is-empty': empty }]}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </aside>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="app-page is-open" data-panel="houses-view:tree">
+      <div class="tree-head">
+        <div class="app-topbar__brand">
+          <span class="app-topbar__mark" set:html={Castle} />
+          <div class="app-topbar__copy">
+            <strong>House Vale</strong>
+            <small>House Vale · immediate family</small>
+          </div>
+        </div>
+        <div class="app-chips">
+          <span class="app-chip">Members only</span>
+          <span class="app-chip is-active">+ immediate family</span>
+        </div>
+      </div>
+      <div class="app-card card--tree">
+        <TreeCanvas />
+        <div class="app-dockwrap">
+          {
+            people.map((person, index) => (
+              <div
+                class:list={['app-dock', { 'is-open': index === 0 }]}
+                data-panel={`house-person:${person.id}`}
+              >
+                <EntityGlyph type="person" size={34} />
+                <div class="app-dock__copy">
+                  <strong>{person.name}</strong>
+                  <small>{person.line}</small>
+                </div>
+                <div class="app-dock__meta">
+                  {person.tags.map((tag) => (
+                    <span class="app-chip">{tag}</span>
+                  ))}
+                  <span class="app-chip">Open in Lore</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tree-head {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-4);
+    padding: 0 var(--app-pad) var(--space-3);
+  }
+  .tree-head .app-chips {
+    margin-left: auto;
+  }
+  .card--tree {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .card--tree :global(.tree) {
+    min-height: 18rem;
+  }
+  @media (max-width: 52rem) {
+    .tree-head {
+      padding-inline: var(--space-4);
+    }
+    .tree-head .app-chips {
+      display: none;
+    }
+  }
+</style>

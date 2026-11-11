@@ -4,11 +4,13 @@
 //
 // Chrome is modelled on the real app shell (../daena/src/lib/shell), reduced to
 // what says where you are: the rail's project line and the six workspace
-// entries (AppSidebar.svelte) and a strip of open tabs with New tab (TabStrip.svelte). History
-// arrows, quick open, status, Home/New/Project/Settings are left out. The six
+// entries (AppSidebar.svelte) and a strip of open tabs with New tab (TabStrip.svelte).
+// History arrows, quick open, status, Home/New/Project/Settings are left out. The six
 // workspace entries are <label>s wrapping visually hidden radios; the checked
 // radio is found with :has() on the figure, which shows the matching view,
-// caption, window title and tab. Arrow keys move between radios natively.
+// caption, window title and tab. Arrow keys move between radios natively. The
+// tab strip is a second set of labels for those same radios, so a tab click
+// switches the workspace without any script.
 //
 // Slots: `view-<id>` holds the rendition, `caption-<id>` the figcaption text.
 import { ChevronDown, Plus, X } from 'lucide-static';
@@ -57,9 +59,10 @@ const { name, groupLabel, projectName, items } = Astro.props;
         <div class="rail__group" role="radiogroup" aria-label={groupLabel}>
           {
             items.map((item, index) => (
-              <label class="rail__item">
+              <label class="rail__item" for={`${name}-${item.id}`}>
                 <input
                   class="rail-radio"
+                  id={`${name}-${item.id}`}
                   type="radio"
                   name={name}
                   value={item.id}
@@ -80,11 +83,11 @@ const { name, groupLabel, projectName, items } = Astro.props;
           <div class="app-toolbar__lead">
             {
               items.map((item) => (
-                <span class="app-tab tab-item" data-view={item.id}>
+                <label class="app-tab tab-item" for={`${name}-${item.id}`} data-view={item.id}>
                   <span class="app-tab__icon" set:html={item.tabIcon} />
                   <span class="app-tab__title">{item.tab}</span>
                   <span class="app-tab__close" set:html={X} />
-                </span>
+                </label>
               ))
             }
             <span class="app-tab-new" set:html={Plus} />
@@ -99,6 +102,7 @@ const { name, groupLabel, projectName, items } = Astro.props;
             ))
           }
         </div>
+        <slot name="overlay" />
       </div>
     </div>
   </div>

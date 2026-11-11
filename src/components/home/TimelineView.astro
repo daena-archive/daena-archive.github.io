@@ -1,0 +1,392 @@
+---
+import CollectionPane from './CollectionPane.astro';
+import TimelineCanvas from './TimelineCanvas.astro';
+import WorkspaceHeading from './WorkspaceHeading.astro';
+
+// Timeline's two views: Events is a normal master-detail collection, while
+// Timeline (the default) is the chronology projection. Selecting an item in the
+// outline or on the canvas opens its detail strip.
+const events = [
+  {
+    id: 'founding',
+    name: 'Founding of Eldermere',
+    paragraphs: [
+      'The first quay is laid at the mouth of the western soundings. The date is recorded as 812 in the Common Reckoning.',
+      'The <span class="ref">Tidewatch</span> keeps the survey. <span class="ref">House Vale</span> traces its seat to the same year.',
+    ],
+    props: [
+      ['Date', '812'],
+      ['Era', 'Age of Settlement'],
+      ['Calendar', 'Common Reckoning'],
+      ['Locations', 'Eldermere'],
+    ],
+  },
+  {
+    id: 'crown',
+    name: 'The Crown of Salt changes hands',
+    paragraphs: [
+      'The <span class="ref">Crown of Salt</span> passes from the Marsh Cant to <span class="ref">House Vale</span>. The marsh keeps a different account of the exchange.',
+      'No witness is named in the common record. The event is dated 834.',
+    ],
+    props: [
+      ['Date', '834'],
+      ['Era', 'Age of Settlement'],
+      ['Calendar', 'Common Reckoning'],
+      ['Participants', 'House Vale, Marsh Cant'],
+    ],
+  },
+  {
+    id: 'war',
+    name: 'War of Tides',
+    paragraphs: [
+      'A generation of raids and counter-raids over the western soundings. <span class="ref">House Vale</span>, the <span class="ref">Coastfolk</span>, and <span class="ref">House Rook</span> are all named in the surviving rolls.',
+      'The war ends with the Lantern Marsh Accord in 861.',
+    ],
+    props: [
+      ['Dates', '843 – 861'],
+      ['Era', 'Age of Strife'],
+      ['Participants', 'House Vale, Coastfolk, House Rook'],
+      ['Locations', 'Eldermere, Lantern Marsh'],
+    ],
+  },
+  {
+    id: 'accord',
+    name: 'The Lantern Marsh Accord',
+    paragraphs: [
+      'The accord closes the War of Tides. It fixes the marsh boundary and opens the soundings to both fleets.',
+      'The text is short enough to be copied onto a single sheet, and every captain is expected to carry one.',
+    ],
+    props: [
+      ['Date', '861'],
+      ['Era', 'Age of Strife'],
+      ['Calendar', 'Common Reckoning'],
+      ['Locations', 'Lantern Marsh'],
+    ],
+  },
+];
+
+const outline = [
+  {
+    id: 'founding',
+    year: '812',
+    name: 'Founding of Eldermere',
+    meta: 'Starts: 812',
+    type: 'Timeline event',
+    kind: 'Event',
+  },
+  {
+    id: 'mira',
+    year: '819',
+    name: 'Mira Vale',
+    meta: 'Birth: 819 – Death: 880',
+    type: 'Lifeline',
+    kind: 'Person',
+  },
+  {
+    id: 'crown',
+    year: '834',
+    name: 'Crown of Salt changes hands',
+    meta: '834',
+    type: 'Timeline event',
+    kind: 'Event',
+  },
+  {
+    id: 'war',
+    year: '843',
+    name: 'War of Tides',
+    meta: 'Starts: 843 – Ends: 861',
+    type: 'Timeline event',
+    kind: 'Event',
+  },
+  {
+    id: 'accord',
+    year: '861',
+    name: 'Lantern Marsh Accord',
+    meta: '861',
+    type: 'Timeline event',
+    kind: 'Event',
+  },
+];
+
+const details = [
+  {
+    id: 'founding',
+    kind: 'Timeline event',
+    name: 'Founding of Eldermere',
+    meta: '812 · Age of Settlement',
+    chips: ['Eldermere', 'Common Reckoning'],
+  },
+  {
+    id: 'mira',
+    kind: 'Lifeline',
+    name: 'Mira Vale',
+    meta: '819 – 880 · Person',
+    chips: ['House Vale', 'Cartographer'],
+  },
+  {
+    id: 'crown',
+    kind: 'Timeline event',
+    name: 'Crown of Salt changes hands',
+    meta: '834 · Age of Settlement',
+    chips: ['House Vale', 'Marsh Cant'],
+  },
+  {
+    id: 'war',
+    kind: 'Timeline event',
+    name: 'War of Tides',
+    meta: '843 – 861 · Age of Strife',
+    chips: ['House Vale', 'Coastfolk', 'House Rook'],
+  },
+  {
+    id: 'accord',
+    kind: 'Timeline event',
+    name: 'Lantern Marsh Accord',
+    meta: '861 · Age of Strife',
+    chips: ['Lantern Marsh', 'House Vale'],
+  },
+  {
+    id: 'elian',
+    kind: 'Lifeline',
+    name: 'Elian Rook',
+    meta: '823 – 878 · Person',
+    chips: ['House Rook', 'Captain'],
+  },
+];
+---
+
+<section class="app-screen">
+  <WorkspaceHeading
+    kicker="Chronology"
+    title="Timeline"
+    nav={['Events', 'Timeline']}
+    active={1}
+    group="timeline-view"
+    create="New"
+  />
+
+  <div class="app-stage">
+    <div class="app-page" data-panel="timeline-view:events">
+      <div class="app-grid app-grid--entry">
+        <CollectionPane
+          kicker="Events"
+          count={4}
+          label="records"
+          search="Search events"
+          group="event-entry"
+          rows={events.map((event) => ({
+            type: 'event',
+            name: event.name,
+            subtitle: 'Timeline event',
+            value: event.id,
+          }))}
+        />
+        <div class="app-entrywrap">
+          {
+            events.map((event, index) => (
+              <div
+                class:list={['app-entry', { 'is-open': index === 0 }]}
+                data-panel={`event-entry:${event.id}`}
+              >
+                <article class="app-pane app-content">
+                  <div class="app-entry-head">
+                    <div>
+                      <span class="overline">Timeline event</span>
+                      <h2>{event.name}</h2>
+                    </div>
+                    <div class="app-nav">
+                      <span class="is-active">Article</span>
+                      <span>Edit</span>
+                    </div>
+                  </div>
+                  <div class="app-article">
+                    {event.paragraphs.map((paragraph) => (
+                      <p set:html={paragraph} />
+                    ))}
+                  </div>
+                </article>
+                <aside class="app-pane app-inspector">
+                  <div class="app-inspector__head">
+                    <span class="overline">Inspector</span>
+                    <strong>Timeline event</strong>
+                    <p>{event.name}</p>
+                  </div>
+                  <div class="app-props">
+                    {event.props.map(([label, value]) => (
+                      <div class="app-prop">
+                        <span>{label}</span>
+                        <div class="app-input">{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </aside>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="app-page is-open" data-panel="timeline-view:timeline">
+      <div class="app-card tl">
+        <aside class="tl-outline">
+          <span class="tl-heading">Chronological outline</span>
+          {
+            outline.map((item) => (
+              <>
+                <div class="tl-year">{item.year}</div>
+                <div
+                  class:list={['tl-card', { 'is-active': item.id === 'war' }]}
+                  data-set={`tl-item:${item.id}`}
+                  data-tab-title={item.name}
+                >
+                  <strong>{item.name}</strong>
+                  <small>{item.meta}</small>
+                  <span>
+                    <b>{item.type}</b>
+                    <small>{item.kind}</small>
+                  </span>
+                </div>
+              </>
+            ))
+          }
+        </aside>
+        <TimelineCanvas />
+        <div class="tl-detailwrap">
+          {
+            details.map((detail) => (
+              <div
+                class:list={['tl-detail', { 'is-open': detail.id === 'war' }]}
+                data-panel={`tl-item:${detail.id}`}
+              >
+                <div class="tl-detail__copy">
+                  <span class="overline">{detail.kind}</span>
+                  <strong>{detail.name}</strong>
+                  <small>{detail.meta}</small>
+                </div>
+                <div class="app-chips">
+                  {detail.chips.map((chip) => (
+                    <span class="app-chip">{chip}</span>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Timeline projection, after the module's chronology view and inspector. */
+  .tl {
+    display: grid;
+    grid-template-columns: 252px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .tl-outline {
+    min-height: 0;
+    overflow: hidden;
+    padding: var(--space-4);
+    border-right: 1px solid var(--line-soft);
+  }
+  .tl-heading {
+    display: block;
+    margin: 0 0 var(--space-2);
+    color: var(--ink-muted);
+    font: 600 11px/1.2 var(--font-ui);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tl-year {
+    margin: var(--space-2) 4px 2px;
+    color: var(--ink-muted);
+    font: 600 13px/1 var(--font-display);
+  }
+  .tl-card {
+    display: grid;
+    gap: 3px;
+    padding: 6px 9px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+  }
+  .tl-card[data-set] {
+    cursor: pointer;
+  }
+  .tl-card[data-set]:not(.is-active):hover {
+    background: var(--surface-muted);
+  }
+  .tl-card.is-active {
+    border-color: var(--line-strong);
+    background: var(--warning-bg);
+  }
+  .tl-card strong {
+    color: var(--ink);
+    font: 600 13px/1.3 var(--font-ui);
+  }
+  .tl-card small {
+    color: var(--ink-muted);
+    font: 400 11px/1.35 var(--font-ui);
+  }
+  .tl-card span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .tl-card b {
+    padding: 2px 7px;
+    border-radius: var(--radius-pill);
+    background: var(--warning-bg);
+    color: var(--ink-soft);
+    font: 600 11px/1.2 var(--font-ui);
+  }
+  .tl :global(.vis) {
+    grid-column: 2;
+  }
+  .tl-detailwrap {
+    display: grid;
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--line-soft);
+  }
+  .tl-detail {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    grid-area: 1 / 1;
+    background: var(--surface-muted);
+  }
+  .tl-detail__copy {
+    display: grid;
+    min-width: 0;
+    gap: 2px;
+  }
+  .tl-detail__copy strong {
+    color: var(--ink);
+    font: 600 14px/1.2 var(--font-ui);
+  }
+  .tl-detail__copy small {
+    color: var(--ink-soft);
+    font: 500 12px/1.3 var(--font-ui);
+  }
+  .tl-detail .app-chips {
+    margin-left: auto;
+  }
+
+  @media (max-width: 52rem) {
+    .tl {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .tl-outline {
+      display: none;
+    }
+    .tl :global(.vis) {
+      grid-column: 1;
+    }
+    .tl-detail .app-chips {
+      display: none;
+    }
+  }
+</style>

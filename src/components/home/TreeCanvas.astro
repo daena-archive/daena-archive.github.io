@@ -8,9 +8,9 @@ import EntityGlyph from './EntityGlyph.astro';
 //   ../daena/src/lib/houses/FamilyRelationshipEdge.svelte (halo-ed edges)
 // Example people only; coordinates are in a fixed 710 x 330 stage centred in the canvas.
 const people = [
-  { name: 'Mira Vale', role: 'Head', x: 110, y: 30 },
-  { name: 'Elian Rook', role: '', x: 400, y: 30 },
-  { name: 'Neris Vale', role: 'Heir', x: 255, y: 220 },
+  { key: 'mira', name: 'Mira Vale', house: 'House Vale', role: 'Head', x: 110, y: 30 },
+  { key: 'elian', name: 'Elian Rook', house: 'House Rook', role: '', x: 400, y: 30 },
+  { key: 'neris', name: 'Neris Vale', house: 'House Vale', role: 'Heir', x: 255, y: 220 },
 ] as const;
 ---
 
@@ -41,13 +41,18 @@ const people = [
     <span class="union" aria-hidden="true">+</span>
     {
       people.map((person) => (
-        <div class="card" style={`left: ${person.x}px; top: ${person.y}px;`}>
+        <div
+          class:list={['card', { 'is-active': person.key === 'mira' }]}
+          data-set={`house-person:${person.key}`}
+          data-tab-title={person.name}
+          style={`left: ${person.x}px; top: ${person.y}px;`}
+        >
           <span class="card__avatar">
             <EntityGlyph type="person" size={34} />
           </span>
           <span class="card__copy">
             <strong>{person.name}</strong>
-            <span class="card__house">House Vale</span>
+            <span class="card__house">{person.house}</span>
             {person.role && <em class="card__role">{person.role}</em>}
           </span>
         </div>
@@ -124,6 +129,16 @@ const people = [
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     background: var(--surface);
+  }
+  .card[data-set] {
+    cursor: pointer;
+  }
+  .card[data-set]:not(.is-active):hover {
+    border-color: var(--line-strong);
+  }
+  .card.is-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 24%, transparent);
   }
   .card__avatar {
     display: grid;
